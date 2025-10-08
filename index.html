@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      href="https://fonts.gstatic.com/s/inter/v12/1Pn0EnyXJmdSgbTxHLk.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.1.0/fontfaceobserver.standalone.js"></script>
+
+    <link rel="prefetch" href="home.html" as="document" />
+    <link rel="stylesheet" href="navbar\navbar.css" />
+    <link rel="stylesheet" href="font\font.css" />
+    <link rel="stylesheet" href="animations/global.css" />
+    <link rel="stylesheet" href="pages\index.css" />
+    <link rel="stylesheet" href="controlers\scroll.css" />
+    <link rel="stylesheet" href="sections/hero.css" />
+    <link rel="stylesheet" href="sections\carousel.css" />
+    <style>
+      :root {
+        --nav-height: 3rem;
+      }
+
+      html,
+      body {
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      body.preload {
+        visibility: hidden;
+        opacity: 0;
+      }
+
+      body {
+        transition: opacity 0.2s ease-in;
+        overflow-x: hidden;
+      }
+      /* Main content container fills the entire viewport. */
+      .main-content {
+        position: relative; /* important for absolute positioning of its children */
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .images-container {
+        flex-grow: 1;
+        z-index: 10;
+        width: 100%;
+        position: relative;
+
+        display: flex;
+        align-items: center; /* vertical center */
+        justify-content: center; /* horizontal center */
+
+        padding-top: calc(var(--nav-height) + 2rem); /* give breathing room */
+      }
+
+      .video-titles-container {
+        z-index: 20; /* Places this section on top */
+        background: transparent;
+        padding: 2rem;
+        width: 100%;
+        /* New positioning to anchor it to the bottom */
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+      .carousel-image {
+        width: clamp(250px, 40vw, 600px); /* responsive width */
+        aspect-ratio: 16 / 9; /* keeps ratio */
+        height: auto; /* auto-calculated from width */
+        max-height: 40vh; /* cap based on viewport height */
+        object-fit: cover; /* avoids stretching */
+      }
+
+      .video-reel {
+        width: clamp(200px, 40vw, 300px);
+      }
+      /* Ensure nav and aside are always on top */
+      #navbar,
+      #sidebar-multi-level-sidebar {
+        z-index: 30 !important;
+      }
+
+      /* Prevent any potential overflow */
+      * {
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body class="preload">
+    <main id="swup">
+      <div class="main-content text-container">
+        <nav
+          id="navbar"
+          class="duration-300 fixed inset-x-0 top-0 z-50 h-12 w-full"
+        >
+          <div class="w-full h-full bg-white dark:bg-[#242424] px-3">
+            <div
+              class="flex items-center justify-between h-full max-w-screen-xl mx-auto"
+            >
+              <a
+                href=""
+                class="relative z-60 pointer-events-auto flex items-center space-x-2"
+              >
+                <img
+                  src="images\sk_logo.webp"
+                  alt="Logo"
+                  class="h-5 w-auto"
+                />
+                <span class="font-theme font-medium">SK Lepaga</span>
+              </a>
+              <button
+                id="menu-toggle-btn"
+                type="button"
+                class="font-theme rounded-md hover:bg-[#e8e8e8] dark:hover:bg-[#696969] focus:outline-none"
+                aria-controls="sidebar-multi-level-sidebar"
+                aria-expanded="false"
+              >
+                <svg
+                  class="w-7 h-7"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    id="menu-icon-path"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </nav>
+
+<aside id="sidebar-multi-level-sidebar" class="fixed top-12 left-0 z-30 w-[100vw] hidden transition-[max-height] duration-500 bg-white dark:bg-[#242424]" style="height: calc(100vh - 3rem); overflow-y: auto;" aria-label="Sidebar">
+    <div class="h-full flex items-center justify-center px-4 py-4 max-w-4xl mx-auto">
+        <div id="sidebar-menu" class="font-theme space-y-5 flex flex-col items-center justify-center">
+
+            <div class="sidebar-menu-item flex flex-col items-center">
+                <a href="schedules.html" class="sidebar-menu-header subtext-title"  data-transition rel="nofollow noopener">SCHEDULES</a>
+            </div>
+
+            <div class="sidebar-menu-item flex flex-col items-center">
+                <a href="news.html" class="sidebar-menu-header subtext-title"  data-transition rel="nofollow noopener">NEWS</a>
+            </div>
+
+            <div class="sidebar-menu-item flex flex-col items-center">
+                <a href="about.html" class="sidebar-menu-header subtext-title"  data-transition rel="nofollow noopener">ABOUT</a>
+            </div>
+
+            <div class="sidebar-menu-item flex flex-col items-center">
+                <button class="sidebar-menu-header flex items-center space-x-2 focus:outline-none">
+                    <h2 class="subtext-title">CONTACT</h2>
+                    <svg class="w-5 h-5 stroke-white transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div class="sidebar-menu-body max-h-0 overflow-hidden opacity-0 transition-all duration-500 ease-in-out mt-3 space-y-1 text-center flex flex-col items-center">
+                    <a href="contact.html" class="subtext submenu-link block text-[#FFFFF]"  data-transition rel="nofollow noopener">Send a Message</a>
+                    <a href="authentication.html" class="subtext submenu-link block text-[#FFFFF]"  data-transition rel="nofollow noopener">Chat with Us</a>
+                    <br>
+                </div>
+            </div>
+
+            <div class="sidebar-menu-item flex flex-col items-center">
+                <a href="sitemap.html" class="sidebar-menu-header subtext-title"  data-transition rel="nofollow noopener">SITE MAP</a>
+            </div>
+            
+        </div>
+    </div>
+</aside>
+
+        <section
+          class="clipp-section images-container w-full flex flex-col justify-between bg-white overflow-hidden bg-white dark:bg-[#242424]"
+        >
+          <div class="w-full pb-4 px-0">
+            <div class="overflow-hidden relative w-full">
+              <div id="scroller" class="flex w-max will-change-transform">
+                <p class="text-gray-500 p-4">Loading projects...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="video-titles-container w-full bg-transparent mt-0 pt-0">
+          <div class="w-full flex flex-col-reverse md:flex-row">
+            <div class="hero w-full md:w-3/8 mb-20 md:mb-0 flex items-end relative">
+              <div class="flex flex-col justify-end">
+                <p class="mb-4 sm:mt-8 context font-theme">Play Reel ▶</p>
+                <div class="w-full max-w-sm">
+                  <video
+                    id="playReel"
+                    src="https://sklepagatesting.github.io/resources/Images/reel.mp4"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                    class="video-reel shadow-lg object-cover aspect-video cursor-pointer"
+                  ></video>
+                </div>
+              </div>
+            </div>
+            <div id="videoOverlayBg" class="video-overlay-bg"></div>
+
+            <div
+              class="w-full md:w-5/8 flex flex-col justify-end sm:text-left md:text-left"
+            >
+              <div>
+                <div class="text-container">
+                  <h2 class="text-line context font-theme mb-2"></h2>
+                </div>
+                <div class="text-container">
+                  <h1 class="text-line subtext-title font-theme">
+                    BRANGAY LEPAGA
+                  </h1>
+                </div>
+                <div class="text-container">
+                  <h1 class="text-line subtext-title font-theme">
+                    SK INITIATIVES
+                  </h1>
+                </div>
+                <div class="text-container mb-4">
+                  <h1 class="text-line subtext-title font-theme">AND PROJETS</h1>
+                </div>
+                <div class="text-container mb-4">
+                  <p class="text-line subtext font-theme"></p>
+                </div>
+                <div class="text-container mb-8 md:mb-0">
+                  <a
+                    href="home.html"
+                    class="text-line context inline-block w-fit font-theme border-b border-black hover:opacity-75 transition"
+                    data-transition
+                    rel="nofollow noopener"
+                  >
+                    Explore All Work
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite/dist/flowbite.min.js"></script>
+
+    <script src="navbar\navbar.js"></script>
+    <script src="pages/index.js"></script>
+    <script src="animations\globalindex.js"></script>
+    <script src="font\font.js"></script>
+    <script src="loader\loader.js"></script>
+    <script src="loader\others.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.1.0/fontfaceobserver.standalone.js"></script>
+    <script src="https://unpkg.com/swup@latest/dist/swup.min.js"></script>
+
+    <script>
+      // On DOM load
+      window.addEventListener('DOMContentLoaded', () => {
+        gsap.utils.toArray('.clipp-section').forEach((section, index) => {
+          gsap.to(section, {
+            clipPath: 'inset(0% 0% 0% 0%)', // Reveal fully
+            duration: 0.7,
+            ease: 'power2.out',
+          });
+        });
+      });
+    </script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    enableIndexedDbPersistence, // <-- Key for Caching
+  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+  // NOTE: resolveContentLoaded is declared globally in the main script block
+  // and is accessible here because module scripts share the global scope.
+
+  // 1. Firebase Configuration (unchanged)
+  const firebaseConfig = {
+    apiKey: "AIzaSyDZUVChTTWtGm4R40wMWGrTYwyUk0FDahs",
+    authDomain: "sklepaga-8790e.firebaseapp.com",
+    projectId: "sklepaga-8790e",
+    storageBucket: "sklepaga-8790e.appspot.com",
+    messagingSenderId: "815409129057",
+    appId: "1:815409129057:web:9f6342be47e28c1f69ec20",
+    measurementId: "G-9GH707G2WZ",
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // 2. Enable Firestore Caching (unchanged)
+  try {
+    await enableIndexedDbPersistence(db);
+    console.log("Firestore offline persistence enabled.");
+  } catch (err) {
+    if (err.code === 'failed-precondition') {
+      console.warn("Persistence failed: multiple tabs open, or browser doesn't support it.");
+    } else if (err.code === 'unimplemented') {
+      console.warn("Persistence not supported on this device.");
+    }
+  }
+
+  // *** UPDATED FUNCTION: Title Truncation Logic ***
+  function truncateTitle(title) {
+    // Define the maximum length for desktop and mobile
+    const desktopMaxLength = 35;
+    const mobileMaxLength = 25;
+    
+    // Determine the current max length based on screen width.
+    const isMobile = window.innerWidth < 640;
+    const maxLength = isMobile ? mobileMaxLength : desktopMaxLength;
+    
+    if (title.length > maxLength) {
+      // Find the last space before the limit
+      let truncated = title.substring(0, maxLength);
+      const lastSpace = truncated.lastIndexOf(' ');
+            
+      // If a space is found, cut there
+      if (lastSpace !== -1) {
+        truncated = truncated.substring(0, lastSpace);
+      }
+
+      // *** CONDITIONAL ADDITION OF '...' ***
+      // Add '...' only if it's a mobile view, or if you want to
+      // keep it simple, you could only add '...' on mobile, as requested.
+      // If desktop, the text will just be cut at the word break.
+      const suffix = isMobile ? '...' : '';
+      
+      return truncated.trim() + suffix;
+    }
+    return title;
+  }
+
+  // 3. Main Fetch and Render Function
+  async function fetchAndRenderProjects() {
+    const scroller = document.getElementById('scroller');
+    if (!scroller) {
+        resolveContentLoaded();
+        return;
+    }
+
+    scroller.innerHTML = '<p class="text-gray-500 p-4">Loading projects...</p>';
+
+    try {
+      const docRef = doc(db, "contentJson", "data");
+      const docSnap = await getDoc(docRef);
+
+      let contentArray = [];
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        contentArray = data.content || [];
+      } else {
+         scroller.innerHTML = "<p class='text-gray-500 p-4'>No content document found in Firestore.</p>";
+      }
+                  const projectContent = contentArray.filter(
+        (item) => item.category === 'projects'
+      );
+
+      if (projectContent.length === 0) {
+        scroller.innerHTML =
+          "<p class='text-gray-500 p-4'>No projects found in the database. Add content via Admin Panel.</p>";
+      }
+
+      // Sort by timestamp (newest first)
+      const sortedProjects = projectContent.sort(
+        (a, b) => (b.timestamp || 0) - (a.timestamp || 0)
+      );
+
+      // Generate HTML
+      const projectHTML = sortedProjects
+        .map((item) => {
+          // Link to article.html using a query parameter for the slug.
+          const linkHref = item.slug
+            ? `article.html?slug=${item.slug}`
+            : `article.html?id=${item.id}`;
+
+          // Application of truncation
+          const truncatedTitle = truncateTitle(item.title);
+
+          return `
+            <a href="${linkHref}" class="group relative flex-shrink-0 mr-8" data-transition rel="nofollow noopener">
+                <div class="zoom overflow-hidden relative carousel-image">
+                    <img
+                        src="${item.image}"
+                        alt="${item.title}"
+                        class="w-full h-full object-cover"
+                    />
+                </div>
+                <div class="w-full pt-2 overflow-hidden">
+                    <p class="context font-theme sm:translate-y-full sm:group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+                        ${truncatedTitle}
+                    </p>
+                </div>
+            </a>
+          `;
+        })
+        .join('');
+
+      // Insert the new HTML into the scroller
+      scroller.innerHTML = projectHTML;
+      
+      // Simple Debounce function to limit how often fetchAndRenderProjects runs on resize
+      function debounce(func, timeout = 300) {
+        let timer;
+        return (...args) => {
+          clearTimeout(timer);
+          timer = setTimeout(() => { func.apply(this, args); }, timeout);
+        };
+      }
+
+      const fetchAndRenderProjectsDebounced = debounce(fetchAndRenderProjects);
+      window.addEventListener('resize', fetchAndRenderProjectsDebounced);
+
+      } catch (error) {
+      console.error('Failed to load and render content from Firestore:', error);
+      scroller.innerHTML = `<p class='text-red-500 p-4'>Error loading content. Check Console for details.</p>`;
+    } finally {
+        // CRITICAL CHANGE: RESOLVE THE PROMISE HERE
+        resolveContentLoaded();
+    }
+  }
+
+  // Run the function when the DOM content is fully loaded
+  document.addEventListener('DOMContentLoaded', fetchAndRenderProjects);
+
+  // ... inside fetchAndRenderProjects in your <script type="module">
+
+// Insert the new HTML into the scroller
+scroller.innerHTML = projectHTML;            
+
+// 🔥 CRITICAL FIX: Re-run the transition setup for new links
+if (typeof window.setupPageTransition === 'function') {
+    window.setupPageTransition();
+    console.log("Carousel links processed for data-transition.");
+} else {
+    console.warn("setupPageTransition function not found. Ensure page-transition.js is loaded correctly.");
+}
+
+// Simple Debounce function...
+// ...
+</script>
+  </body>
+</html>
