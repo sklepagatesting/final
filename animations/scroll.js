@@ -1,61 +1,56 @@
-// --- Inertia-based Smooth Scroll ---
-(function() {
+// --- Inertia-based Smooth Scroll (tuned for Chrome 141) ---
+(() => {
   let currentY = 0;                // Current scroll position
   let velocity = 0;                // Current scroll velocity
-  const friction = 0.98;           // Scroll resistance (lower = more resistance)
-  const stopThreshold = 0.05;      // Minimum velocity before stopping
-  const maxInputVelocity = 3;      // Limit input speed from one wheel/touch event
-  const maxTotalVelocity = 50;     // Maximum velocity allowed
-  const scrollScale = 0.2;         // How much wheel movement affects scroll
+  const friction = 0.92;           // Slightly stronger drag (slower deceleration)
+  const stopThreshold = 0.04;      // Lower = stops more gradually
+  const scrollScale = 0.08;        // Reduced sensitivity (was 0.2 before)
+  const maxInputVelocity = 2.5;    // Cap single-wheel flicks
+  const maxTotalVelocity = 30;     // Prevent runaway speed
+  let isAnimating = false;
 
-  function clamp(value, min, max) {
-    return Math.max(min, Math.min(value, max));
-  }
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 
   function animate() {
-    // Apply friction to slow down scrolling
     velocity *= friction;
 
-    // Stop if velocity is very small
     if (Math.abs(velocity) < stopThreshold) {
       velocity = 0;
+      isAnimating = false;
       return;
     }
 
-    // Update scroll position
     currentY += velocity;
 
-    // Ensure we don't scroll beyond page boundaries
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     currentY = clamp(currentY, 0, maxScroll);
 
-    // Move the page
-    window.scrollTo(0, currentY);
+    // 'instant' avoids Chrome's built-in scroll easing interference
+    window.scrollTo({ top: currentY, behavior: 'instant' });
 
-    // Keep animating until velocity reaches zero
     requestAnimationFrame(animate);
   }
 
-  // Handle mouse wheel input
-  window.addEventListener('wheel', (e) => {
-    e.preventDefault();
+  window.addEventListener(
+    "wheel",
+    (e) => {
+      if (e.cancelable) e.preventDefault();
 
-    // Convert wheel delta to velocity
-    let inputVelocity = e.deltaY * scrollScale;
-    inputVelocity = clamp(inputVelocity, -maxInputVelocity, maxInputVelocity);
+      // Normalize and reduce sensitivity
+      let inputVelocity = e.deltaY * scrollScale;
 
-    // Add to current velocity and clamp total
-    velocity += inputVelocity;
-    velocity = clamp(velocity, -maxTotalVelocity, maxTotalVelocity);
+      inputVelocity = clamp(inputVelocity, -maxInputVelocity, maxInputVelocity);
+      velocity = clamp(velocity + inputVelocity, -maxTotalVelocity, maxTotalVelocity);
 
-    // If there's enough velocity, start animation loop
-    if (Math.abs(velocity) >= stopThreshold) {
-      requestAnimationFrame(animate);
-    }
-  }, { passive: false });
+      if (!isAnimating) {
+        isAnimating = true;
+        requestAnimationFrame(animate);
+      }
+    },
+    { passive: false }
+  );
 
-  // Sync starting position with actual scroll
-  window.addEventListener('load', () => {
+  window.addEventListener("load", () => {
     currentY = window.scrollY;
   });
 })();
