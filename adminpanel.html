@@ -325,141 +325,144 @@
   </div>
 
   <script type="module">
-    import {
-      initializeApp
-    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import {
-      getAuth,
-      onAuthStateChanged,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-    import {
-      getFirestore,
-      collection,
-      doc,
-      getDoc,
-      setDoc,
-      deleteDoc,
-      onSnapshot,
-      query,
-      orderBy,
-      limit,
-      startAfter,
-      getDocs
-    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+   import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import {
+    getFirestore,
+    collection,
+    doc,
+    getDoc,
+    setDoc,
+    deleteDoc,
+    onSnapshot,
+    query,
+    orderBy,
+    limit,
+    startAfter,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDZUVChTTWtGm4R40wMWGrTYwyUk0FDahs",
-      authDomain: "sklepaga-8790e.firebaseapp.com",
-      projectId: "sklepaga-8790e",
-      storageBucket: "sklepaga-8790e.appspot.com",
-      messagingSenderId: "815409129057",
-      appId: "1:815409129057:web:9f6342be47e28c1f69ec20",
-      measurementId: "G-9GH707G2WZ"
-    };
+const firebaseConfig = {
+    apiKey: "AIzaSyDZUVChTTWtGm4R40wMWGrTYwyUk0FDahs",
+    authDomain: "sklepaga-8790e.firebaseapp.com",
+    projectId: "sklepaga-8790e",
+    storageBucket: "sklepaga-8790e.appspot.com",
+    messagingSenderId: "815409129057",
+    appId: "1:815409129057:web:9f6342be47e28c1f69ec20",
+    measurementId: "G-9GH707G2WZ"
+};
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    let activeAdmin = null;
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+let activeAdmin = null;
 
-    // UI Elements
-    const adminInfoDiv = document.getElementById("adminInfo");
-    const outBtn = document.getElementById("outBtn");
-    const userListEl = document.getElementById("userList");
-    const searchInput = document.getElementById("searchInput");
-    const sortSelect = document.getElementById("sortSelect");
-    const loadMoreBtn = document.getElementById("loadMoreBtn");
-    const toastEl = document.getElementById("toast");
-    const toastBody = document.getElementById("toastBody");
-    const toastIcon = document.getElementById("toastIcon");
-    const toastText = document.getElementById("toastText");
+// UI Elements
+const adminInfoDiv = document.getElementById("adminInfo");
+const outBtn = document.getElementById("outBtn");
+const userListEl = document.getElementById("userList");
+const searchInput = document.getElementById("searchInput");
+const sortSelect = document.getElementById("sortSelect");
+const loadMoreBtn = document.getElementById("loadMoreBtn");
+const toastEl = document.getElementById("toast");
+const toastBody = document.getElementById("toastBody");
+const toastIcon = document.getElementById("toastIcon");
+const toastText = document.getElementById("toastText");
 
-    // Modal Elements
-    const modalContainer = document.getElementById("modalContainer");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalMessage = document.getElementById("modalMessage");
-    const modalCancelBtn = document.getElementById("modalCancelBtn");
-    const modalConfirmBtn = document.getElementById("modalConfirmBtn");
-    const modalIcon = document.getElementById("modalIcon");
+// Modal Elements
+const modalContainer = document.getElementById("modalContainer");
+const modalTitle = document.getElementById("modalTitle");
+const modalMessage = document.getElementById("modalMessage");
+const modalCancelBtn = document.getElementById("modalCancelBtn");
+const modalConfirmBtn = document.getElementById("modalConfirmBtn");
+const modalIcon = document.getElementById("modalIcon");
 
-    function toast(msg, type = "success") {
-      const icons = {
+function toast(msg, type = "success") {
+    const icons = {
         success: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.236 4.53L8.53 10.53a.75.75 0 00-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg>`,
         warn: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.19-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>`,
         error: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 00-1.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" /></svg>`
-      };
-
-      const colors = {
+    };
+    const colors = {
         success: "bg-gradient-to-r from-green-500 to-emerald-600",
         warn: "bg-gradient-to-r from-amber-500 to-orange-600",
         error: "bg-gradient-to-r from-red-500 to-rose-600"
-      };
+    };
+    toastBody.className = `px-6 py-4 rounded-2xl text-white shadow-2xl backdrop-blur-lg flex items-center gap-3 min-w-[280px] ${colors[type]}`;
+    toastIcon.innerHTML = icons[type];
+    toastText.textContent = msg;
+    toastEl.classList.remove("hidden");
+    setTimeout(() => toastEl.classList.add("hidden"), 3000);
+}
 
-      toastBody.className = `px-6 py-4 rounded-2xl text-white shadow-2xl backdrop-blur-lg flex items-center gap-3 min-w-[280px] ${colors[type]}`;
-      toastIcon.innerHTML = icons[type];
-      toastText.textContent = msg;
-      toastEl.classList.remove("hidden");
-      setTimeout(() => toastEl.classList.add("hidden"), 3000);
-    }
+// Sign Out button logic
+outBtn.addEventListener("click", async () => {
+    await signOut(auth);
+    window.location.href = "authentication.html";
+});
 
-    // Sign Out button logic
-    outBtn.addEventListener("click", async () => {
-      await signOut(auth);
-      window.location.href = "authentication.html";
-    });
-
-    function showModal(title, message) {
-      return new Promise(resolve => {
+function showModal(title, message) {
+    return new Promise(resolve => {
         modalTitle.textContent = title;
         modalMessage.textContent = message;
         modalContainer.classList.remove("hidden");
 
         const cleanUp = () => {
-          modalContainer.classList.add("hidden");
-          modalConfirmBtn.onclick = null;
-          modalCancelBtn.onclick = null;
+            modalContainer.classList.add("hidden");
+            modalConfirmBtn.onclick = null;
+            modalCancelBtn.onclick = null;
         };
 
         modalConfirmBtn.onclick = () => {
-          cleanUp();
-          resolve(true);
+            cleanUp();
+            resolve(true);
         };
         modalCancelBtn.onclick = () => {
-          cleanUp();
-          resolve(false);
+            cleanUp();
+            resolve(false);
         };
-      });
-    }
+    });
+}
 
-    async function resignAdminRole() {
-      if (!activeAdmin) return;
-      const ok = await showModal("Resign Admin Role", "Are you sure you want to resign your admin role? You will lose access and be signed out.");
-      if (!ok) return;
-      try {
+async function resignAdminRole() {
+    if (!activeAdmin) return;
+    const ok = await showModal("Resign Admin Role", "Are you sure you want to resign your admin role? You will lose access and be signed out.");
+    if (!ok) return;
+    try {
         const adminRef = doc(db, "admin", activeAdmin.uid);
         const adminSnap = await getDoc(adminRef);
         if (!adminSnap.exists()) throw new Error("Admin document not found.");
 
         const adminData = adminSnap.data();
         await setDoc(doc(db, "accounts", activeAdmin.uid), {
-          uid: adminData.uid,
-          name: adminData.name || activeAdmin.displayName || "",
-          email: adminData.email || activeAdmin.email || "",
-          avatar: adminData.avatar || activeAdmin.photoURL || "",
-          createdAt: adminData.createdAt || new Date().toISOString(),
+            uid: adminData.uid,
+            name: adminData.name || activeAdmin.displayName || "",
+            email: adminData.email || activeAdmin.email || "",
+            avatar: adminData.avatar || activeAdmin.photoURL || "",
+            createdAt: adminData.createdAt || new Date().toISOString(),
         });
         await deleteDoc(adminRef);
         toast("Admin role resigned. Signing out...");
+        
+        // Use history.replaceState to prevent the back button from returning to the admin page
+        // as the state is now invalid.
+        window.history.replaceState(null, '', window.location.href);
+
         setTimeout(() => signOut(auth), 1500);
-      } catch (e) {
+    } catch (e) {
         console.error(e);
         toast("Failed to resign admin role", "error");
-      }
     }
+}
 
-    function loadAdminInfo(user) {
-      adminInfoDiv.innerHTML = `
+function loadAdminInfo(user) {
+    adminInfoDiv.innerHTML = `
         <div class="flex items-center gap-6 w-full lg:w-auto">
           <div class="relative">
             <img src="${user.photoURL || 'https://ui-avatars.com/api/?background=667eea&color=fff&name=' + encodeURIComponent(user.displayName || 'A')}" class="w-20 h-20 rounded-2xl border-2 border-white shadow-lg object-cover">
@@ -479,19 +482,19 @@
         <button class="px-6 py-3 subtext rounded-2xl border-2 text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300 w-full lg:w-auto font-medium transition-all duration-200 text-slate-800" id="resignBtn">
           Resign Admin Role
         </button>
-      `;
-      document.getElementById("resignBtn").onclick = resignAdminRole;
-    }
+    `;
+    document.getElementById("resignBtn").onclick = resignAdminRole;
+}
 
-    // Users List Management
-    const PAGE_SIZE = 18;
-    let cachedUsers = [];
-    let lastDocSnap = null;
-    let unsubUsers = null;
+// Users List Management
+const PAGE_SIZE = 18;
+let cachedUsers = [];
+let lastDocSnap = null;
+let unsubUsers = null;
 
-    function renderUsers(list) {
-      userListEl.innerHTML = "";
-      if (!list.length) {
+function renderUsers(list) {
+    userListEl.innerHTML = "";
+    if (!list.length) {
         userListEl.innerHTML = `
           <div class="col-span-full text-center py-16 text-gray-400">
             <div class="w-16 h-16 mx-auto rounded-2xl bg-slate-800 flex items-center justify-center mb-4">
@@ -504,9 +507,9 @@
           </div>
         `;
         return;
-      }
+    }
 
-      list.forEach((u, index) => {
+    list.forEach((u, index) => {
         const card = document.createElement("div");
         card.className = "glass-card rounded-3xl p-6 flex flex-col card-hover fade-in text-slate-800";
         card.style.animationDelay = `${index * 0.1}s`;
@@ -515,7 +518,7 @@
           <div class="flex items-start gap-4 flex-1">
             <div class="flex-shrink-0 relative">
               <img src="${u.avatar || 'https://ui-avatars.com/api/?background=667eea&color=fff&name=' + encodeURIComponent(u.name || 'U')}" class="w-14 h-14 rounded-full border-2 border-white shadow-lg object-cover">
-              ${u.uid === activeAdmin.uid ? '' : '<span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full ring-2 ring-white"></span>'}
+              ${u.uid === (activeAdmin ? activeAdmin.uid : '') ? '' : '<span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full ring-2 ring-white"></span>'}
             </div>
             <div class="flex-1 min-w-0">
               <p class="font-bold subtext text-slate-800 truncate">${u.name || "(no name)"}</p>
@@ -534,107 +537,136 @@
         `;
 
         card.querySelector(".promoteBtn").onclick = async () => {
-          const ok = await showModal("Promote User", `Are you sure you want to promote ${u.name || u.email} to an administrator? This action is permanent and will remove them from the general user list.`);
-          if (!ok) return;
-          try {
-            await setDoc(doc(db, "admin", u.uid), {
-              uid: u.uid,
-              name: u.name || "",
-              email: u.email || "",
-              avatar: u.avatar || "",
-              createdAt: new Date().toISOString(),
-              createdBy: activeAdmin.uid
-            });
-            await deleteDoc(doc(db, "accounts", u.uid));
-            toast("User promoted to admin");
-          } catch (e) {
-            console.error(e);
-            toast("Promotion failed", "error");
-          }
+            const ok = await showModal("Promote User", `Are you sure you want to promote ${u.name || u.email} to an administrator? This action is permanent and will remove them from the general user list.`);
+            if (!ok) return;
+            try {
+                await setDoc(doc(db, "admin", u.uid), {
+                    uid: u.uid,
+                    name: u.name || "",
+                    email: u.email || "",
+                    avatar: u.avatar || "",
+                    createdAt: new Date().toISOString(),
+                    createdBy: activeAdmin.uid
+                });
+                await deleteDoc(doc(db, "accounts", u.uid));
+                toast("User promoted to admin");
+            } catch (e) {
+                console.error(e);
+                toast("Promotion failed", "error");
+            }
         };
 
         card.querySelector(".deleteBtn").onclick = async () => {
-          const ok = await showModal("Delete User", `Are you sure you want to permanently delete the user account for ${u.name || u.email}? This cannot be undone.`);
-          if (!ok) return;
-          try {
-            await deleteDoc(doc(db, "accounts", u.uid));
-            toast("User account removed");
-          } catch (e) {
-            console.error(e);
-            toast("Removal failed", "error");
-          }
+            const ok = await showModal("Delete User", `Are you sure you want to permanently delete the user account for ${u.name || u.email}? This cannot be undone.`);
+            if (!ok) return;
+            try {
+                await deleteDoc(doc(db, "accounts", u.uid));
+                toast("User account removed");
+            } catch (e) {
+                console.error(e);
+                toast("Removal failed", "error");
+            }
         };
         userListEl.appendChild(card);
-      });
-    }
+    });
+}
 
-    function applySearchAndSort() {
-      const q = (searchInput.value || "").toLowerCase().trim();
-      let list = cachedUsers.filter(u => (u.name || "").toLowerCase().includes(q) || (u.email || "").toLowerCase().includes(q));
-      const sort = sortSelect.value;
-      if (sort === "name-asc") list.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
-      if (sort === "name-desc") list.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
-      if (sort === "time-desc") list.sort((a, b) => (new Date(b.createdAt || 0)) - (new Date(a.createdAt || 0)));
-      if (sort === "time-asc") list.sort((a, b) => (new Date(a.createdAt || 0)) - (new Date(b.createdAt || 0)));
-      renderUsers(list);
-    }
+function applySearchAndSort() {
+    const q = (searchInput.value || "").toLowerCase().trim();
+    let list = cachedUsers.filter(u => (u.name || "").toLowerCase().includes(q) || (u.email || "").toLowerCase().includes(q));
+    const sort = sortSelect.value;
+    if (sort === "name-asc") list.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+    if (sort === "name-desc") list.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
+    if (sort === "time-desc") list.sort((a, b) => (new Date(b.createdAt || 0)) - (new Date(a.createdAt || 0)));
+    if (sort === "time-asc") list.sort((a, b) => (new Date(a.createdAt || 0)) - (new Date(b.createdAt || 0)));
+    renderUsers(list);
+}
 
-    searchInput.addEventListener("input", applySearchAndSort);
-    sortSelect.addEventListener("change", applySearchAndSort);
+searchInput.addEventListener("input", applySearchAndSort);
+sortSelect.addEventListener("change", applySearchAndSort);
 
-    async function initialLoad() {
-      if (unsubUsers) unsubUsers();
-      const q1 = query(collection(db, "accounts"), orderBy("createdAt", "desc"), limit(PAGE_SIZE));
-      unsubUsers = onSnapshot(q1, snap => {
+async function initialLoad() {
+    if (unsubUsers) unsubUsers();
+    const q1 = query(collection(db, "accounts"), orderBy("createdAt", "desc"), limit(PAGE_SIZE));
+    unsubUsers = onSnapshot(q1, snap => {
         cachedUsers = snap.docs.map(d => ({
-          uid: d.id,
-          ...d.data()
+            uid: d.id,
+            ...d.data()
         }));
         lastDocSnap = snap.docs[snap.docs.length - 1] || null;
         loadMoreBtn.style.display = snap.docs.length < PAGE_SIZE ? 'none' : 'inline-flex';
         applySearchAndSort();
-      });
-    }
+    });
+}
 
-    loadMoreBtn.addEventListener("click", async () => {
-      if (!lastDocSnap) {
+loadMoreBtn.addEventListener("click", async () => {
+    if (!lastDocSnap) {
         toast("No more users", "warn");
         loadMoreBtn.style.display = 'none';
         return;
-      }
-      const q2 = query(collection(db, "accounts"), orderBy("createdAt", "desc"), startAfter(lastDocSnap), limit(PAGE_SIZE));
-      const next = await getDocs(q2);
-      const more = next.docs.map(d => ({
+    }
+    const q2 = query(collection(db, "accounts"), orderBy("createdAt", "desc"), startAfter(lastDocSnap), limit(PAGE_SIZE));
+    const next = await getDocs(q2);
+    const more = next.docs.map(d => ({
         uid: d.id,
         ...d.data()
-      }));
-      if (more.length === 0) {
+    }));
+    if (more.length === 0) {
         toast("No more users to load", "warn");
         loadMoreBtn.style.display = 'none';
         return;
-      }
-      cachedUsers = cachedUsers.concat(more);
-      lastDocSnap = next.docs[next.docs.length - 1] || null;
-      if (next.docs.length < PAGE_SIZE) loadMoreBtn.style.display = 'none';
-      applySearchAndSort();
-    });
+    }
+    cachedUsers = cachedUsers.concat(more);
+    lastDocSnap = next.docs[next.docs.length - 1] || null;
+    if (next.docs.length < PAGE_SIZE) loadMoreBtn.style.display = 'none';
+    applySearchAndSort();
+});
 
-    onAuthStateChanged(auth, async user => {
-      if (user) {
+// --- FIX: Check admin status on browser back navigation (bfcache) ---
+window.addEventListener('pageshow', async function(event) {
+    // event.persisted is true if the page was served from the bfcache (e.g., back button press)
+    if (event.persisted && auth.currentUser) {
+        console.log('Page loaded from bfcache. Re-checking admin status...');
+        
+        const user = auth.currentUser;
+        const adminDoc = await getDoc(doc(db, "admin", user.uid));
+        
+        if (!adminDoc.exists()) {
+            // If admin role is missing, sign them out immediately
+            toast("Admin role revoked. Signing out...", "error");
+            
+            // Critical: Also clear the history state to prevent users from getting back again
+            window.history.replaceState(null, '', 'authentication.html');
+
+            setTimeout(() => signOut(auth), 100);
+        } else {
+            console.log('Admin status confirmed on back navigation.');
+            // Re-render info in case the cache was stale
+            loadAdminInfo(user);
+        }
+    }
+});
+// --------------------------------------------------------------------
+
+
+onAuthStateChanged(auth, async user => {
+    if (user) {
         const adminDoc = await getDoc(doc(db, "admin", user.uid));
         if (adminDoc.exists()) {
-          activeAdmin = user;
-          loadAdminInfo(activeAdmin);
-          initialLoad();
+            activeAdmin = user;
+            loadAdminInfo(activeAdmin);
+            initialLoad();
         } else {
-          alert("You are not authorized.");
-          signOut(auth);
+            alert("You are not authorized.");
+            // Prevent users without admin role from being stuck here
+            window.location.href = "authentication.html";
         }
-      } else {
+    } else {
         window.location.href = "authentication.html";
-      }
-    });
+    }
+});
   </script>
 </body>
 </html>
+
 
