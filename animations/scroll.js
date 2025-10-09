@@ -1,15 +1,26 @@
-// --- Inertia-based Smooth Scroll (tuned for Chrome 141) ---
+// --- Adaptive Inertia-based Smooth Scroll (Chrome 141+) ---
 (() => {
-  let currentY = 0;                // Current scroll position
-  let velocity = 0;                // Current scroll velocity
-  const friction = 0.92;           // Slightly stronger drag (slower deceleration)
-  const stopThreshold = 0.04;      // Lower = stops more gradually
-  const scrollScale = 0.08;        // Reduced sensitivity (was 0.2 before)
-  const maxInputVelocity = 2.5;    // Cap single-wheel flicks
-  const maxTotalVelocity = 30;     // Prevent runaway speed
+  let currentY = 0;
+  let velocity = 0;
   let isAnimating = false;
 
+  // Core tuning (slightly looser than previous version)
+  let friction = 0.905;            // Lower = looser, slower stop (5% looser than 0.92)
+  const stopThreshold = 0.04;
+  const baseScrollScale = 0.08;
+  const maxInputVelocity = 2.8;
+  const maxTotalVelocity = 35;
+
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+  // --- Device sensitivity auto-adjust ---
+  function getDeviceScale(e) {
+    // Trackpad scrolls are small & frequent, mouse wheels are larger
+    const abs = Math.abs(e.deltaY);
+    if (abs < 15) return baseScrollScale * 2.2; // gentle touchpad
+    if (abs < 60) return baseScrollScale * 1.2; // mid-range
+    return baseScrollScale * 0.6;               // coarse wheel (reduce speed)
+  }
 
   function animate() {
     velocity *= friction;
@@ -25,9 +36,7 @@
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     currentY = clamp(currentY, 0, maxScroll);
 
-    // 'instant' avoids Chrome's built-in scroll easing interference
-    window.scrollTo({ top: currentY, behavior: 'instant' });
-
+    window.scrollTo({ top: currentY, behavior: "instant" });
     requestAnimationFrame(animate);
   }
 
@@ -36,8 +45,8 @@
     (e) => {
       if (e.cancelable) e.preventDefault();
 
-      // Normalize and reduce sensitivity
-      let inputVelocity = e.deltaY * scrollScale;
+      const scale = getDeviceScale(e);
+      let inputVelocity = e.deltaY * scale;
 
       inputVelocity = clamp(inputVelocity, -maxInputVelocity, maxInputVelocity);
       velocity = clamp(velocity + inputVelocity, -maxTotalVelocity, maxTotalVelocity);
