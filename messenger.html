@@ -914,37 +914,6 @@
             }
         });
 
-        // Function to initialize or check for conversation document (Immediate Creation)
-        async function initializeConversation(user) {
-            const conversationId = `conv_${user.uid}`;
-            const convRef = doc(db, "conversations", conversationId);
-            currentConversationRef = convRef;
-
-            try {
-                const docSnap = await getDoc(convRef);
-                if (!docSnap.exists()) {
-                    // Document does not exist, create it with an empty messages array
-                    await setDoc(convRef, {
-                        user: {
-                            uid: user.uid,
-                            name: user.displayName,
-                            email: user.email
-                        },
-                        admin: {
-                            name: "Support Admin"
-                        },
-                        messages: [], // Initialize with an empty array immediately on login
-                        lastUpdated: serverTimestamp(),
-                        userTyping: false,
-                        adminTyping: false,
-                    });
-                    console.log("✅ New conversation document initialized.");
-                }
-            } catch (error) {
-                console.error("Error initializing conversation document:", error);
-            }
-        }
-
         function setupUserChat(user) {
             currentUser = user;
             const conversationId = `conv_${user.uid}`;
