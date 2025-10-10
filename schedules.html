@@ -483,15 +483,15 @@
                         
                         <div class="date-block mr-0 mb-6 sm:mb-0 sm:mr-8">
                             <p class="font-theme font-bold text-sm leading-none tracking-wider text-gray-600 dark:text-gray-300">${monthShort}</p>
-                            <h3 class="font-theme font-extrabold text-6xl leading-none my-2 text-gray-900 dark:text-white">${day}</h3>
+                            <h3 class="font-theme subtext-title">${day}</h3>
                             <p class="font-theme font-semibold text-base leading-none text-gray-600 dark:text-gray-300">${year}</p>
                         </div>
 
                         <div class="flex-grow flex flex-col justify-center">
-                            <h3 class="font-theme font-extrabold text-2xl sm:text-3xl lg:text-4xl text-gray-900 dark:text-white mb-3 leading-tight">
+                            <h3 class="font-theme subtext-title">
                                 ${schedule.title}
                             </h3>
-                            <p class="font-theme text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+                            <p class="font-theme context mb-4 line-clamp-2">
                                 ${schedule.context.substring(0, 120)}...
                             </p>
                             <a href="schedulesarticle.html?slug=${cardSlug}" 
@@ -508,11 +508,11 @@
                     <div class="schedule-card schedule-list-item flex items-center py-4 px-4 rounded-lg hover:cursor-pointer transition-all duration-200"
                             data-slug="${cardSlug}">
                         
-                        <p class="font-theme text-sm font-semibold text-gray-600 dark:text-gray-400 w-40 flex-shrink-0">
+                        <p class="context font-theme w-40 flex-shrink-0">
                             ${fullDate}
                         </p>
                         
-                        <h4 class="font-theme schedule-title-link font-bold text-base text-gray-900 dark:text-white flex-grow transition-colors duration-200">
+                        <h4 class="font-theme schedule-title-link context text-base text-gray-900 dark:text-white flex-grow transition-colors duration-200">
                             ${schedule.title}
                         </h4>
                         
