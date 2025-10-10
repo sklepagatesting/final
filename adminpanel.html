@@ -192,13 +192,13 @@
                     <p class="context text-gray-400 -mt-1">Administrator Panel</p>
                 </div>
             </div>
-            <button id="outBtnMobile" class="sm:hidden px-3 py-1 subtext rounded-xl btn-danger text-white flex items-center gap-1 font-medium" onclick="window.location.href='authentication.html'">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
-                    <path fill-rule="evenodd" d="M3 4.25A2.25 2.25 0 015.25 2h5.5A2.25 2.25 0 0113 4.25v2a.75.75 0 01-1.5 0v-2a.75.75 0 00-.75-.75h-5.5a.75.75 0 00-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 00.75-.75v-2a.75.75 0 011.5 0v2A2.25 2.25 0 0110.75 18h-5.5A2.25 2.25 0 013 15.75V4.25z" clip-rule="evenodd" />
-                    <path fill-rule="evenodd" d="M16.72 9.22a.75.75 0 011.06 0l2.25 2.25a.75.75 0 010 1.06l-2.25 2.25a.75.75 0 11-1.06-1.06L17.94 12l-1.22-1.22a.75.75 0 010-1.06z" clip-rule="evenodd" />
-                </svg>
-                <span class="hidden xs:inline">Sign out</span>
-            </button>
+           <a href="index.html" id="outBtnMobile" class="sm:hidden px-3 py-1 subtext rounded-xl btn-danger text-white flex items-center gap-1 font-medium">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+        <path fill-rule="evenodd" d="M3 4.25A2.25 2.25 0 015.25 2h5.5A2.25 2.25 0 0113 4.25v2a.75.75 0 01-1.5 0v-2a.75.75 0 00-.75-.75h-5.5a.75.75 0 00-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 00.75-.75v-2a.75.75 0 011.5 0v2A2.25 2.25 0 0110.75 18h-5.5A2.25 2.25 0 013 15.75V4.25z" clip-rule="evenodd" />
+        <path fill-rule="evenodd" d="M16.72 9.22a.75.75 0 011.06 0l2.25 2.25a.75.75 0 010 1.06l-2.25 2.25a.75.75 0 11-1.06-1.06L17.94 12l-1.22-1.22a.75.75 0 010-1.06z" clip-rule="evenodd" />
+    </svg>
+    <span class="hidden xs:inline">Sign out</span>
+</a>
         </div>
         
         <div class="flex items-center gap-3 overflow-x-auto pb-1 sm:pb-0 sm:overflow-x-visible">
@@ -668,5 +668,6 @@ onAuthStateChanged(auth, async user => {
   </script>
 </body>
 </html>
+
 
 
