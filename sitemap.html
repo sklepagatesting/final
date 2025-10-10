@@ -141,103 +141,92 @@
 </aside>
 
 <!--section goes here-->>
-<div class="site-map-section pt-20 pb-20 px-4 sm:px-6 lg:px-8">
+<div class="site-map-section pt-20 pb-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-[#242424]">
     <div class="max-w-4xl mx-auto">
-        <h1 class="text-4xl sm:text-5xl font-extrabold text-center mb-12 dark:text-white">Site Map</h1>
+        <h1 class="main-title text-4xl sm:text-5xl font-extrabold text-center mb-12 dark:text-white">SITE MAP</h1>
 
-        <div class="flex flex-wrap justify-center gap-3">
+        <div class="flex flex-wrap justify-center gap-4">
 
-            <a href="index.html" class="site-map-button active">
-                Home
+            <a href="index.html" class="site-map-button active subtext-title">
+                HOME
             </a>
 
-            <a href="schedules.html" class="site-map-button">
-                Schedules
+            <a href="schedules.html" class="site-map-button subtext-title">
+                SCHEDULES
             </a>
 
-            <a href="news.html" class="site-map-button">
-                News
+            <a href="news.html" class="site-map-button subtext-title">
+                NEWS
             </a>
 
-            <a href="about.html" class="site-map-button">
-                About Us
+            <a href="about.html" class="site-map-button subtext-title">
+                ABOUT US
             </a>
 
-            <a href="contact.html" class="site-map-button">
-                Contact Us
+            <a href="contact.html" class="site-map-button subtext-title">
+                CONTACT US
             </a>
 
-            <a href="messenger.html" class="site-map-button">
-                Chat with Us
+            <a href="messenger.html" class="site-map-button subtext-title">
+                CHAT WITH US
             </a>
 
-            <a href="authentication.html" class="site-map-button">
-                Login
+            <a href="authentication.html" class="site-map-button subtext-title">
+                LOGIN
             </a>
         </div>
     </div>
 </div>
 
 <style>
-    /* Custom styles to achieve the look from the image, using Tailwind utility classes */
+    /* Custom styles to achieve the look from the image with large text and black hover */
     .site-map-button {
         display: inline-flex;
         align-items: center;
         /* Padding and Border Radius for the "Pill" look */
-        padding: 0.5rem 1.5rem; /* py-2 px-6 */
+        padding: 0.8rem 2rem; /* Increased padding for the bigger text */
         border-radius: 9999px; /* rounded-full */
         /* Default state (unselected, like 'Creative' in the image) */
         border: 1px solid #d1d5db; /* border-gray-300 */
-        background-color: #ffffff; /* bg-white */
+        background-color: transparent;
         color: #1f2937; /* text-gray-800 */
         /* Transition for hover/active effects */
         transition: all 0.2s ease-in-out;
-        font-size: 1rem; /* text-base */
         font-weight: 500; /* font-medium */
         text-decoration: none; /* No underline */
-        white-space: nowrap; /* Prevent buttons from breaking onto new lines unnecessarily */
+        white-space: nowrap;
+        text-transform: uppercase; /* Match your other elements */
     }
 
-    /* Hover State */
+    /* Hover State: Black background, white text */
     .site-map-button:hover {
-        border-color: #9ca3af; /* border-gray-400 */
-        background-color: #f3f4f6; /* bg-gray-100 */
+        border-color: #000000;
+        background-color: #000000;
+        color: #ffffff !important; /* Use !important to override potential subtext-title color */
     }
 
-    /* Active State (like 'All Work' in the image) */
+    /* Active State (like 'All Work' in the image): Black background, white text */
     .site-map-button.active {
         border-color: #000000;
         background-color: #000000;
-        color: #ffffff;
+        color: #ffffff !important;
     }
 
     /* Dark Mode support for the default state */
     .dark .site-map-button {
         border: 1px solid #4b5563; /* dark:border-gray-600 */
-        background-color: #242424; /* dark:bg-[#242424] */
+        background-color: transparent;
         color: #d1d5db; /* dark:text-gray-300 */
     }
 
-    /* Dark Mode support for the hover state */
-    .dark .site-map-button:hover {
-        border-color: #6b7280; /* dark:border-gray-500 */
-        background-color: #374151; /* dark:bg-gray-700 */
-        color: #ffffff;
-    }
-
-    /* Dark Mode support for the active state (should remain black/white for contrast) */
+    /* Dark Mode support for the hover and active states (should remain black/white for maximum contrast and consistency) */
+    .dark .site-map-button:hover,
     .dark .site-map-button.active {
         border-color: #ffffff; /* border-white */
         background-color: #ffffff; /* bg-white */
-        color: #000000; /* text-black */
-    }
-
-    /* Styling for the wrapping container to ensure a good flow */
-    .site-map-section .flex {
-        max-width: 100%;
+        color: #000000 !important; /* text-black */
     }
 </style>
-
                <footer class="footer relative bg-white dark:bg-[#242424] text-gray-700 dark:text-gray-300 antialiased pt-12 pb-6 border-t border-gray-100 dark:border-gray-800">
   <!-- Gradient overlay -->
   <div class="footer-tint absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-500"></div>
