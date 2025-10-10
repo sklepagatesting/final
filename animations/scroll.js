@@ -5,7 +5,7 @@
   let isAnimating = false;
 
   // Core tuning (slightly looser than previous version)
-  let friction = 0.905;            // Lower = looser, slower stop (5% looser than 0.92)
+  let friction = 0.705;            // Lower = looser, slower stop (5% looser than 0.92)
   const stopThreshold = 0.04;
   const baseScrollScale = 0.08;
   const maxInputVelocity = 2.8;
@@ -63,3 +63,4 @@
     currentY = window.scrollY;
   });
 })();
+
