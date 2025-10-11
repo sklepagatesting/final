@@ -10,260 +10,264 @@
         rel="stylesheet">
     <meta name="color-scheme" content="light dark" />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+    body {
+        font-family: 'Inter', sans-serif;
+    }
 
-        /* Custom Font Size Classes - MATCHING DASHBOARD */
-        .context {
-            font-size: 0.75rem;
-            /* text-xs equivalent */
-        }
+    /* Custom Font Size Classes - MATCHING DASHBOARD */
+    .context {
+        font-size: 0.75rem;
+        /* text-xs equivalent */
+    }
 
-        .subtext {
-            font-size: 0.875rem;
-            /* text-sm equivalent */
-        }
+    .subtext {
+        font-size: 0.875rem;
+        /* text-sm equivalent */
+    }
 
-        .subtext-title {
-            font-size: 1.25rem;
-            /* text-xl equivalent */
-            font-weight: 700;
-        }
+    .subtext-title {
+        font-size: 1.25rem;
+        /* text-xl equivalent */
+        font-weight: 700;
+    }
 
-        /* High-Contrast Theme Styles - MATCHING DASHBOARD */
+    /* High-Contrast Theme Styles - MATCHING DASHBOARD */
 
-        /* Light Glass on Dark Background */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            color: #1e293b;
-            /* Primary dark color for content inside the light card */
-        }
+    /* Light Glass on Dark Background */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        color: #1e293b;
+        /* Primary dark color for content inside the light card */
+        border-radius: 1.5rem; /* Large, modern rounded corners applied here */
+    }
 
-        /* Darker Header (Fixed) */
-        .floating-header {
-            background: rgba(15, 23, 42, 0.95);
-            /* slate-900 alpha */
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    /* Darker Header (Fixed) */
+    .floating-header {
+        background: rgba(15, 23, 42, 0.95);
+        /* slate-900 alpha */
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
+    .gradient-bg {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
 
-        /* Button Styles - MATCHING DASHBOARD */
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            transition: all 0.3s ease;
-            border-radius: 0.75rem;
-            /* Slightly larger border-radius for buttons */
-            padding: 0.75rem 1rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
+    /* Button Styles - MATCHING DASHBOARD */
+    .btn-primary {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        transition: all 0.3s ease;
+        border-radius: 0.75rem;
+        /* Slightly larger border-radius for buttons */
+        padding: 0.75rem 1rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-1px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
-        }
+    .btn-primary:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+    }
 
-        .btn-danger {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            transition: all 0.3s ease;
-            border-radius: 0.75rem;
-            padding: 0.75rem 1rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
+    .btn-danger {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        transition: all 0.3s ease;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .btn-danger:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
-        }
+    .btn-danger:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
+    }
 
-        /* Neutral Button Style for Cancel/Default */
-        .btn-neutral {
-            background-color: #f1f5f9;
-            /* slate-100 */
-            color: #475569;
-            /* slate-600 */
-            border-radius: 0.75rem;
-            padding: 0.75rem 1rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
+    /* Neutral Button Style for Cancel/Default */
+    .btn-neutral {
+        background-color: #f1f5f9;
+        /* slate-100 */
+        color: #475569;
+        /* slate-600 */
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .btn-neutral:hover {
-            background-color: #e2e8f0;
-            /* slate-200 */
-        }
+    .btn-neutral:hover {
+        background-color: #e2e8f0;
+        /* slate-200 */
+    }
 
-        /* Unified Input/Textarea/Select Style for high contrast within the light card */
-        .form-input-flat {
-            background-color: #ffffff; /* Explicitly set to White */
-            border: 1px solid #d1d5db;
-            /* gray-300 border */
-            border-radius: 0.5rem;
-            padding: 0.75rem;
-            transition: all 0.2s ease;
-            color: #1e293b; /* Explicitly set to Dark Text */
-            appearance: none; /* Reset for better styling consistency */
-        }
+    /* Unified Input/Textarea/Select Style for high contrast within the light card */
+    .form-input-flat {
+        background-color: #ffffff;
+        /* Explicitly set to White */
+        border: 1px solid #d1d5db;
+        /* gray-300 border */
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+        transition: all 0.2s ease;
+        color: #1e293b;
+        /* Explicitly set to Dark Text */
+        appearance: none;
+        /* Reset for better styling consistency */
+    }
 
-        .form-input-flat:focus {
-            border-color: #3b82f6;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-        }
-        
-        /* Specific styling for the SELECT dropdown element */
-        select.form-input-flat {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3e%3cpath d='M7 7l3 3 3-3m-3 7v-4' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 0.75rem center;
-            background-size: 1.5em 1.5em;
-            padding-right: 2.5rem;
-        }
+    .form-input-flat:focus {
+        border-color: #3b82f6;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    /* Specific styling for the SELECT dropdown element */
+    select.form-input-flat {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3e%3cpath d='M7 7l3 3 3-3m-3 7v-4' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 1.5em 1.5em;
+        padding-right: 2.5rem;
+    }
 
 
-        /* Unified Radio/Checkbox Style */
-        .form-radio {
-            appearance: none;
-            width: 1rem;
-            height: 1rem;
-            border: 2px solid #94a3b8;
-            /* slate-400 */
-            border-radius: 50%;
-            display: inline-block;
-            position: relative;
-            cursor: pointer;
-            vertical-align: middle;
-            margin-right: 0.5rem;
-            transition: all 0.2s ease;
-        }
+    /* Unified Radio/Checkbox Style */
+    .form-radio {
+        appearance: none;
+        width: 1rem;
+        height: 1rem;
+        border: 2px solid #94a3b8;
+        /* slate-400 */
+        border-radius: 50%;
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+        vertical-align: middle;
+        margin-right: 0.5rem;
+        transition: all 0.2s ease;
+    }
 
-        .form-radio:checked {
-            border-color: #3b82f6;
-            background-color: #3b82f6;
-        }
+    .form-radio:checked {
+        border-color: #3b82f6;
+        background-color: #3b82f6;
+    }
 
-        .form-radio:checked::after {
-            content: '';
-            width: 0.375rem;
-            /* 6px */
-            height: 0.375rem;
-            /* 6px */
-            background-color: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
+    .form-radio:checked::after {
+        content: '';
+        width: 0.375rem;
+        /* 6px */
+        height: 0.375rem;
+        /* 6px */
+        background-color: white;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 
-        /* Animations - MATCHING DASHBOARD */
-        .fade-in {
-            animation: fadeIn 0.5s ease-out;
-        }
+    /* Animations - MATCHING DASHBOARD */
+    .fade-in {
+        animation: fadeIn 0.5s ease-out;
+    }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* --- Modal Styles --- (Adjusted to match glass style backdrop and btn-neutral)*/
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-content {
-            /* Applied glass-card style to modal */
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #1e293b;
-
-            padding: 2rem;
-            border-radius: 1.5rem;
-            /* Larger border radius for modal */
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            transform: scale(0.95);
+    @keyframes fadeIn {
+        from {
             opacity: 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(10px);
         }
 
-        .modal-content.show {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        /* Toast Styles (Simplified and moved to bottom right) */
-        .toast-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1001;
-        }
-
-        .toast {
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 1.5rem;
-            /* Consistent radius */
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            margin-bottom: 0.5rem;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.4s ease-out;
-        }
-
-        .toast.show {
+        to {
             opacity: 1;
             transform: translateY(0);
         }
+    }
 
-        .toast.error {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-        }
+    /* --- Modal Styles --- (Adjusted to match glass style backdrop and btn-neutral)*/
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(5px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        transition: opacity 0.3s ease;
+    }
 
-        .toast.success {
-            background: linear-gradient(135deg, #10b981, #059669);
-        }
-    </style>
+    .modal-content {
+        /* Applied glass-card style to modal */
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #1e293b;
+
+        padding: 2rem;
+        border-radius: 1.5rem;
+        /* Larger border radius for modal */
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+        transform: scale(0.95);
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .modal-content.show {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    /* Toast Styles (Simplified and moved to bottom right) */
+    .toast-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1001;
+    }
+
+    .toast {
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 1.5rem;
+        /* Consistent radius */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        margin-bottom: 0.5rem;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s ease-out;
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .toast.error {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .toast.success {
+        background: linear-gradient(135deg, #10b981, #059669);
+    }
+</style>
 </head>
 
 <body class="bg-slate-900 text-white min-h-screen pb-28">
@@ -1080,3 +1084,4 @@
 </body>
 
 </html>
+
