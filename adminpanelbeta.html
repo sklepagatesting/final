@@ -115,7 +115,7 @@
     </section>
   </main>
   
-  <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40">
+ <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40">
     <div class="flex items-center justify-center gap-2 rounded-full p-2" style="background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1);">
       <a href="adminpanel.html" class="flex flex-col items-center justify-center text-center px-4 py-2 w-20 h-16 rounded-full transition-all duration-300 bg-blue-500/20 text-blue-300">
         <svg class="w-6 h-6 mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -137,17 +137,23 @@
         </svg>
         <span class="text-xs font-medium">Letters</span>
       </a>
+      
+      <a href="adminupload.html" class="flex flex-col items-center justify-center text-center px-4 py-2 w-20 h-16 rounded-full transition-all duration-300 text-gray-400 hover:bg-white/10 hover:text-white">
+        <svg class="w-6 h-6 mb-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-3-12-4 4m-4-4 4 4m0-4v12"/>
+        </svg>
+        <span class="text-xs font-medium">Uploads</span>
+      </a>
 
-     <a href="authentication.html" id="signOutTab" class="flex flex-col items-center justify-center text-center px-4 py-2 w-20 h-16 rounded-full transition-all duration-300 text-gray-400 hover:bg-red-500/20 hover:text-red-400">
-    <svg class="w-6 h-6 mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M13.75 4.25a2.25 2.25 0 00-2.25 2.25v.5c0 .414.336.75.75.75h.5a.75.75 0 00.75-.75v-.5a.75.75 0 01.75-.75h2.5a.75.75 0 01.75.75v8.5a.75.75 0 01-.75-.75h-2.5a.75.75 0 01-.75-.75v-.5a.75.75 0 00-.75-.75h-.5a.75.75 0 00-.75.75v.5a2.25 2.25 0 002.25 2.25h2.5a2.25 2.25 0 002.25-2.25v-8.5a2.25 2.25 0 00-2.25-2.25h-2.5z" clip-rule="evenodd" />
-        <path fill-rule="evenodd" d="M8.28 9.22a.75.75 0 000 1.06l2.25 2.25a.75.75 0 101.06-1.06L9.81 10l1.78-1.78a.75.75 0 10-1.06-1.06l-2.25 2.25zM4.75 10a.75.75 0 00.75.75h4.04l-1.78 1.78a.75.75 0 101.06 1.06l2.25-2.25a.75.75 0 000-1.06l-2.25-2.25a.75.75 0 10-1.06 1.06L9.54 9.25H5.5a.75.75 0 00-.75.75z" clip-rule="evenodd" />
-    </svg>
-    <span class="text-xs font-medium">Sign Out</span>
-</a>
+      <a href="authentication.html" id="signOutTab" class="flex flex-col items-center justify-center text-center px-4 py-2 w-20 h-16 rounded-full transition-all duration-300 text-gray-400 hover:bg-red-500/20 hover:text-red-400">
+        <svg class="w-6 h-6 mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M13.75 4.25a2.25 2.25 0 00-2.25 2.25v.5c0 .414.336.75.75.75h.5a.75.75 0 00.75-.75v-.5a.75.75 0 01.75-.75h2.5a.75.75 0 01.75.75v8.5a.75.75 0 01-.75-.75h-2.5a.75.75 0 01-.75-.75v-.5a.75.75 0 00-.75-.75h-.5a.75.75 0 00-.75.75v.5a2.25 2.25 0 002.25 2.25h2.5a2.25 2.25 0 002.25-2.25v-8.5a2.25 2.25 0 00-2.25-2.25h-2.5z" clip-rule="evenodd" />
+            <path fill-rule="evenodd" d="M8.28 9.22a.75.75 0 000 1.06l2.25 2.25a.75.75 0 101.06-1.06L9.81 10l1.78-1.78a.75.75 0 10-1.06-1.06l-2.25 2.25zM4.75 10a.75.75 0 00.75.75h4.04l-1.78 1.78a.75.75 0 101.06 1.06l2.25-2.25a.75.75 0 000-1.06l-2.25-2.25a.75.75 0 10-1.06 1.06L9.54 9.25H5.5a.75.75 0 00-.75.75z" clip-rule="evenodd" />
+        </svg>
+        <span class="text-xs font-medium">Sign Out</span>
+      </a>
     </div>
   </nav>
-
   <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 hidden">
     <div id="toastBody" class="px-6 py-4 rounded-2xl text-white shadow-2xl backdrop-blur-lg flex items-center gap-3 min-w-[280px]">
       <div id="toastIcon" class="w-5 h-5 flex-shrink-0"></div>
