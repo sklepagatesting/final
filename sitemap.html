@@ -199,7 +199,6 @@
         /* Default state (unselected, like 'Creative' in the image) */
         border: 1px solid #d1d5db; /* border-gray-300 */
         background-color: transparent;
-        color: #1f2937; /* text-gray-800 */
         /* Transition for hover/active effects */
         transition: all 0.2s ease-in-out;
         font-weight: 500; /* font-medium */
@@ -215,13 +214,6 @@
         color: #ffffff !important; /* Use !important to override potential subtext-title color */
     }
 
-    /* Active State (like 'All Work' in the image): Black background, white text */
-    .site-map-button.active {
-        border-color: #000000;
-        background-color: #000000;
-        color: #ffffff !important;
-    }
-
     /* Dark Mode support for the default state */
     .dark .site-map-button {
         border: 1px solid #4b5563; /* dark:border-gray-600 */
@@ -229,8 +221,7 @@
     }
 
     /* Dark Mode support for the hover and active states (should remain black/white for maximum contrast and consistency) */
-    .dark .site-map-button:hover,
-    .dark .site-map-button.active {
+    .dark .site-map-button:hover {
         border-color: #ffffff; /* border-white */
         background-color: #ffffff; /* bg-white */
         color: #000000 !important; /* text-black */
