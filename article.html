@@ -35,13 +35,13 @@
             transition: opacity 0.2s ease-in;
         }
 
-        /* The container for the entire content, keeps min-height for the loader */
-        #article-content-wrapper {
-            min-height: calc(100vh - 48px);
+        /* Container for the article and loader */
+        #article-content-container {
+            min-height: calc(100vh - 48px); /* Full height minus navbar */
             position: relative;
         }
 
-        /* Style for the loading message to center it and take full space */
+        /* Style the loading message to cover the entire container */
         #loading-message {
             position: absolute;
             top: 0;
@@ -55,7 +55,7 @@
             background-color: inherit;
             z-index: 10;
         }
-
+        
         #article-context {
             white-space: pre-wrap;
         }
@@ -141,7 +141,7 @@
                 </aside>
             </header>
 
-            <section id="article-content-wrapper" class="font-theme px-4 pt-12 sm:pt-0 bg-white dark:bg-[#242424]">
+            <section id="article-content-container" class="font-theme px-4 py-8 sm:py-16 bg-white dark:bg-[#242424]">
                 <p id="loading-message" class="subtext-title text-gray-500" role="status" aria-live="polite">
                     Loading article content...
                 </p>
@@ -343,7 +343,6 @@
 
                 if (!slug) {
                     document.getElementById('loading-message').textContent = "Error: Article slug not found in URL. Please navigate from the news page.";
-                    document.getElementById('loading-message').classList.remove('hidden');
                     return;
                 }
 
@@ -403,21 +402,18 @@
 
                         document.getElementById('article-context').innerHTML = articleData.context?.replace(/\n/g, '<br>') || 'Article content is missing.';
 
-                        // Crucial fix: Hide the loading message and show the content
                         document.getElementById('loading-message').classList.add('hidden');
                         document.getElementById('article-data').classList.remove('hidden');
 
                         runAnimations();
                     } else {
                         document.getElementById('loading-message').textContent = `Article with slug "${slug}" not found.`;
-                        document.getElementById('loading-message').classList.remove('hidden');
-                        document.getElementById('article-data').classList.add('hidden'); // Ensure content is hidden on error
+                        document.getElementById('article-data').classList.add('hidden');
                     }
                 } catch (error) {
                     console.error('Failed to load article:', error);
-                    document.getElementById('loading-message').textContent = `Error loading content. Please check the browser console for details.`;
-                    document.getElementById('loading-message').classList.remove('hidden');
-                    document.getElementById('article-data').classList.add('hidden'); // Ensure content is hidden on error
+                    document.getElementById('loading-message').textContent = `Error loading content. Please check the browser console.`;
+                    document.getElementById('article-data').classList.add('hidden');
                 }
             }
 
