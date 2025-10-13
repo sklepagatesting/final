@@ -16,7 +16,7 @@
     <meta name="author" content="Capito, Rafael, Arzaga, Capadosa">
     <meta name="keywords"
         content="SK Lepaga news, local announcements, community projects, youth activities, barangay updates">
-    <link rel="canonical" href="[YOUR_NEWS_ARTICLE_URL]">
+    <link rel="canonical" href="www.sklepaga.com/news">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.gstatic.com/s/inter/v12/1Pn0EnyXJmdSgbTxHLk.woff2" as="font"
@@ -24,7 +24,6 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
-    <link rel="prefetch" href="home.html" as="document">
     <link rel="stylesheet" href="navbar\navbar.css" />
     <link rel="stylesheet" href="font\font.css">
     <link rel="stylesheet" href="animations/global.css">
@@ -55,73 +54,65 @@
 
 <body class="bg-white dark:bg-[#242424]">
     <header class="duration-300 fixed inset-x-0 top-0 z-50 h-12 w-full" aria-label="Main navigation">
-        <div class="w-full h-full bg-white dark:bg-[#242424] px-3">
-            <div class="flex items-center justify-between h-full max-w-screen-xl mx-auto">
-                <a href="index.html" class="relative z-60 pointer-events-auto flex items-center space-x-2"
-                    aria-label="SK Lepaga Home">
-                    <img src="images\sk_logo.webp" alt="SK Lepaga Logo" class="h-5 w-auto" />
-                    <span class="font-theme font-medium">SK Lepaga</span>
-                </a>
-                <button id="menu-toggle-btn" type="button"
-                    class="font-theme rounded-md hover:bg-[#e8e8e8] dark:hover:bg-[#696969] focus:outline-none"
-                    aria-controls="sidebar-multi-level-sidebar" aria-expanded="false"
-                    aria-label="Toggle Navigation Menu">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path id="menu-icon-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <aside id="sidebar-multi-level-sidebar"
-        class="fixed top-12 left-0 z-30 w-[100vw] hidden transition-[max-height] duration-500 bg-white dark:bg-[#242424]"
-        style="height: calc(100vh - 3rem); overflow-y: auto;" aria-label="Sidebar Navigation Menu">
-        <div class="h-full flex items-center justify-center px-4 py-4 max-w-4xl mx-auto">
-            <nav id="sidebar-menu" class="font-theme space-y-5 flex flex-col items-center justify-center" role="menu">
-                <div class="sidebar-menu-item flex flex-col items-center" role="none">
-                    <a href="index.html" class="sidebar-menu-header submenu-link subtext-title" data-transition
-                        rel="nofollow noopener" role="menuitem">HOME</a>
-                </div>
-                <div class="sidebar-menu-item flex flex-col items-center" role="none">
-                    <a href="schedules.html" class="sidebar-menu-header submenu-link subtext-title" data-transition
-                        rel="nofollow noopener" role="menuitem">SCHEDULES</a>
-                </div>
-                <div class="sidebar-menu-item flex flex-col items-center" role="none">
-                    <a href="news.html" class="sidebar-menu-header submenu-link subtext-title" data-transition
-                        rel="nofollow noopener" role="menuitem">NEWS</a>
-                </div>
-                <div class="sidebar-menu-item flex flex-col items-center" role="none">
-                    <a href="about.html" class="sidebar-menu-header submenu-link subtext-title" data-transition
-                        rel="nofollow noopener" role="menuitem">ABOUT</a>
-                </div>
-                <div class="sidebar-menu-item flex flex-col items-center" role="none">
-                    <button class="sidebar-menu-header flex items-center space-x-2 focus:outline-none"
-                        aria-expanded="false" aria-controls="contact-submenu" aria-label="Toggle Contact Menu">
-                        <h2 class="subtext-title">CONTACT</h2>
-                        <svg class="w-5 h-5 stroke-white transition-transform duration-300" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div id="contact-submenu"
-                        class="sidebar-menu-body max-h-0 overflow-hidden opacity-0 transition-all duration-500 ease-in-out mt-3 space-y-1 text-center flex flex-col items-center"
-                        role="menu" hidden>
-                        <a href="contact.html" class="subtext submenu-link block text-[#FFFFF]" data-transition
-                            rel="nofollow noopener" role="menuitem">Send a Message</a>
-                        <a href="authentication.html" class="subtext submenu-link block text-[#FFFFF]" data-transition
-                            rel="nofollow noopener" role="menuitem">Chat with Us</a>
-                        <br>
+         <nav id="navbar" class="duration-300 fixed inset-x-0 top-0 z-50 h-12 w-full">
+                <div class="w-full h-full bg-white dark:bg-[#242424] px-3">
+                    <div class="flex items-center justify-between h-full max-w-screen-xl mx-auto">
+                        <a href="index.html" class="relative z-60 pointer-events-auto flex items-center space-x-2" data-transition rel="nofollow noopener">
+                            <img src="images\sk_logo.webp" alt="SK Lepaga Logo" class="h-5 w-auto" />
+                            <span class="font-theme font-medium">SK Lepaga</span>
+                        </a>
+                        <button id="menu-toggle-btn" type="button" class="font-theme rounded-md hover:bg-[#e8e8e8] dark:hover:bg-[#696969] focus:outline-none" aria-controls="sidebar-multi-level-sidebar" aria-expanded="false" aria-label="Toggle navigation menu">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path id="menu-icon-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
-                <div class="sidebar-menu-item flex flex-col items-center" role="none">
-                    <a href="sitemap.html" class="sidebar-menu-header submenu-link subtext-title" data-transition
-                        rel="nofollow noopener" role="menuitem">SITE MAP</a>
-                </div>
             </nav>
-        </div>
-    </aside>
+
+
+            <aside id="sidebar-multi-level-sidebar" class="fixed top-12 left-0 z-30 w-[100vw] hidden transition-[max-height] duration-500 bg-white dark:bg-[#242424]" style="height: calc(100vh - 3rem); overflow-y: auto;" aria-label="Sidebar navigation">
+                <div class="h-full flex items-center justify-center px-4 py-4 max-w-4xl mx-auto">
+                    <div id="sidebar-menu" class="font-theme space-y-5 flex flex-col items-center justify-center">
+
+                        <div class="sidebar-menu-item flex flex-col items-center">
+                            <a href="index.html" class="sidebar-menu-header submenu-link subtext-title" data-transition rel="noopener noreferrer">PROJECTS</a>
+                        </div>
+
+                        <div class="sidebar-menu-item flex flex-col items-center">
+                            <a href="schedules.html" class="sidebar-menu-header submenu-link subtext-title" data-transition rel="noopener noreferrer">SCHEDULES</a>
+                        </div>
+
+                        <div class="sidebar-menu-item flex flex-col items-center">
+                            <a href="news.html" class="sidebar-menu-header submenu-link subtext-title" data-transition rel="noopener noreferrer">NEWS</a>
+                        </div>
+
+                        <div class="sidebar-menu-item flex flex-col items-center">
+                            <a href="about.html" class="sidebar-menu-header submenu-link subtext-title" data-transition rel="noopener noreferrer">ABOUT</a>
+                        </div>
+
+                        <div class="sidebar-menu-item flex flex-col items-center">
+                            <button class="sidebar-menu-header flex items-center space-x-2 focus:outline-none" aria-expanded="false" aria-controls="contact-submenu">
+                                <h2 class="subtext-title">CONTACT</h2>
+                                <svg class="w-5 h-5 stroke-white transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div id="contact-submenu" class="sidebar-menu-body max-h-0 overflow-hidden opacity-0 transition-all duration-500 ease-in-out mt-3 space-y-1 text-center flex flex-col items-center">
+                                <a href="contact.html" class="subtext submenu-link block text-[#FFFFF]" data-transition rel="noopener noreferrer">Send a Message</a>
+                                <a href="authentication.html" class="subtext submenu-link block text-[#FFFFF]" data-transition rel="noopener noreferrer">Chat with Us</a>
+                                <br>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-menu-item flex flex-col items-center">
+                            <a href="sitemap.html" class="sidebar-menu-header submenu-link subtext-title" data-transition rel="noopener noreferrer">SITE MAP</a>
+                        </div>
+
+                    </div>
+                </div>
+            </aside>
+    </header>
 
     <main id="swup">
         <div class="main-content text-container">
@@ -179,7 +170,7 @@
     </main>
 
     <footer
-        class="footer relative bg-white dark:bg-[#242424] text-gray-700 dark:text-gray-300 antialiased pt-12 pb-6 border-t border-gray-100 dark:border-gray-800"
+        class="footer relative bg-white dark:bg-[#242424] text-gray-700 dark:text-gray-300 antialiased pt-12 pb-6"
         role="contentinfo">
         <div class="footer-tint absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-500"></div>
 
@@ -189,7 +180,7 @@
                 <div class="text-container">
                     <a href="index.html"
                         class="text-line relative subtext-title uppercase transition-colors duration-300 hover:text-black dark:hover:text-white after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-current after:transition-all after:duration-300 hover:after:w-full"
-                        data-transition rel="nofollow noopener">HOME</a>
+                        data-transition rel="nofollow noopener">PROJECTS</a>
                 </div>
                 <div class="text-container">
                     <a href="schedules.html"

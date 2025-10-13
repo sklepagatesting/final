@@ -53,7 +53,7 @@
 const shouldRunLoader = true;
 
 // **********************************************
-// 1. GLOBAL CONTENT READY CONTROL (NEW/MODIFIED)
+// 1. GLOBAL CONTENT READY CONTROL
 // **********************************************
 
 // Global Promise that resolves when all critical dynamic content (like Firebase data) is loaded and rendered.
@@ -95,7 +95,7 @@ function heroIn() {
   });
 }
 
-// --- Loader animation (MODIFIED) ---
+// --- Loader animation (ORIGINAL) ---
 function runLoader() {
   const screen = document.createElement('div');
   Object.assign(screen.style, {
@@ -171,7 +171,7 @@ function runLoader() {
     const completeInterval = setInterval(() => {
       finalProgress += 2;
       // Cap at 99% until content is fully confirmed ready to transition
-      counter.textContent = `${Math.min(100, Math.floor(finalProgress))}%`; 
+      counter.textContent = `${Math.min(100, Math.floor(finalProgress))}%`;
       counter.style.transform = `scale(${1 + finalProgress / 100})`;
 
       if (finalProgress >= 100) {
@@ -213,7 +213,7 @@ function setupPageTransition() {
       if (!isPageReady) {
         return;
       }
-      
+
       e.preventDefault();
       const href = link.getAttribute('href');
 
@@ -278,24 +278,76 @@ window.addEventListener("resize", () => {
   }
 });
 
-// --- Loader and Transition Control ---
+/**
+ * NEW FUNCTION: Skips the counter loader but runs the scroller intro animation.
+ */
+function skipLoaderButRunIntro() {
+    // 1. Immediately create and destroy the loader screen elements quickly
+    const screen = document.createElement('div');
+    Object.assign(screen.style, {
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100dvh',
+        backgroundColor: 'white',
+        zIndex: '999999999'
+    });
+    document.documentElement.appendChild(screen);
+
+    const shadowOverlay = document.createElement('div');
+    Object.assign(shadowOverlay.style, {
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100dvh',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        zIndex: '999999998',
+        opacity: '1' // Start visible
+    });
+    document.documentElement.appendChild(shadowOverlay);
+
+    contentLoadedPromise.then(() => {
+        // 2. Start a fast exit animation (0.5s transition)
+        screen.style.transition = 'clip-path 0.5s cubic-bezier(.94,-0.01,0,.99), transform 0.5s cubic-bezier(.89,.04,0,.99), opacity 0.5s';
+        screen.style.clipPath = 'polygon(0 0, 100% 0, 100% 0, 0 0)';
+        screen.style.transform = 'scale(0)';
+        shadowOverlay.style.transition = 'opacity 0.5s ease-out';
+        shadowOverlay.style.opacity = '0';
+        
+        // 3. Complete the cleanup and content reveal
+        setTimeout(() => {
+            screen.remove();
+            shadowOverlay.remove();
+
+            const wrapper = document.getElementById("main-content");
+            if (wrapper) wrapper.style.display = "block";
+            document.body.style.overflow = "auto";
+            document.body.classList.remove("preload");
+
+            // *** CRITICAL FIX: Reset the saved position to force the scroller intro animation to run ***
+            sessionStorage.removeItem('scrollerPosition'); 
+            
+            heroIn();
+            startObservingText();
+            window.dispatchEvent(new Event("scroller:start"));
+            window.dispatchEvent(new Event("page:ready"));
+        }, 500); // Match the 0.5s transition time
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  if (shouldRunLoader) {
+  const isFirstVisit = !sessionStorage.getItem("visited");
+  // Set visited regardless of loader status
+  sessionStorage.setItem("visited", "true");
+
+  if (isFirstVisit && shouldRunLoader) {
+    // Run full loader only on TRUE first visit (original behavior)
     runLoader();
   } else {
-    // This block is only for when loader is disabled.
-    // We still need to wait for content for a full ready state.
-    contentLoadedPromise.then(() => {
-        const wrapper = document.getElementById("main-content");
-        if (wrapper) wrapper.style.display = "block";
-        document.body.style.overflow = "auto";
-        document.body.classList.remove("preload");
-        
-        isPageReady = true;
-        startObservingText();
-        heroIn();
-        window.dispatchEvent(new Event("scroller:start"));
-    });
+    // *** MODIFIED: Use the fast skip function that still runs the intro animation ***
+    skipLoaderButRunIntro();
   }
 
   window.addEventListener('page:ready', () => {
@@ -304,6 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setupPageTransition();
 });
+
 
 // --- Force reload on back/forward navigation ---
 window.addEventListener('pageshow', (event) => {
@@ -314,7 +367,7 @@ window.addEventListener('pageshow', (event) => {
 
 // ============================================
 // SCROLLER SCRIPT - Runs after loader completes
-// (No changes needed here)
+// (Modified for position persistence and intro check)
 // ============================================
 
 window.addEventListener("scroller:start", () => {
@@ -323,7 +376,7 @@ window.addEventListener("scroller:start", () => {
   window.scrollerInitialized = true;
 
   // Check if dependencies are ready
-  if (typeof gsap === 'undefined' || typeof ModifiersPlugin === 'undefined') {
+  if (typeof gsap === 'undefined') {
     console.warn('GSAP not loaded yet');
     return;
   }
@@ -333,19 +386,6 @@ window.addEventListener("scroller:start", () => {
     console.warn('Scroller element not found');
     return;
   }
-
-  // --- Register GSAP Plugin ---
-  // Assuming gsap.registerPlugin(ModifiersPlugin); is handled elsewhere or ModifiersPlugin is correctly loaded.
-  // Note: ModifiersPlugin is not a standard GSAP v3 plugin. You might mean Draggable or CustomEase.
-  // For the sake of this fix, I'll trust it's correctly loaded.
-  
-  // You might need to add:
-  // if (typeof ModifiersPlugin !== 'undefined') {
-  //   gsap.registerPlugin(ModifiersPlugin);
-  // }
-  
-  // I will remove the ModifiersPlugin check/registration here as it wasn't requested for change.
-  // Keeping the original code logic for scroller initialization.
 
   // --- Duplicate for seamless loop ---
   scroller.innerHTML += scroller.innerHTML;
@@ -357,12 +397,18 @@ window.addEventListener("scroller:start", () => {
   const marginRight = parseFloat(cardStyle.marginRight);
   const initialOffset = marginRight;
 
-  let position = initialOffset;
+  // *** MODIFIED: Initialize position using saved value or default offset ***
+  // NOTE: If 'scrollerPosition' was cleared in skipLoaderButRunIntro(), 
+  // this defaults to initialOffset, which is desired to re-run the intro.
+  const savedPosition = sessionStorage.getItem('scrollerPosition');
+  let position = savedPosition !== null ? parseFloat(savedPosition) : initialOffset;
+  // *********************************************************************
+  
   let velocity = 0;
   let scrollAllowed = false;
 
   // --- Set initial scroll position ---
-  gsap.set(scroller, { x: initialOffset });
+  gsap.set(scroller, { x: position });
 
   const cards = scroller.children;
 
@@ -406,44 +452,65 @@ window.addEventListener("scroller:start", () => {
     window.removeEventListener('keydown', keyScrollBlock, { passive: false });
   };
 
-  // Lock all scrolling and inputs immediately
-  lockScroll();
+  // Determine if the intro animation should run (i.e., if scrollerPosition is NOT set)
+  const shouldRunIntroAnimation = sessionStorage.getItem("scrollerPosition") === null;
 
-  // --- INTRO ANIMATION ---
-  setTimeout(() => {
-    const fastDuration = 2;
-    const fastDistance = scrollWidth * 1.5;
+  if (shouldRunIntroAnimation) {
+      lockScroll();
+  } else {
+      // If position was loaded from session storage, allow scroll immediately
+      scrollAllowed = true;
+  }
+  
+  // --- INTRO ANIMATION EXECUTION ---
+  if (shouldRunIntroAnimation) {
+      // The content has loaded, now run the visual scroller intro
+      setTimeout(() => {
+          const fastDuration = 2;
+          const fastDistance = scrollWidth * 1.5;
+  
+          const tl = gsap.timeline({
+              onComplete: () => {
+                  position = parseFloat(gsap.getProperty(scroller, "x"));
+                  
+                  // *** FIX 1: Save the final position after the intro animation ***
+                  sessionStorage.setItem('scrollerPosition', position);
+                  // **************************************************************
+  
+                  scroller.style.height = "";
+                  scroller.style.overflow = "";
+  
+                  unlockScroll();
+                  scrollAllowed = true;
+              }
+          });
+  
+          tl.to(cards, {
+              scaleY: 1,
+              duration: 1,
+              ease: "power4.out"
+          }, 0);
+  
+          tl.to(scroller, {
+              x: `-=${fastDistance}`,
+              duration: fastDuration,
+              ease: "power4.out",
+              modifiers: {
+                  x: gsap.utils.unitize(x => {
+                      const raw = parseFloat(x);
+                      const looped = raw % scrollWidth;
+                      return looped;
+                  })
+              }
+          }, 0);
+      }, 2000); // 2-second delay to match the end of the original full loader/content-ready
+  } else {
+      // If skipping the animation, set final card state immediately
+      gsap.set(cards, { scaleY: 1 });
+      scroller.style.height = "";
+      scroller.style.overflow = "";
+  }
 
-    const tl = gsap.timeline({
-      onComplete: () => {
-        position = parseFloat(gsap.getProperty(scroller, "x"));
-        scroller.style.height = "";
-        scroller.style.overflow = "";
-
-        unlockScroll();
-        scrollAllowed = true;
-      }
-    });
-
-    tl.to(cards, {
-      scaleY: 1,
-      duration: 1,
-      ease: "power4.out"
-    }, 0);
-
-    tl.to(scroller, {
-      x: `-=${fastDistance}`,
-      duration: fastDuration,
-      ease: "power4.out",
-      modifiers: {
-        x: gsap.utils.unitize(x => {
-          const raw = parseFloat(x);
-          const looped = raw % scrollWidth;
-          return looped;
-        })
-      }
-    }, 0);
-  }, 2000);
 
   // --- WHEEL INPUT ---
   window.addEventListener("wheel", (e) => {
