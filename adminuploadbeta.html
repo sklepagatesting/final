@@ -514,555 +514,551 @@
     </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import {
-    getAuth,
-    onAuthStateChanged,
-    signOut
-  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-  import {
-    getFirestore,
-    doc,
-    getDoc,
-    collection,
-    addDoc,
-    getDocs,
-    setDoc,
-    updateDoc,
-    deleteDoc,
-    query,
-    orderBy,
-    serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import {
+        initializeApp
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import {
+        getAuth,
+        onAuthStateChanged,
+        signOut
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import {
+        getFirestore,
+        doc,
+        getDoc,
+        collection,
+        addDoc,
+        getDocs,
+        setDoc,
+        updateDoc,
+        deleteDoc,
+        query,
+        orderBy
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    
+    // ⚠️ NEW: Import ImageKit SDK
+    import ImageKit from "https://unpkg.com/imagekit-javascript@1.4.1/dist/imagekit";
 
-  // --- Firebase config (keep your project config here) ---
-  const firebaseConfig = {
-    apiKey: "AIzaSyDZUVChTTWtGm4R40wMWGrTYwyUk0FDahs",
-    authDomain: "sklepaga-8790e.firebaseapp.com",
-    projectId: "sklepaga-8790e",
-    storageBucket: "sklepaga-8790e.appspot.com",
-    messagingSenderId: "815409129057",
-    appId: "1:815409129057:web:9f6342be47e28c1f69ec20",
-    measurementId: "G-9GH707G2WZ"
-  };
+    // --- ImageKit.io Configuration ---
+    // IMPORTANT: Replace these with your actual ImageKit.io values
+    const IMAGEKIT_PUBLIC_KEY = "public_jt8KW3nGjP5Gfc6XEjoQHPP0+mE=";
+    const IMAGEKIT_URL_ENDPOINT = "https://ik.imagekit.io/cxej5oq8t";
+    // *** CRITICAL: This MUST be a secure endpoint on your server ***
+    const IMAGEKIT_AUTH_ENDPOINT = "http://www.yourserver.com/auth"; 
 
-  // --- Init ---
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+    // --- Firebase Configuration ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyDZUVChTTWtGm4R40wMWGrTYwyUk0FDahs",
+        authDomain: "sklepaga-8790e.firebaseapp.com",
+        projectId: "sklepaga-8790e",
+        storageBucket: "sklepaga-8790e.appspot.com",
+        messagingSenderId: "815409129057",
+        appId: "1:815409129057:web:9f6342be47e28c1f69ec20",
+        measurementId: "G-9GH707G2WZ"
+    };
 
-  // --- DOM elements (same IDs as your markup) ---
-  const authStatus = document.getElementById('auth-status');
-  const contentForm = document.getElementById('content-form');
-  const titleInput = document.getElementById('title');
-  const datePublishedInput = document.getElementById('date-published');
-  const dateLabel = document.getElementById('date-label');
-  const categoryRadios = document.getElementById('category-radios');
-  const contextInput = document.getElementById('context');
-  const imageUploadInput = document.getElementById('image-upload');
-  const currentImageStatus = document.getElementById('current-image-status');
-  const authorInput = document.getElementById('author');
-  const submitBtn = document.getElementById('submit-btn');
-  const cancelEditBtn = document.getElementById('cancel-edit-btn');
-  const contentListEl = document.getElementById('content-list');
-  const contentManagement = document.getElementById('content-management');
-  const categoryFilter = document.getElementById('category-filter');
-  const imageUrlInput = document.getElementById('image-url-input');
-  const progressBar = document.getElementById('upload-progress-bar');
-  const progressText = document.getElementById('upload-progress-text');
-  const radioUpload = document.getElementById('radio-upload');
-  const radioUrl = document.getElementById('radio-url');
-  const imageUploadSection = document.getElementById('image-upload-section');
-  const imageUrlSection = document.getElementById('image-url-section');
-  const uploadProgressContainer = document.getElementById('upload-progress-container');
-  const signOutTab = document.getElementById('signOutTab');
+    // --- SDK Initialization ---
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-  // Modal Elements
-  const modalOverlay = document.getElementById('confirmation-modal-overlay');
-  const modalContent = document.getElementById('confirmation-modal-content');
-  const modalTitle = document.getElementById('modal-title');
-  const modalMessage = document.getElementById('modal-message');
-  const modalConfirmBtn = document.getElementById('modal-confirm-btn');
-  const modalCancelBtn = document.getElementById('modal-cancel-btn');
-  const toastContainer = document.getElementById('toast-container');
+    const imagekit = new ImageKit({
+        publicKey: IMAGEKIT_PUBLIC_KEY,
+        urlEndpoint: IMAGEKIT_URL_ENDPOINT,
+        authenticationEndpoint: IMAGEKIT_AUTH_ENDPOINT,
+    });
 
-  // --- State ---
-  let currentAdminUser = null;
-  let editingDocId = null;
-  let allContent = [];
-  let currentImageUrl = '';
+    // --- DOM Elements (omitted for brevity, assume they are still there) ---
+    const authStatus = document.getElementById('auth-status');
+    const contentForm = document.getElementById('content-form');
+    const titleInput = document.getElementById('title');
+    const datePublishedInput = document.getElementById('date-published');
+    const dateLabel = document.getElementById('date-label');
+    const categoryRadios = document.getElementById('category-radios');
+    const contextInput = document.getElementById('context');
+    const imageUploadInput = document.getElementById('image-upload');
+    const currentImageStatus = document.getElementById('current-image-status');
+    const authorInput = document.getElementById('author');
+    const submitBtn = document.getElementById('submit-btn');
+    const cancelEditBtn = document.getElementById('cancel-edit-btn');
+    const contentListEl = document.getElementById('content-list');
+    const contentManagement = document.getElementById('content-management');
+    const categoryFilter = document.getElementById('category-filter');
+    const imageUrlInput = document.getElementById('image-url-input');
+    const progressBar = document.getElementById('upload-progress-bar');
+    const progressText = document.getElementById('upload-progress-text');
+    const radioUpload = document.getElementById('radio-upload');
+    const radioUrl = document.getElementById('radio-url');
+    const imageUploadSection = document.getElementById('image-upload-section');
+    const imageUrlSection = document.getElementById('image-url-section');
+    const uploadProgressContainer = document.getElementById('upload-progress-container');
+    const signOutTab = document.getElementById('signOutTab');
 
-  // --- Toast & Modal helpers ---
-  function showToast(message, type = 'default') {
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.textContent = message;
-    toastContainer.appendChild(toast);
+    // Modal Elements
+    const modalOverlay = document.getElementById('confirmation-modal-overlay');
+    const modalContent = document.getElementById('confirmation-modal-content');
+    const modalTitle = document.getElementById('modal-title');
+    const modalMessage = document.getElementById('modal-message');
+    const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+    const modalCancelBtn = document.getElementById('modal-cancel-btn');
+    const toastContainer = document.getElementById('toast-container');
+    
+    let currentAdminUser = null;
+    let editingDocId = null;
+    let allContent = [];
+    let currentImageUrl = '';
+    
+    // --- Custom Alert/Toast and Confirmation Modal Functions (no change) ---
+    function showToast(message, type = 'default') {
+        // ... (original implementation)
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+        toastContainer.appendChild(toast);
 
-    setTimeout(() => toast.classList.add('show'), 10);
-    setTimeout(() => {
-      toast.classList.remove('show');
-      setTimeout(() => toast.remove(), 500);
-    }, 3000);
-  }
-
-  function showConfirmation(message, title = 'Confirm Action') {
-    return new Promise(resolve => {
-      modalTitle.textContent = title;
-      modalMessage.textContent = message;
-
-      modalConfirmBtn.textContent = 'Yes, Delete';
-      modalConfirmBtn.classList.remove('btn-neutral', 'bg-red-600', 'hover:bg-red-700');
-      modalConfirmBtn.classList.add('btn-danger', 'text-white');
-
-      modalOverlay.classList.remove('hidden');
-      setTimeout(() => modalContent.classList.add('show'), 10);
-
-      let confirmHandler = () => { cleanupAndHide(true); };
-      let cancelHandler = () => { cleanupAndHide(false); };
-
-      modalConfirmBtn.addEventListener('click', confirmHandler, { once: true });
-      modalCancelBtn.addEventListener('click', cancelHandler, { once: true });
-
-      function cleanupAndHide(result) {
-        modalConfirmBtn.removeEventListener('click', confirmHandler);
-        modalCancelBtn.removeEventListener('click', cancelHandler);
-        modalContent.classList.remove('show');
         setTimeout(() => {
-          modalOverlay.classList.add('hidden');
-          resolve(result);
-        }, 300);
-      }
-    });
-  }
-
-  // --- Utility: slug generation ---
-  const createBaseSlug = (title) => {
-    return title.toLowerCase()
-      .trim()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/[\s_-]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-  };
-
-  async function generateUniqueSlug(title, currentDocId) {
-    if (!title) return '';
-    const baseSlug = createBaseSlug(title);
-    let finalSlug = baseSlug;
-    let counter = 1;
-
-    const comparableContent = allContent.filter(c => c.id !== currentDocId);
-    while (comparableContent.some(c => c.slug === finalSlug)) {
-      counter++;
-      finalSlug = `${baseSlug}-${counter}`;
+            toast.classList.add('show');
+        }, 10);
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.remove();
+            }, 500);
+        }, 3000);
     }
-    return finalSlug;
-  }
+    
+    function showConfirmation(message, title = 'Confirm Action') {
+        // ... (original implementation)
+        return new Promise(resolve => {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
 
-  // --- AlpacaCDN upload (with progress using XHR) ---
-  async function uploadImageToAlpaca(file) {
-    if (!file) return currentImageUrl || '';
+            modalConfirmBtn.textContent = 'Yes, Delete';
+            modalConfirmBtn.classList.remove('btn-neutral', 'bg-red-600', 'hover:bg-red-700'); 
+            modalConfirmBtn.classList.add('btn-danger', 'text-white');
 
-    // Safety limit (adjust if you'd like)
-    const maxSize = 20 * 1024 * 1024; // 20 MB
-    if (file.size > maxSize) {
-      throw new Error(`Image too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Max size is 20MB.`);
-    }
+            modalOverlay.classList.remove('hidden');
+            setTimeout(() => modalContent.classList.add('show'), 10);
 
-    // Reset progress UI
-    progressBar.style.width = '0%';
-    progressText.textContent = 'Preparing upload...';
-    uploadProgressContainer.classList.remove('hidden');
+            let confirmHandler = () => {
+                cleanupAndHide(true);
+            };
+            let cancelHandler = () => {
+                cleanupAndHide(false);
+            };
 
-    const formData = new FormData();
-    formData.append('file', file);
+            modalConfirmBtn.addEventListener('click', confirmHandler, {
+                once: true
+            });
+            modalCancelBtn.addEventListener('click', cancelHandler, {
+                once: true
+            });
 
-    return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', 'https://alpacacdn.com/api/upload', true);
-
-      xhr.upload.onprogress = (ev) => {
-        if (ev.lengthComputable) {
-          const percent = Math.round((ev.loaded / ev.total) * 100);
-          progressBar.style.width = percent + '%';
-          progressText.textContent = `Uploading... ${percent}%`;
-        }
-      };
-
-      xhr.onload = () => {
-        try {
-          if (xhr.status >= 200 && xhr.status < 300) {
-            const data = JSON.parse(xhr.responseText);
-            if (!data || !data.url) {
-              progressBar.style.width = '0%';
-              progressText.textContent = 'Upload failed ❌';
-              reject(new Error('Invalid response from AlpacaCDN'));
-              return;
+            function cleanupAndHide(result) {
+                modalConfirmBtn.removeEventListener('click', confirmHandler);
+                modalCancelBtn.removeEventListener('click', cancelHandler);
+                modalContent.classList.remove('show');
+                setTimeout(() => {
+                    modalOverlay.classList.add('hidden');
+                    resolve(result);
+                }, 300);
             }
-            progressBar.style.width = '100%';
-            progressText.textContent = 'Upload complete ✅';
-            resolve(data.url);
-          } else {
-            progressBar.style.width = '0%';
-            progressText.textContent = 'Upload failed ❌';
-            reject(new Error(`Upload failed with status ${xhr.status}`));
-          }
-        } catch (err) {
-          progressBar.style.width = '0%';
-          progressText.textContent = 'Upload failed ❌';
-          reject(err);
+        });
+    }
+    // --- END: Custom Modal/Toast Functions ---
+
+    // --- Helper Functions (createBaseSlug, generateUniqueSlug, getFormData, setFormData, toggleImageInputVisibility, updateDateLabel, saveContent, fetchAllContent, updateContentJSON, renderContentList, handleEdit, handleDelete, resetForm - mostly unchanged) ---
+
+    // Functionality for ImageKit upload (REPLACEMENT FOR uploadImageToImgBB)
+    /**
+     * Uploads a file to ImageKit.io.
+     * @param {File} file The file to upload.
+     * @returns {Promise<string>} The URL of the uploaded image.
+     */
+    async function uploadImageToImageKit(file) {
+        if (!file) {
+            return currentImageUrl; // If no new file, return current URL
         }
-      };
 
-      xhr.onerror = () => {
+        if (!IMAGEKIT_AUTH_ENDPOINT || IMAGEKIT_AUTH_ENDPOINT === 'http://www.yourserver.com/auth') {
+            throw new Error('ImageKit Authentication Endpoint is not configured. Upload will fail.');
+        }
+
+        // ImageKit handles size limits (default 25MB). We'll keep the UI updates.
         progressBar.style.width = '0%';
-        progressText.textContent = 'Upload failed ❌';
-        reject(new Error('Network error during upload'));
-      };
+        progressText.textContent = 'Starting upload to ImageKit...';
 
-      xhr.send(formData);
+        return new Promise((resolve, reject) => {
+            try {
+                const uniqueFileName = `${Date.now()}-${file.name.replace(/\s/g, '_')}`;
+
+                imagekit.upload({
+                    file: file,
+                    fileName: uniqueFileName,
+                    tags: ["content-management"], // Optional tags
+                    // Update progress bar
+                    onProgress: progress => {
+                        const percent = progress.loaded / progress.total * 100;
+                        progressBar.style.width = `${percent}%`;
+                        progressText.textContent = `Uploading... ${Math.round(percent)}%`;
+                    }
+                }, (err, result) => {
+                    if (err) {
+                        progressBar.style.width = '0%';
+                        progressText.textContent = 'Upload failed ❌';
+                        console.error('ImageKit upload error:', err);
+                        return reject(new Error(`Failed to upload to ImageKit: ${err.message || 'Unknown error'}`));
+                    }
+
+                    if (result && result.url) {
+                        progressBar.style.width = '100%';
+                        progressText.textContent = 'Upload complete! ✅';
+                        resolve(result.url);
+                    } else {
+                        progressBar.style.width = '0%';
+                        progressText.textContent = 'Upload failed ❌';
+                        reject(new Error('ImageKit upload succeeded but returned no URL.'));
+                    }
+                });
+
+            } catch (error) {
+                progressBar.style.width = '0%';
+                progressText.textContent = 'Upload failed ❌';
+                console.error('ImageKit general error:', error);
+                reject(new Error(`An ImageKit error occurred: ${error.message}`));
+            }
+        });
+    }
+    
+    // Original Helper Functions (omitted for brevity, assume they are still there)
+
+    const createBaseSlug = (title) => {
+        return title.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
+    };
+    
+    async function generateUniqueSlug(title, currentDocId) {
+        if (!title) return '';
+
+        const baseSlug = createBaseSlug(title);
+        let finalSlug = baseSlug;
+        let counter = 1;
+
+        const comparableContent = allContent.filter(c => c.id !== currentDocId);
+
+        while (comparableContent.some(c => c.slug === finalSlug)) {
+            counter++;
+            finalSlug = `${baseSlug}-${counter}`;
+        }
+        return finalSlug;
+    }
+    
+    const getFormData = () => ({
+        title: titleInput.value.trim(),
+        datePublished: datePublishedInput.value.trim(),
+        context: contextInput.value.trim(),
+        category: document.querySelector('input[name="category"]:checked')?.value || '',
+        author: authorInput.value.trim(),
+        authorId: currentAdminUser.uid,
     });
-  }
+    
+    const setFormData = (data) => {
+        titleInput.value = data.title;
+        contextInput.value = data.context;
+        datePublishedInput.value = data.datePublished || new Date().toISOString().substring(0, 10);
 
-  // --- Form state helpers ---
-  const getFormData = () => ({
-    title: titleInput.value.trim(),
-    datePublished: datePublishedInput.value.trim(),
-    context: contextInput.value.trim(),
-    category: document.querySelector('input[name="category"]:checked')?.value || '',
-    author: authorInput.value.trim(),
-    authorId: currentAdminUser ? currentAdminUser.uid : null,
-  });
+        const categoryRadio = document.querySelector(`input[name="category"][value="${data.category}"]`);
+        if (categoryRadio) {
+            categoryRadio.checked = true;
+            updateDateLabel(data.category);
+        }
 
-  const setFormData = (data) => {
-    titleInput.value = data.title || '';
-    contextInput.value = data.context || '';
-    datePublishedInput.value = data.datePublished || new Date().toISOString().substring(0, 10);
+        authorInput.value = data.author;
 
-    const categoryRadio = document.querySelector(`input[name="category"][value="${data.category}"]`);
-    if (categoryRadio) {
-      categoryRadio.checked = true;
-      updateDateLabel(data.category);
+        currentImageUrl = data.image || '';
+        currentImageStatus.textContent = currentImageUrl ? `(Existing image: ${currentImageUrl.substring(0, 30)}...)` : '(No image linked)';
+
+        radioUpload.checked = true;
+        radioUrl.checked = false;
+        imageUrlInput.value = currentImageUrl; // Pre-fill URL input for easy viewing/copying
+        imageUploadInput.value = '';
+
+        // Automatically select URL mode if there's an existing image that wasn't uploaded via file this session
+        if (currentImageUrl && !imageUploadInput.value) {
+            radioUrl.checked = true;
+            radioUpload.checked = false;
+            toggleImageInputVisibility('url');
+        } else {
+            toggleImageInputVisibility('upload');
+        }
+    };
+    
+    function toggleImageInputVisibility(mode) {
+        if (mode === 'upload') {
+            imageUploadSection.classList.remove('hidden');
+            uploadProgressContainer.classList.remove('hidden');
+            imageUrlSection.classList.add('hidden');
+        } else if (mode === 'url') {
+            imageUploadSection.classList.add('hidden');
+            uploadProgressContainer.classList.add('hidden');
+            imageUrlSection.classList.remove('hidden');
+        }
     }
-
-    authorInput.value = data.author || '';
-    currentImageUrl = data.image || '';
-    currentImageStatus.textContent = currentImageUrl ? `(Existing image: ${currentImageUrl.substring(0, 50)}...)` : '(No image linked)';
-    imageUrlInput.value = currentImageUrl;
-
-    // default to upload unless there's an existing URL
-    if (currentImageUrl && !imageUploadInput.value) {
-      radioUrl.checked = true;
-      radioUpload.checked = false;
-      toggleImageInputVisibility('url');
-    } else {
-      radioUpload.checked = true;
-      radioUrl.checked = false;
-      toggleImageInputVisibility('upload');
+    
+    function updateDateLabel(category) {
+        if (category === 'schedules') {
+            dateLabel.textContent = 'Date of the Event';
+        } else {
+            dateLabel.textContent = 'Date Published';
+        }
     }
-  };
-
-  function toggleImageInputVisibility(mode) {
-    if (mode === 'upload') {
-      imageUploadSection.classList.remove('hidden');
-      uploadProgressContainer.classList.remove('hidden');
-      imageUrlSection.classList.add('hidden');
-    } else {
-      imageUploadSection.classList.add('hidden');
-      uploadProgressContainer.classList.add('hidden');
-      imageUrlSection.classList.remove('hidden');
+    
+    async function saveContent(data) {
+        if (editingDocId) {
+            await updateDoc(doc(db, "content", editingDocId), {
+                ...data,
+                updatedAt: new Date().toISOString()
+            });
+        } else {
+            await addDoc(collection(db, "content"), {
+                ...data,
+                timestamp: Date.now()
+            });
+        }
     }
-  }
-
-  function updateDateLabel(category) {
-    if (category === 'schedules') {
-      dateLabel.textContent = 'Date of the Event';
-    } else {
-      dateLabel.textContent = 'Date Published';
+    
+    async function fetchAllContent() {
+        const q = query(collection(db, "content"), orderBy("timestamp", "desc"));
+        const snapshot = await getDocs(q);
+        allContent = [];
+        snapshot.forEach(d => allContent.push({
+            id: d.id,
+            ...d.data()
+        }));
     }
-  }
-
-  async function saveContent(data) {
-    if (editingDocId) {
-      await updateDoc(doc(db, "content", editingDocId), {
-        ...data,
-        updatedAt: new Date().toISOString()
-      });
-    } else {
-      await addDoc(collection(db, "content"), {
-        ...data,
-        timestamp: Date.now()
-      });
+    
+    async function updateContentJSON() {
+        await setDoc(doc(db, "contentJson", "data"), {
+            updatedAt: new Date().toISOString(),
+            content: allContent
+        });
     }
-  }
+    
+    async function renderContentList() {
+        contentListEl.innerHTML = '<p class="text-gray-500 subtext">Loading content...</p>';
 
-  // --- Firestore: fetch, update JSON cache, render list ---
-  async function fetchAllContent() {
-    const q = query(collection(db, "content"), orderBy("timestamp", "desc"));
-    const snapshot = await getDocs(q);
-    allContent = [];
-    snapshot.forEach(d => allContent.push({ id: d.id, ...d.data() }));
-  }
+        await fetchAllContent();
 
-  async function updateContentJSON() {
-    await setDoc(doc(db, "contentJson", "data"), {
-      updatedAt: new Date().toISOString(),
-      content: allContent
+        try {
+            const filterValue = categoryFilter.value;
+            const filteredContent = filterValue === 'all' ?
+                allContent :
+                allContent.filter(c => c.category === filterValue);
+
+            if (filteredContent.length === 0) {
+                contentListEl.innerHTML =
+                    `<p class="text-gray-500 subtext">No ${filterValue !== 'all' ? filterValue : ''} content found.</p>`;
+                return;
+            }
+
+            contentListEl.innerHTML = filteredContent
+                .sort((a, b) => b.timestamp - a.timestamp)
+                .map(d => `                        <div class="p-4 border border-gray-200 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center hover:bg-gray-100 transition duration-150">                            <div class="mb-2 sm:mb-0">                                <p class="subtext font-semibold text-slate-800">${d.title} <span class="context font-normal text-gray-500">(${d.category || 'N/A'})</span></p>                                <p class="subtext text-gray-500">                                    By: ${d.author || 'N/A'} -                                    📅 ${d.datePublished ? new Date(d.datePublished).toLocaleDateString() : 'Date N/A'}                                    <span class="context text-gray-400 block sm:inline-block">/slug: ${d.slug || 'N/A'}</span>                                </p>                            </div>                            <div class="space-x-2 flex-shrink-0 mt-2 sm:mt-0">                                <button data-id="${d.id}" data-action="edit" class="bg-blue-100 text-blue-700 py-1 px-3 rounded-full hover:bg-blue-200 font-medium context">Edit</button>                                <button data-id="${d.id}" data-action="delete" class="bg-red-100 text-red-700 py-1 px-3 rounded-full hover:bg-red-200 font-medium context">Delete</button>                            </div>                        </div>                    `).join('');
+        } catch (err) {
+            console.error("Error fetching content:", err);
+            contentListEl.innerHTML = '<p class="text-red-500 subtext">Failed to load content.</p>';
+        }
+    }
+    
+    async function handleEdit(docId) {
+        const docData = allContent.find(d => d.id === docId);
+        if (docData) {
+            editingDocId = docId;
+            setFormData(docData);
+            submitBtn.textContent = 'Update Content';
+            submitBtn.dataset.mode = 'edit';
+            cancelEditBtn.classList.remove('hidden');
+            window.scrollTo({
+                top: contentForm.offsetTop - 20,
+                behavior: 'smooth'
+            });
+        } else {
+            showToast("Content not found in local cache! Please refresh.", 'error');
+        }
+    }
+    
+    async function handleDelete(docId) {
+        const confirmed = await showConfirmation("Are you sure you want to delete this content? This action is irreversible.");
+        if (!confirmed) return;
+
+        try {
+            await deleteDoc(doc(db, "content", docId));
+            await fetchAllContent();
+            await updateContentJSON();
+            showToast("Content deleted successfully! ✅", 'success');
+            renderContentList();
+        } catch (err) {
+            console.error("Error deleting content:", err);
+            showToast(`Failed to delete content: ${err.message}`, 'error');
+        }
+    }
+    
+    function resetForm() {
+        contentForm.reset();
+        submitBtn.textContent = 'Publish Content';
+        submitBtn.dataset.mode = 'create';
+        cancelEditBtn.classList.add('hidden');
+        editingDocId = null;
+        currentImageUrl = '';
+        currentImageStatus.textContent = '(No image linked)';
+
+        progressBar.style.width = '0%';
+        progressText.textContent = "Ready to upload...";
+
+        datePublishedInput.value = new Date().toISOString().substring(0, 10);
+
+        radioUpload.checked = true;
+        radioUrl.checked = false;
+        toggleImageInputVisibility('upload');
+
+        updateDateLabel('news');
+
+        if (currentAdminUser) {
+            authorInput.value = currentAdminUser.email;
+        }
+    }
+    
+    // --- Event Listeners (mostly unchanged) ---
+    
+    // Category radio listener to change the date label
+    categoryRadios.addEventListener('change', (e) => {
+        if (e.target.name === 'category') {
+            updateDateLabel(e.target.value);
+        }
     });
-  }
 
-  async function renderContentList() {
-    contentListEl.innerHTML = '<p class="text-gray-500 subtext">Loading content...</p>';
-    await fetchAllContent();
+    // Image source radio listener
+    document.querySelectorAll('input[name="image-source"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            toggleImageInputVisibility(e.target.value);
+        });
+    });
 
-    try {
-      const filterValue = categoryFilter.value;
-      const filteredContent = filterValue === 'all' ? allContent : allContent.filter(c => c.category === filterValue);
+    // Content List listener for Edit/Delete buttons
+    contentListEl.addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if (btn) {
+            const docId = btn.dataset.id;
+            const action = btn.dataset.action;
+            if (action === 'edit') {
+                handleEdit(docId);
+            } else if (action === 'delete') {
+                handleDelete(docId);
+            }
+        }
+    });
 
-      if (filteredContent.length === 0) {
-        contentListEl.innerHTML = `<p class="text-gray-500 subtext">No ${filterValue !== 'all' ? filterValue : ''} content found.</p>`;
-        return;
-      }
+    // Form Submission Handler (UPDATED to use uploadImageToImageKit)
+    contentForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-      contentListEl.innerHTML = filteredContent
-        .sort((a, b) => b.timestamp - a.timestamp)
-        .map(d => `
-          <div class="p-4 border border-gray-200 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center hover:bg-gray-100 transition duration-150">
-            <div class="mb-2 sm:mb-0">
-              <p class="subtext font-semibold text-slate-800">${escapeHtml(d.title)} <span class="context font-normal text-gray-500">(${escapeHtml(d.category || 'N/A')})</span></p>
-              <p class="subtext text-gray-500">
-                By: ${escapeHtml(d.author || 'N/A')} -
-                📅 ${d.datePublished ? new Date(d.datePublished).toLocaleDateString() : 'Date N/A'}
-                <span class="context text-gray-400 block sm:inline-block">/slug: ${escapeHtml(d.slug || 'N/A')}</span>
-              </p>
-            </div>
-            <div class="space-x-2 flex-shrink-0 mt-2 sm:mt-0">
-              <button data-id="${d.id}" data-action="edit" class="bg-blue-100 text-blue-700 py-1 px-3 rounded-full hover:bg-blue-200 font-medium context">Edit</button>
-              <button data-id="${d.id}" data-action="delete" class="bg-red-100 text-red-700 py-1 px-3 rounded-full hover:bg-red-200 font-medium context">Delete</button>
-            </div>
-          </div>
-        `).join('');
-    } catch (err) {
-      console.error("Error fetching content:", err);
-      contentListEl.innerHTML = '<p class="text-red-500 subtext">Failed to load content.</p>';
-    }
-  }
+        submitBtn.disabled = true;
+        submitBtn.textContent = editingDocId ? 'Updating...' : 'Publishing...';
+        showToast('Processing request...', 'default');
 
-  // small helper to avoid XSS in rendered list
-  function escapeHtml(str = '') {
-    return String(str)
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;')
-      .replaceAll('"', '&quot;')
-      .replaceAll("'", '&#039;');
-  }
+        try {
+            const formData = getFormData();
+            let imageUrl = currentImageUrl;
+            let isImageUploaded = false;
 
-  // --- Edit / Delete handlers ---
-  async function handleEdit(docId) {
-    const docData = allContent.find(d => d.id === docId);
-    if (docData) {
-      editingDocId = docId;
-      setFormData(docData);
-      submitBtn.textContent = 'Update Content';
-      submitBtn.dataset.mode = 'edit';
-      cancelEditBtn.classList.remove('hidden');
-      window.scrollTo({ top: contentForm.offsetTop - 20, behavior: 'smooth' });
-    } else {
-      showToast("Content not found in local cache! Please refresh.", 'error');
-    }
-  }
+            // 1. Image Handling
+            const imageSource = document.querySelector('input[name="image-source"]:checked')?.value;
+            if (imageSource === 'upload' && imageUploadInput.files.length > 0) {
+                // Upload a new file using ImageKit function
+                const file = imageUploadInput.files[0];
+                imageUrl = await uploadImageToImageKit(file); 
+                isImageUploaded = true;
+            } else if (imageSource === 'url') {
+                // Use the provided URL
+                imageUrl = imageUrlInput.value.trim();
+            }
 
-  async function handleDelete(docId) {
-    const confirmed = await showConfirmation("Are you sure you want to delete this content? This action is irreversible.");
-    if (!confirmed) return;
-    try {
-      await deleteDoc(doc(db, "content", docId));
-      await fetchAllContent();
-      await updateContentJSON();
-      showToast("Content deleted successfully! ✅", 'success');
-      renderContentList();
-    } catch (err) {
-      console.error("Error deleting content:", err);
-      showToast(`Failed to delete content: ${err.message}`, 'error');
-    }
-  }
+            // 2. Slug Generation
+            const docIdForSlug = editingDocId;
+            const newSlug = await generateUniqueSlug(formData.title, docIdForSlug);
 
-  function resetForm() {
-    contentForm.reset();
-    submitBtn.textContent = 'Publish Content';
-    submitBtn.dataset.mode = 'create';
-    cancelEditBtn.classList.add('hidden');
-    editingDocId = null;
-    currentImageUrl = '';
-    currentImageStatus.textContent = '(No image linked)';
-    progressBar.style.width = '0%';
-    progressText.textContent = "Ready to upload...";
-    datePublishedInput.value = new Date().toISOString().substring(0, 10);
-    radioUpload.checked = true;
-    radioUrl.checked = false;
-    toggleImageInputVisibility('upload');
-    updateDateLabel('news');
-    if (currentAdminUser) authorInput.value = currentAdminUser.email;
-  }
+            // 3. Save to Firestore
+            const contentToSave = {
+                ...formData,
+                image: imageUrl, // Update with the new or verified image URL
+                slug: newSlug
+            };
 
-  // --- Event listeners ---
-  categoryRadios.addEventListener('change', (e) => {
-    if (e.target.name === 'category') updateDateLabel(e.target.value);
-  });
+            await saveContent(contentToSave);
 
-  document.querySelectorAll('input[name="image-source"]').forEach(radio => {
-    radio.addEventListener('change', (e) => toggleImageInputVisibility(e.target.value));
-  });
+            // 4. Update JSON cache (Crucial for live front-end data)
+            await fetchAllContent();
+            await updateContentJSON();
 
-  contentListEl.addEventListener('click', (e) => {
-    const btn = e.target.closest('button');
-    if (btn) {
-      const docId = btn.dataset.id;
-      const action = btn.dataset.action;
-      if (action === 'edit') handleEdit(docId);
-      else if (action === 'delete') handleDelete(docId);
-    }
-  });
+            // 5. Success Message & Cleanup
+            showToast(editingDocId ? "Content updated successfully! 🎉" : "Content published successfully! 🎉", 'success');
+            resetForm();
+            renderContentList();
 
-  contentForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    submitBtn.disabled = true;
-    submitBtn.textContent = editingDocId ? 'Updating...' : 'Publishing...';
-    showToast('Processing request...', 'default');
+        } catch (error) {
+            console.error("Submission error:", error);
+            // Updated error message check
+            const errorMessage = error.message.includes('ImageKit') ? error.message : "An unexpected error occurred during submission.";
+            showToast(errorMessage, 'error');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = editingDocId ? 'Update Content' : 'Publish Content';
+        }
+    });
+    
+    // Cancel Edit Handler
+    cancelEditBtn.addEventListener('click', resetForm);
 
-      try {
-  progressBar.style.width = "10%";
-  progressText.textContent = "Starting upload...";
-
-  let imageUrl = currentImageUrl;
-  const file = e.target.image.files[0];
-
-  if (file) {
-    console.log("Uploading file to Alpaca:", file.name);
-    imageUrl = await uploadImageToAlpaca(file);
-    console.log("✅ Alpaca upload complete:", imageUrl);
-  } else {
-    console.log("No image selected, skipping upload.");
-  }
-
-  progressBar.style.width = "90%";
-  progressText.textContent = "Saving to Firestore...";
-
-  const docRef = await addDoc(collection(db, "posts"), {
-    title: e.target.title.value.trim(),
-    body: e.target.body.value.trim(),
-    image: imageUrl || "",
-    category: e.target.category?.value || "Uncategorized",
-    timestamp: serverTimestamp(),
-  });
-
-  console.log("✅ Firestore document added:", docRef.id);
-  progressBar.style.width = "100%";
-  progressText.textContent = "Done ✅";
-
-  alert("Content published successfully!");
-  e.target.reset();
-  currentImageUrl = null;
-} catch (err) {
-  console.error("🔥 Submission error details:", err);
-  alert("An unexpected error occurred during submission:\n" + err.message);
-} finally {
-  setTimeout(() => {
-    progressBar.style.width = "0%";
-    progressText.textContent = "";
-  }, 1500);
-}
-
-
-    try {
-      const formData = getFormData();
-      let imageUrl = currentImageUrl || '';
-      let isImageUploaded = false;
-
-      // Image handling
-      const imageSource = document.querySelector('input[name="image-source"]:checked')?.value;
-      if (imageSource === 'upload' && imageUploadInput.files.length > 0) {
-        const file = imageUploadInput.files[0];
-        imageUrl = await uploadImageToAlpaca(file);
-        isImageUploaded = true;
-      } else if (imageSource === 'url') {
-        imageUrl = imageUrlInput.value.trim();
-      }
-
-      const newSlug = await generateUniqueSlug(formData.title, editingDocId);
-
-      const contentToSave = {
-        ...formData,
-        image: imageUrl || '',
-        slug: newSlug
-      };
-
-      await saveContent(contentToSave);
-      await fetchAllContent();
-      await updateContentJSON();
-
-      showToast(editingDocId ? "Content updated successfully! 🎉" : "Content published successfully! 🎉", 'success');
-      resetForm();
-      renderContentList();
-
-    } catch (error) {
-      console.error("Submission error:", error);
-      const errorMessage = error.message.includes('AlpacaCDN') ? error.message : "An unexpected error occurred during submission.";
-      showToast(errorMessage, 'error');
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = editingDocId ? 'Update Content' : 'Publish Content';
-    }
-  });
-
-  cancelEditBtn.addEventListener('click', resetForm);
-
-  signOutTab.addEventListener("click", async (e) => {
-    e.preventDefault();
-    await signOut(auth);
-    window.location.href = "authentication.html";
-  });
-
-  categoryFilter.addEventListener('change', renderContentList);
-
-  // --- Auth check & admin gating ---
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      window.location.href = "authentication.html";
-      return;
-    }
-
-    try {
-      const adminDoc = await getDoc(doc(db, "admin", user.uid));
-      if (adminDoc.exists()) {
-        currentAdminUser = user;
-        authStatus.textContent = `Authenticated as Admin: ${user.email}`;
-        authStatus.classList.replace('text-red-500', 'text-green-500');
-        authorInput.value = user.email;
-        contentForm.classList.remove('hidden');
-        contentManagement.classList.remove('hidden');
-        resetForm();
-        await renderContentList();
-      } else {
-        alert("You are not authorized to view the admin upload page.");
+    // Sign Out Logic
+    signOutTab.addEventListener("click", async (e) => {
+        e.preventDefault();
         await signOut(auth);
         window.location.href = "authentication.html";
-      }
-    } catch (e) {
-      console.error("Admin check failed:", e);
-      authStatus.textContent = "Error: Failed to verify admin status.";
-      alert("An error occurred during authorization check.");
-      await signOut(auth);
-      window.location.href = "authentication.html";
-    }
-  });
+    });
 
-  // Initial UI state
-  (function init() {
-    datePublishedInput.value = new Date().toISOString().substring(0, 10);
-    progressText.textContent = 'Ready to upload...';
-  })();
+    // Filter Listener
+    categoryFilter.addEventListener('change', renderContentList);
+
+    // --- Authentication Check (unchanged) ---
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+            window.location.href = "authentication.html";
+            return;
+        }
+
+        try {
+            const adminDoc = await getDoc(doc(db, "admin", user.uid));
+            if (adminDoc.exists()) {
+                currentAdminUser = user;
+                authStatus.textContent = `Authenticated as Admin: ${user.email}`;
+                authStatus.classList.replace('text-red-500', 'text-green-500');
+                authorInput.value = user.email;
+                contentForm.classList.remove('hidden');
+                contentManagement.classList.remove('hidden');
+                resetForm();
+                renderContentList();
+            } else {
+                alert("You are not authorized to view the admin upload page.");
+                await signOut(auth);
+                window.location.href = "authentication.html";
+            }
+        } catch (e) {
+            console.error("Admin check failed:", e);
+            authStatus.textContent = "Error: Failed to verify admin status.";
+            alert("An error occurred during authorization check.");
+            await signOut(auth);
+            window.location.href = "authentication.html";
+        }
+    });
 </script>
 
 </body>
