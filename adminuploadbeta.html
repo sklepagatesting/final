@@ -931,6 +931,50 @@
     submitBtn.textContent = editingDocId ? 'Updating...' : 'Publishing...';
     showToast('Processing request...', 'default');
 
+      try {
+  progressBar.style.width = "10%";
+  progressText.textContent = "Starting upload...";
+
+  let imageUrl = currentImageUrl;
+  const file = e.target.image.files[0];
+
+  if (file) {
+    console.log("Uploading file to Alpaca:", file.name);
+    imageUrl = await uploadImageToAlpaca(file);
+    console.log("✅ Alpaca upload complete:", imageUrl);
+  } else {
+    console.log("No image selected, skipping upload.");
+  }
+
+  progressBar.style.width = "90%";
+  progressText.textContent = "Saving to Firestore...";
+
+  const docRef = await addDoc(collection(db, "posts"), {
+    title: e.target.title.value.trim(),
+    body: e.target.body.value.trim(),
+    image: imageUrl || "",
+    category: e.target.category?.value || "Uncategorized",
+    timestamp: serverTimestamp(),
+  });
+
+  console.log("✅ Firestore document added:", docRef.id);
+  progressBar.style.width = "100%";
+  progressText.textContent = "Done ✅";
+
+  alert("Content published successfully!");
+  e.target.reset();
+  currentImageUrl = null;
+} catch (err) {
+  console.error("🔥 Submission error details:", err);
+  alert("An unexpected error occurred during submission:\n" + err.message);
+} finally {
+  setTimeout(() => {
+    progressBar.style.width = "0%";
+    progressText.textContent = "";
+  }, 1500);
+}
+
+
     try {
       const formData = getFormData();
       let imageUrl = currentImageUrl || '';
