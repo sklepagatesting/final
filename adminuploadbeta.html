@@ -514,183 +514,513 @@
     </div>
 
 <script type="module">
-     // --- Firebase Admin Panel Script with AlpacaCDN Integration ---
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    collection,
+    addDoc,
+    getDocs,
+    setDoc,
+    updateDoc,
+    deleteDoc,
+    query,
+    orderBy,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-// Initialize Firebase
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-  doc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  // --- Firebase config (keep your project config here) ---
+  const firebaseConfig = {
+    apiKey: "AIzaSyDZUVChTTWtGm4R40wMWGrTYwyUk0FDahs",
+    authDomain: "sklepaga-8790e.firebaseapp.com",
+    projectId: "sklepaga-8790e",
+    storageBucket: "sklepaga-8790e.appspot.com",
+    messagingSenderId: "815409129057",
+    appId: "1:815409129057:web:9f6342be47e28c1f69ec20",
+    measurementId: "G-9GH707G2WZ"
+  };
 
-// --- Firebase Config (replace with your own) ---
- const firebaseConfig = {
-            apiKey: "AIzaSyDZUVChTTWtGm4R40wMWGrTYwyUk0FDahs",
-            authDomain: "sklepaga-8790e.firebaseapp.com",
-            projectId: "sklepaga-8790e",
-            storageBucket: "sklepaga-8790e.appspot.com",
-            messagingSenderId: "815409129057",
-            appId: "1:815409129057:web:9f6342be47e28c1f69ec20",
-            measurementId: "G-9GH707G2WZ"
-        };
+  // --- Init ---
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-// --- Initialize ---
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+  // --- DOM elements (same IDs as your markup) ---
+  const authStatus = document.getElementById('auth-status');
+  const contentForm = document.getElementById('content-form');
+  const titleInput = document.getElementById('title');
+  const datePublishedInput = document.getElementById('date-published');
+  const dateLabel = document.getElementById('date-label');
+  const categoryRadios = document.getElementById('category-radios');
+  const contextInput = document.getElementById('context');
+  const imageUploadInput = document.getElementById('image-upload');
+  const currentImageStatus = document.getElementById('current-image-status');
+  const authorInput = document.getElementById('author');
+  const submitBtn = document.getElementById('submit-btn');
+  const cancelEditBtn = document.getElementById('cancel-edit-btn');
+  const contentListEl = document.getElementById('content-list');
+  const contentManagement = document.getElementById('content-management');
+  const categoryFilter = document.getElementById('category-filter');
+  const imageUrlInput = document.getElementById('image-url-input');
+  const progressBar = document.getElementById('upload-progress-bar');
+  const progressText = document.getElementById('upload-progress-text');
+  const radioUpload = document.getElementById('radio-upload');
+  const radioUrl = document.getElementById('radio-url');
+  const imageUploadSection = document.getElementById('image-upload-section');
+  const imageUrlSection = document.getElementById('image-url-section');
+  const uploadProgressContainer = document.getElementById('upload-progress-container');
+  const signOutTab = document.getElementById('signOutTab');
 
-// --- DOM Elements ---
-const loginForm = document.getElementById("login-form");
-const contentForm = document.getElementById("content-form");
-const progressBar = document.querySelector(".progress-bar");
-const progressText = document.querySelector(".progress-text");
-const logoutBtn = document.getElementById("logout-btn");
+  // Modal Elements
+  const modalOverlay = document.getElementById('confirmation-modal-overlay');
+  const modalContent = document.getElementById('confirmation-modal-content');
+  const modalTitle = document.getElementById('modal-title');
+  const modalMessage = document.getElementById('modal-message');
+  const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+  const modalCancelBtn = document.getElementById('modal-cancel-btn');
+  const toastContainer = document.getElementById('toast-container');
 
-let currentImageUrl = null;
+  // --- State ---
+  let currentAdminUser = null;
+  let editingDocId = null;
+  let allContent = [];
+  let currentImageUrl = '';
 
-// --- Login ---
-loginForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = e.target.email.value;
-  const password = e.target.password.value;
+  // --- Toast & Modal helpers ---
+  function showToast(message, type = 'default') {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    toastContainer.appendChild(toast);
 
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    loginForm.classList.add("hidden");
-    contentForm.classList.remove("hidden");
-  } catch (err) {
-    alert("Login failed: " + err.message);
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 500);
+    }, 3000);
   }
-});
 
-// --- Auth Check ---
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    loginForm.classList.add("hidden");
-    contentForm.classList.remove("hidden");
-  } else {
-    loginForm.classList.remove("hidden");
-    contentForm.classList.add("hidden");
-  }
-});
+  function showConfirmation(message, title = 'Confirm Action') {
+    return new Promise(resolve => {
+      modalTitle.textContent = title;
+      modalMessage.textContent = message;
 
-// --- Logout ---
-logoutBtn.addEventListener("click", async () => {
-  await signOut(auth);
-  alert("Logged out.");
-});
+      modalConfirmBtn.textContent = 'Yes, Delete';
+      modalConfirmBtn.classList.remove('btn-neutral', 'bg-red-600', 'hover:bg-red-700');
+      modalConfirmBtn.classList.add('btn-danger', 'text-white');
 
-// --- Upload to AlpacaCDN ---
-async function uploadImageToAlpaca(file) {
-  if (!file) return currentImageUrl;
+      modalOverlay.classList.remove('hidden');
+      setTimeout(() => modalContent.classList.add('show'), 10);
 
-  const maxSize = 20 * 1024 * 1024; // 20MB limit
-  if (file.size > maxSize) {
-    throw new Error(`Image too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Max size is 20MB.`);
-  }
+      let confirmHandler = () => { cleanupAndHide(true); };
+      let cancelHandler = () => { cleanupAndHide(false); };
 
-  progressBar.style.width = "0%";
-  progressText.textContent = "Preparing upload...";
+      modalConfirmBtn.addEventListener('click', confirmHandler, { once: true });
+      modalCancelBtn.addEventListener('click', cancelHandler, { once: true });
 
-  const formData = new FormData();
-  formData.append("file", file);
-
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://alpacacdn.com/api/upload", true);
-
-    // Track progress
-    xhr.upload.onprogress = (event) => {
-      if (event.lengthComputable) {
-        const percent = Math.round((event.loaded / event.total) * 100);
-        progressBar.style.width = percent + "%";
-        progressText.textContent = `Uploading... ${percent}%`;
+      function cleanupAndHide(result) {
+        modalConfirmBtn.removeEventListener('click', confirmHandler);
+        modalCancelBtn.removeEventListener('click', cancelHandler);
+        modalContent.classList.remove('show');
+        setTimeout(() => {
+          modalOverlay.classList.add('hidden');
+          resolve(result);
+        }, 300);
       }
-    };
-
-    xhr.onload = () => {
-      if (xhr.status === 200) {
-        try {
-          const data = JSON.parse(xhr.responseText);
-          if (!data.url) throw new Error("No URL returned");
-          progressBar.style.width = "100%";
-          progressText.textContent = "Upload complete ✅";
-          resolve(data.url);
-        } catch (err) {
-          reject(new Error("Invalid response from AlpacaCDN"));
-        }
-      } else {
-        reject(new Error(`Upload failed with status ${xhr.status}`));
-      }
-    };
-
-    xhr.onerror = () => reject(new Error("Network error during upload"));
-    xhr.send(formData);
-  });
-}
-
-// --- Submit Content ---
-contentForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const title = e.target.title.value.trim();
-  const body = e.target.body.value.trim();
-  const file = e.target.image.files[0];
-
-  if (!title || !body) {
-    alert("Please fill all fields");
-    return;
+    });
   }
 
-  try {
-    progressBar.style.width = "10%";
-    progressText.textContent = "Starting upload...";
+  // --- Utility: slug generation ---
+  const createBaseSlug = (title) => {
+    return title.toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  };
 
-    let imageUrl = currentImageUrl;
-    if (file) {
-      imageUrl = await uploadImageToAlpaca(file);
+  async function generateUniqueSlug(title, currentDocId) {
+    if (!title) return '';
+    const baseSlug = createBaseSlug(title);
+    let finalSlug = baseSlug;
+    let counter = 1;
+
+    const comparableContent = allContent.filter(c => c.id !== currentDocId);
+    while (comparableContent.some(c => c.slug === finalSlug)) {
+      counter++;
+      finalSlug = `${baseSlug}-${counter}`;
+    }
+    return finalSlug;
+  }
+
+  // --- AlpacaCDN upload (with progress using XHR) ---
+  async function uploadImageToAlpaca(file) {
+    if (!file) return currentImageUrl || '';
+
+    // Safety limit (adjust if you'd like)
+    const maxSize = 20 * 1024 * 1024; // 20 MB
+    if (file.size > maxSize) {
+      throw new Error(`Image too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Max size is 20MB.`);
     }
 
-    progressBar.style.width = "90%";
-    progressText.textContent = "Saving to Firestore...";
+    // Reset progress UI
+    progressBar.style.width = '0%';
+    progressText.textContent = 'Preparing upload...';
+    uploadProgressContainer.classList.remove('hidden');
 
-    await addDoc(collection(db, "posts"), {
-      title,
-      body,
-      image: imageUrl || "",
-      timestamp: serverTimestamp(),
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', 'https://alpacacdn.com/api/upload', true);
+
+      xhr.upload.onprogress = (ev) => {
+        if (ev.lengthComputable) {
+          const percent = Math.round((ev.loaded / ev.total) * 100);
+          progressBar.style.width = percent + '%';
+          progressText.textContent = `Uploading... ${percent}%`;
+        }
+      };
+
+      xhr.onload = () => {
+        try {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            const data = JSON.parse(xhr.responseText);
+            if (!data || !data.url) {
+              progressBar.style.width = '0%';
+              progressText.textContent = 'Upload failed ❌';
+              reject(new Error('Invalid response from AlpacaCDN'));
+              return;
+            }
+            progressBar.style.width = '100%';
+            progressText.textContent = 'Upload complete ✅';
+            resolve(data.url);
+          } else {
+            progressBar.style.width = '0%';
+            progressText.textContent = 'Upload failed ❌';
+            reject(new Error(`Upload failed with status ${xhr.status}`));
+          }
+        } catch (err) {
+          progressBar.style.width = '0%';
+          progressText.textContent = 'Upload failed ❌';
+          reject(err);
+        }
+      };
+
+      xhr.onerror = () => {
+        progressBar.style.width = '0%';
+        progressText.textContent = 'Upload failed ❌';
+        reject(new Error('Network error during upload'));
+      };
+
+      xhr.send(formData);
     });
-
-    progressBar.style.width = "100%";
-    progressText.textContent = "Done ✅";
-
-    alert("Content published successfully!");
-    e.target.reset();
-    currentImageUrl = null;
-  } catch (err) {
-    console.error("Error:", err);
-    alert("Failed: " + err.message);
-  } finally {
-    setTimeout(() => {
-      progressBar.style.width = "0%";
-      progressText.textContent = "";
-    }, 1500);
   }
-});
 
-    </script>
+  // --- Form state helpers ---
+  const getFormData = () => ({
+    title: titleInput.value.trim(),
+    datePublished: datePublishedInput.value.trim(),
+    context: contextInput.value.trim(),
+    category: document.querySelector('input[name="category"]:checked')?.value || '',
+    author: authorInput.value.trim(),
+    authorId: currentAdminUser ? currentAdminUser.uid : null,
+  });
+
+  const setFormData = (data) => {
+    titleInput.value = data.title || '';
+    contextInput.value = data.context || '';
+    datePublishedInput.value = data.datePublished || new Date().toISOString().substring(0, 10);
+
+    const categoryRadio = document.querySelector(`input[name="category"][value="${data.category}"]`);
+    if (categoryRadio) {
+      categoryRadio.checked = true;
+      updateDateLabel(data.category);
+    }
+
+    authorInput.value = data.author || '';
+    currentImageUrl = data.image || '';
+    currentImageStatus.textContent = currentImageUrl ? `(Existing image: ${currentImageUrl.substring(0, 50)}...)` : '(No image linked)';
+    imageUrlInput.value = currentImageUrl;
+
+    // default to upload unless there's an existing URL
+    if (currentImageUrl && !imageUploadInput.value) {
+      radioUrl.checked = true;
+      radioUpload.checked = false;
+      toggleImageInputVisibility('url');
+    } else {
+      radioUpload.checked = true;
+      radioUrl.checked = false;
+      toggleImageInputVisibility('upload');
+    }
+  };
+
+  function toggleImageInputVisibility(mode) {
+    if (mode === 'upload') {
+      imageUploadSection.classList.remove('hidden');
+      uploadProgressContainer.classList.remove('hidden');
+      imageUrlSection.classList.add('hidden');
+    } else {
+      imageUploadSection.classList.add('hidden');
+      uploadProgressContainer.classList.add('hidden');
+      imageUrlSection.classList.remove('hidden');
+    }
+  }
+
+  function updateDateLabel(category) {
+    if (category === 'schedules') {
+      dateLabel.textContent = 'Date of the Event';
+    } else {
+      dateLabel.textContent = 'Date Published';
+    }
+  }
+
+  async function saveContent(data) {
+    if (editingDocId) {
+      await updateDoc(doc(db, "content", editingDocId), {
+        ...data,
+        updatedAt: new Date().toISOString()
+      });
+    } else {
+      await addDoc(collection(db, "content"), {
+        ...data,
+        timestamp: Date.now()
+      });
+    }
+  }
+
+  // --- Firestore: fetch, update JSON cache, render list ---
+  async function fetchAllContent() {
+    const q = query(collection(db, "content"), orderBy("timestamp", "desc"));
+    const snapshot = await getDocs(q);
+    allContent = [];
+    snapshot.forEach(d => allContent.push({ id: d.id, ...d.data() }));
+  }
+
+  async function updateContentJSON() {
+    await setDoc(doc(db, "contentJson", "data"), {
+      updatedAt: new Date().toISOString(),
+      content: allContent
+    });
+  }
+
+  async function renderContentList() {
+    contentListEl.innerHTML = '<p class="text-gray-500 subtext">Loading content...</p>';
+    await fetchAllContent();
+
+    try {
+      const filterValue = categoryFilter.value;
+      const filteredContent = filterValue === 'all' ? allContent : allContent.filter(c => c.category === filterValue);
+
+      if (filteredContent.length === 0) {
+        contentListEl.innerHTML = `<p class="text-gray-500 subtext">No ${filterValue !== 'all' ? filterValue : ''} content found.</p>`;
+        return;
+      }
+
+      contentListEl.innerHTML = filteredContent
+        .sort((a, b) => b.timestamp - a.timestamp)
+        .map(d => `
+          <div class="p-4 border border-gray-200 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center hover:bg-gray-100 transition duration-150">
+            <div class="mb-2 sm:mb-0">
+              <p class="subtext font-semibold text-slate-800">${escapeHtml(d.title)} <span class="context font-normal text-gray-500">(${escapeHtml(d.category || 'N/A')})</span></p>
+              <p class="subtext text-gray-500">
+                By: ${escapeHtml(d.author || 'N/A')} -
+                📅 ${d.datePublished ? new Date(d.datePublished).toLocaleDateString() : 'Date N/A'}
+                <span class="context text-gray-400 block sm:inline-block">/slug: ${escapeHtml(d.slug || 'N/A')}</span>
+              </p>
+            </div>
+            <div class="space-x-2 flex-shrink-0 mt-2 sm:mt-0">
+              <button data-id="${d.id}" data-action="edit" class="bg-blue-100 text-blue-700 py-1 px-3 rounded-full hover:bg-blue-200 font-medium context">Edit</button>
+              <button data-id="${d.id}" data-action="delete" class="bg-red-100 text-red-700 py-1 px-3 rounded-full hover:bg-red-200 font-medium context">Delete</button>
+            </div>
+          </div>
+        `).join('');
+    } catch (err) {
+      console.error("Error fetching content:", err);
+      contentListEl.innerHTML = '<p class="text-red-500 subtext">Failed to load content.</p>';
+    }
+  }
+
+  // small helper to avoid XSS in rendered list
+  function escapeHtml(str = '') {
+    return String(str)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
+  }
+
+  // --- Edit / Delete handlers ---
+  async function handleEdit(docId) {
+    const docData = allContent.find(d => d.id === docId);
+    if (docData) {
+      editingDocId = docId;
+      setFormData(docData);
+      submitBtn.textContent = 'Update Content';
+      submitBtn.dataset.mode = 'edit';
+      cancelEditBtn.classList.remove('hidden');
+      window.scrollTo({ top: contentForm.offsetTop - 20, behavior: 'smooth' });
+    } else {
+      showToast("Content not found in local cache! Please refresh.", 'error');
+    }
+  }
+
+  async function handleDelete(docId) {
+    const confirmed = await showConfirmation("Are you sure you want to delete this content? This action is irreversible.");
+    if (!confirmed) return;
+    try {
+      await deleteDoc(doc(db, "content", docId));
+      await fetchAllContent();
+      await updateContentJSON();
+      showToast("Content deleted successfully! ✅", 'success');
+      renderContentList();
+    } catch (err) {
+      console.error("Error deleting content:", err);
+      showToast(`Failed to delete content: ${err.message}`, 'error');
+    }
+  }
+
+  function resetForm() {
+    contentForm.reset();
+    submitBtn.textContent = 'Publish Content';
+    submitBtn.dataset.mode = 'create';
+    cancelEditBtn.classList.add('hidden');
+    editingDocId = null;
+    currentImageUrl = '';
+    currentImageStatus.textContent = '(No image linked)';
+    progressBar.style.width = '0%';
+    progressText.textContent = "Ready to upload...";
+    datePublishedInput.value = new Date().toISOString().substring(0, 10);
+    radioUpload.checked = true;
+    radioUrl.checked = false;
+    toggleImageInputVisibility('upload');
+    updateDateLabel('news');
+    if (currentAdminUser) authorInput.value = currentAdminUser.email;
+  }
+
+  // --- Event listeners ---
+  categoryRadios.addEventListener('change', (e) => {
+    if (e.target.name === 'category') updateDateLabel(e.target.value);
+  });
+
+  document.querySelectorAll('input[name="image-source"]').forEach(radio => {
+    radio.addEventListener('change', (e) => toggleImageInputVisibility(e.target.value));
+  });
+
+  contentListEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (btn) {
+      const docId = btn.dataset.id;
+      const action = btn.dataset.action;
+      if (action === 'edit') handleEdit(docId);
+      else if (action === 'delete') handleDelete(docId);
+    }
+  });
+
+  contentForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = editingDocId ? 'Updating...' : 'Publishing...';
+    showToast('Processing request...', 'default');
+
+    try {
+      const formData = getFormData();
+      let imageUrl = currentImageUrl || '';
+      let isImageUploaded = false;
+
+      // Image handling
+      const imageSource = document.querySelector('input[name="image-source"]:checked')?.value;
+      if (imageSource === 'upload' && imageUploadInput.files.length > 0) {
+        const file = imageUploadInput.files[0];
+        imageUrl = await uploadImageToAlpaca(file);
+        isImageUploaded = true;
+      } else if (imageSource === 'url') {
+        imageUrl = imageUrlInput.value.trim();
+      }
+
+      const newSlug = await generateUniqueSlug(formData.title, editingDocId);
+
+      const contentToSave = {
+        ...formData,
+        image: imageUrl || '',
+        slug: newSlug
+      };
+
+      await saveContent(contentToSave);
+      await fetchAllContent();
+      await updateContentJSON();
+
+      showToast(editingDocId ? "Content updated successfully! 🎉" : "Content published successfully! 🎉", 'success');
+      resetForm();
+      renderContentList();
+
+    } catch (error) {
+      console.error("Submission error:", error);
+      const errorMessage = error.message.includes('AlpacaCDN') ? error.message : "An unexpected error occurred during submission.";
+      showToast(errorMessage, 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = editingDocId ? 'Update Content' : 'Publish Content';
+    }
+  });
+
+  cancelEditBtn.addEventListener('click', resetForm);
+
+  signOutTab.addEventListener("click", async (e) => {
+    e.preventDefault();
+    await signOut(auth);
+    window.location.href = "authentication.html";
+  });
+
+  categoryFilter.addEventListener('change', renderContentList);
+
+  // --- Auth check & admin gating ---
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      window.location.href = "authentication.html";
+      return;
+    }
+
+    try {
+      const adminDoc = await getDoc(doc(db, "admin", user.uid));
+      if (adminDoc.exists()) {
+        currentAdminUser = user;
+        authStatus.textContent = `Authenticated as Admin: ${user.email}`;
+        authStatus.classList.replace('text-red-500', 'text-green-500');
+        authorInput.value = user.email;
+        contentForm.classList.remove('hidden');
+        contentManagement.classList.remove('hidden');
+        resetForm();
+        await renderContentList();
+      } else {
+        alert("You are not authorized to view the admin upload page.");
+        await signOut(auth);
+        window.location.href = "authentication.html";
+      }
+    } catch (e) {
+      console.error("Admin check failed:", e);
+      authStatus.textContent = "Error: Failed to verify admin status.";
+      alert("An error occurred during authorization check.");
+      await signOut(auth);
+      window.location.href = "authentication.html";
+    }
+  });
+
+  // Initial UI state
+  (function init() {
+    datePublishedInput.value = new Date().toISOString().substring(0, 10);
+    progressText.textContent = 'Ready to upload...';
+  })();
+</script>
+
 </body>
 
 </html>
