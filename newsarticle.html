@@ -373,7 +373,7 @@
                     document.getElementById('article-image').alt = `Featured image for the news article: ${articleData.title || 'Untitled Article'}`;
                     document.querySelector('#article-image-container source').srcset = articleData.image;
 
-                    document.getElementById('article-author').textContent = `{articleData.author || 'SK Lepaga'}`;
+                    document.getElementById('article-author').textContent = `${articleData.author || 'SK Lepaga'}`;
                     document.getElementById('article-date').textContent = `Published: ${dateFormatted}`;
 
                     document.getElementById('article-context').innerHTML = articleData.context?.replace(/\n/g, '<br>') || 'Article content is missing.';
@@ -397,5 +397,6 @@
 </body>
 
 </html>
+
 
 
