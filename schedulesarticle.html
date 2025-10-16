@@ -133,7 +133,7 @@
                             <div id="countdown-timer" class="text-line font-theme max-w-5xl mx-auto context" aria-live="polite"></div>
                         </div>
                         <div class="max-w-screen-xl mx-auto">
-                            <figure id="schedule-image-container" class="flex flex-col mx-auto overflow-hidden relative z-10 image-parallax-sizing" data-dark-border="#242424">
+                            <figure id="schedule-image-container" class="zoomout flex flex-col mx-auto overflow-hidden relative z-10 image-parallax-sizing" data-dark-border="#242424">
                                 <picture>
                                     <source media="(max-width: 767px)" srcset="">
                                     <img id="schedule-image" src="" alt="Featured image for the SK Lepaga schedule or event" class="w-full h-auto object-cover">
@@ -294,7 +294,7 @@
                 gsap.registerPlugin(ScrollTrigger);
             }
 
-            const target = document.querySelector("#schedule-image-container.zoom");
+            const target = document.querySelector("#schedule-image-container.zoomout");
             if (target) {
                 gsap.fromTo(
                     target, {
@@ -391,3 +391,4 @@
 </body>
 
 </html>x
+
