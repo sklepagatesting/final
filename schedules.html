@@ -26,18 +26,16 @@
     <link rel="stylesheet" href="controlers\scroll.css">
     <link rel="stylesheet" href="sections/hero.css">
     <link rel="stylesheet" href="sections\carousel.css">
-    <style>
+  <style>
         .flat-card {
             background-color: #ffffff;
             border-radius: 16px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
             transition: all 0.3s ease;
         }
-
         .flat-card:hover {
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08), 0 6px 12px rgba(0, 0, 0, 0.04);
         }
-
         .date-block {
             background-color: #f9fafb;
             border-radius: 12px;
@@ -51,7 +49,15 @@
             align-items: center;
             border: 1px solid #e5e7eb;
         }
-
+        /*
+         * START: Modal Scroll Containment Update
+         * ------------------------------------
+         * 1. The modal overlay must allow itself to scroll if the *entire* modal
+         * content block exceeds the screen height (e.g., on small devices).
+         * 2. Remove 'align-items: center' to prevent vertical content clipping
+         * when it overflows the viewport, and instead use flex properties to
+         * push the content down if needed.
+         */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -60,97 +66,104 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             display: flex;
+            /* Changed to 'flex-start' and added padding to center and create space */
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* IMPORTANT: Changed from 'center' to 'flex-start' */
+            padding-top: 5vh; /* Add breathing room at the top */
+            padding-bottom: 5vh; /* Add breathing room at the bottom */
             z-index: 1000;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
+            overflow-y: auto; /* IMPORTANT: Allows the entire modal to scroll if needed */
+            -webkit-overflow-scrolling: touch; /* Better scrolling on iOS */
         }
-
         .modal-overlay.open {
             opacity: 1;
             visibility: visible;
         }
-
         .modal-content {
+            background-color: #ffffff; /* Added explicit background color */
             padding: 2rem;
             border-radius: 16px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             max-width: 560px;
             width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
+            /* Removed max-height and overflow-y from content to let overlay handle overflow. */
+            /* The inner content scroll is handled by the overall modal-content block */
+            /* If the content box is short, it will sit nicely within the 90% width */
+            /* If the content is long, the *modal-overlay* will scroll */
             transform: translateY(20px);
             transition: transform 0.3s ease;
+            
+            /* Re-introduced max-height and overflow-y on the content block
+               to ensure only the *dialog box* scrolls, not the full overlay.
+               This is the standard approach for a centered scrolling modal.
+               Ensure max-height is less than the screen size (e.g., 90vh)
+               and it's applied to the inner block. */
+            max-height: 90vh; /* The main dialog box is limited to 90% of screen height */
+            overflow-y: auto; /* IMPORTANT: The dialog itself scrolls if its content is too long */
         }
-
         .modal-overlay.open .modal-content {
             transform: translateY(0);
         }
-
+        /*
+         * END: Modal Scroll Containment Update
+         * ------------------------------------
+         */
         .schedule-list-item {
             border-left: 3px solid transparent;
             transition: all 0.2s ease;
         }
-
         .schedule-list-item:hover {
             border-left-color: #5c5cff;
             background-color: #f3f4f6;
         }
-
         .dark .flat-card {
             background-color: #454545;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
         }
-
         .dark .flat-card:hover {
             background-color: #454545;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 6px 12px rgba(0, 0, 0, 0.3);
         }
-
         .dark .date-block {
             background-color: #1f2937;
             border: 1px solid #374151;
         }
-
         .dark .schedule-list-item:hover {
             border-left-color: #5c5cff;
             background-color: #374151;
         }
-
+        .dark .modal-content { /* Added dark mode for modal background */
+             background-color: #454545;
+        }
         .modal-content::-webkit-scrollbar {
             width: 8px;
         }
-
         .modal-content::-webkit-scrollbar-track {
             background: #f1f1f1;
             border-radius: 10px;
         }
-
         .modal-content::-webkit-scrollbar-thumb {
             background: #5c5cff;
             border-radius: 10px;
         }
-
         .dark .modal-content::-webkit-scrollbar-track {
             background: #1f2937;
         }
-
+        /* Ensure dark mode styling is applied via the dark class or system preference */
         @media (prefers-color-scheme: dark) {
             body:not(.light) .flat-card {
                 background-color: #454545;
             }
-
             body:not(.light) .modal-content {
                 background-color: #454545;
             }
-
             body:not(.light) .date-block {
                 background-color: #1f2937;
                 border: 1px solid #374151;
             }
-
             body:not(.light) .schedule-list-item:hover {
                 background-color: #374151;
             }
@@ -626,3 +639,4 @@
 </body>
 
 </html>
+
