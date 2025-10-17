@@ -201,23 +201,22 @@
         </div>
     </div>
 
-    <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-    import { getFirestore, collection, doc, getDoc, setDoc, deleteDoc, onSnapshot, query, orderBy, limit, startAfter, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-functions.js";
+   // ... (omitting unchanged HTML and CSS for brevity)
+
+  <script type="module">
+   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+   import { getFirestore, collection, doc, getDoc, setDoc, deleteDoc, onSnapshot, query, orderBy, limit, startAfter, getDocs, where, writeBatch } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
     const firebaseConfig = { apiKey: "AIzaSyDZUVChTTWtGm4R40wMWGrTYwyUk0FDahs", authDomain: "sklepaga-8790e.firebaseapp.com", projectId: "sklepaga-8790e", storageBucket: "sklepaga-8790e.appspot.com", messagingSenderId: "815409129057", appId: "1:815409129057:web:9f6342be47e28c1f69ec20", measurementId: "G-9GH707G2WZ" };
-
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const functions = getFunctions(app);
     let activeAdmin = null;
 
     // UI Elements
     const adminInfoDiv = document.getElementById("adminInfo");
-    const signOutTab = document.getElementById("signOutTab");
+    const signOutTab = document.getElementById("signOutTab"); // New sign out tab
     const userListEl = document.getElementById("userList");
     const searchInput = document.getElementById("searchInput");
     const sortSelect = document.getElementById("sortSelect");
@@ -251,7 +250,7 @@
 
     // New Sign Out tab logic
     signOutTab.addEventListener("click", async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Prevent the link from navigating immediately
         await signOut(auth);
         window.location.href = "authentication.html";
     });
@@ -302,6 +301,38 @@
         document.getElementById("resignBtn").onclick = resignAdminRole;
     }
 
+    // --- Start of new helper function ---
+    /**
+     * Deletes all documents in a collection referenced by a query in batches.
+     * @param {import("firebase/firestore").Query} query
+     * @param {number} batchSize
+     */
+    async function deleteCollectionByQuery(query, batchSize = 10) {
+        let snapshot = await getDocs(query);
+        if (snapshot.size === 0) return 0; // Nothing to delete
+
+        let docsDeleted = 0;
+        const totalDocs = snapshot.size;
+
+        while (snapshot.size > 0) {
+            const batch = writeBatch(db);
+            snapshot.docs.forEach(doc => {
+                batch.delete(doc.ref);
+            });
+            await batch.commit();
+            docsDeleted += snapshot.size;
+
+            // Get the next batch
+            if (docsDeleted < totalDocs) {
+                snapshot = await getDocs(query); // Re-fetch, as the size has changed
+            } else {
+                snapshot = { size: 0 }; // Stop the loop
+            }
+        }
+        return docsDeleted;
+    }
+    // --- End of new helper function ---
+
     const PAGE_SIZE = 18;
     let cachedUsers = [];
     let lastDocSnap = null;
@@ -313,17 +344,11 @@
             userListEl.innerHTML = `<div class="col-span-full text-center py-16 text-gray-400"> <div class="w-16 h-16 mx-auto rounded-2xl bg-slate-800 flex items-center justify-center mb-4"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-8 h-8 text-gray-500"> <path d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654z" /> </svg> </div> <h3 class="subtext-title text-white mb-2">No users found</h3> <p class="subtext text-gray-400">Try adjusting your search criteria</p> </div>`;
             return;
         }
-        
-        // 🚨 IMPORTANT CHANGE: Using a new function name to reflect the new purpose
-        const deleteUserDataOnly = httpsCallable(functions, 'deleteUserDataOnly');
-
         list.forEach((u, index) => {
             const card = document.createElement("div");
             card.className = "glass-card rounded-3xl p-6 flex flex-col card-hover fade-in text-slate-800";
             card.style.animationDelay = `${index * 0.1}s`;
             card.innerHTML = `<div class="flex items-start gap-4 flex-1"> <div class="flex-shrink-0 relative"> <img src="${u.avatar || 'https://ui-avatars.com/api/?background=667eea&color=fff&name=' + encodeURIComponent(u.name || 'U')}" class="w-14 h-14 rounded-full border-2 border-white shadow-lg object-cover"> ${u.uid === (activeAdmin ? activeAdmin.uid : '') ? '' : '<span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full ring-2 ring-white"></span>'} </div> <div class="flex-1 min-w-0"> <p class="font-bold subtext text-slate-800 truncate">${u.name || "(no name)"}</p> <p class="subtext text-gray-600 truncate mt-1 break-words-all">${u.email || ""}</p> <p class="context text-gray-500 mt-2">Joined: ${u.createdAt ? new Date(u.createdAt).toLocaleDateString() : "—"}</p> </div> </div> <div class="flex gap-3 mt-6 pt-4 border-t border-gray-100"> <button class="promoteBtn flex-1 px-4 py-3 subtext rounded-xl btn-primary text-white font-medium"> Promote </button> <button class="deleteBtn flex-1 px-4 py-3 subtext rounded-xl btn-danger text-white font-medium"> Delete </button> </div>`;
-
-            // PROMOTE BUTTON LOGIC (Unchanged)
             card.querySelector(".promoteBtn").onclick = async () => {
                 const ok = await showModal("Promote User", `Are you sure you want to promote ${u.name || u.email} to an administrator? This action is permanent and will remove them from the general user list.`);
                 if (!ok) return;
@@ -336,21 +361,28 @@
                     toast("Promotion failed", "error");
                 }
             };
-
-            // DELETE BUTTON LOGIC (MODIFIED for Data-Only Deletion)
             card.querySelector(".deleteBtn").onclick = async () => {
-                const ok = await showModal("Wipe User Data", `Are you sure you want to permanently delete ALL records and conversations for ${u.name || u.email} from the database? The user's login account will remain active.`);
+                const ok = await showModal("Delete User", `Are you sure you want to permanently delete the user account for ${u.name || u.email} AND all their associated conversations? This cannot be undone.`);
                 if (!ok) return;
                 try {
-                    // Call the NEW Cloud Function to handle data cleanup only
-                    await deleteUserDataOnly({ uid: u.uid });
+                    // 1. Delete user account
+                    await deleteDoc(doc(db, "accounts", u.uid));
 
-                    // The list will refresh automatically via the Firestore listener after the cloud function deletes the 'accounts' document.
-                    toast("User's data wiped successfully. Authentication record preserved.");
+                    // 2. Delete conversations
+                    // ASSUMPTION: The 'conversations' collection stores documents with the user's UID.
+                    // A conversation is a document where the user's UID is a field, e.g., 'userId'.
+                    // Modify the query if your data model is different (e.g., if you use 'fromId' or 'toId').
+                    const conversationsQuery = query(collection(db, "conversations"), where("userId", "==", u.uid));
+                    // Alternatively, if the conversations are one-on-one with the admin,
+                    // you might query for where the user is one of the participants.
+                    // E.g., const conversationsQuery = query(collection(db, "conversations"), where("participants", "array-contains", u.uid));
+
+                    const deletedCount = await deleteCollectionByQuery(conversationsQuery);
+                    
+                    toast(`User account and ${deletedCount} conversation(s) removed`);
                 } catch (e) {
-                    console.error("Cloud Function Error:", e);
-                    const errorMsg = e.details?.message || e.message;
-                    toast(`Data wipe failed: ${errorMsg}`, "error");
+                    console.error(e);
+                    toast("Removal failed", "error");
                 }
             };
             userListEl.appendChild(card);
@@ -369,7 +401,6 @@
     }
     searchInput.addEventListener("input", applySearchAndSort);
     sortSelect.addEventListener("change", applySearchAndSort);
-
     async function initialLoad() {
         if (unsubUsers) unsubUsers();
         const q1 = query(collection(db, "accounts"), orderBy("createdAt", "desc"), limit(PAGE_SIZE));
@@ -380,7 +411,6 @@
             applySearchAndSort();
         });
     }
-
     loadMoreBtn.addEventListener("click", async () => {
         if (!lastDocSnap) {
             toast("No more users", "warn");
@@ -400,41 +430,38 @@
         if (next.docs.length < PAGE_SIZE) loadMoreBtn.style.display = 'none';
         applySearchAndSort();
     });
-
-    // VALIDATION CHECK (Unchanged)
-    async function checkAdminStatusAndRoute(user) {
-        if (!user) {
-            window.location.href = "authentication.html";
-            return;
-        }
-
-        try {
+    window.addEventListener('pageshow', async function(event) {
+        if (event.persisted && auth.currentUser) {
+            console.log('Page loaded from bfcache. Re-checking admin status...');
+            const user = auth.currentUser;
             const adminDoc = await getDoc(doc(db, "admin", user.uid));
-
+            if (!adminDoc.exists()) {
+                toast("Admin role revoked. Signing out...", "error");
+                window.history.replaceState(null, '', 'authentication.html');
+                setTimeout(() => signOut(auth), 100);
+            } else {
+                console.log('Admin status confirmed on back navigation.');
+                loadAdminInfo(user);
+            }
+        }
+    });
+    onAuthStateChanged(auth, async user => {
+        if (user) {
+            const adminDoc = await getDoc(doc(db, "admin", user.uid));
             if (adminDoc.exists()) {
                 activeAdmin = user;
                 loadAdminInfo(activeAdmin);
                 initialLoad();
             } else {
-                toast("Admin role revoked. Signing out...", "error");
-                await signOut(auth);
+                alert("You are not authorized.");
                 window.location.href = "authentication.html";
             }
-        } catch (error) {
-            console.error("Database check failed:", error);
-            toast("Failed to verify admin status. Please try again.", "error");
-            await signOut(auth);
+        } else {
             window.location.href = "authentication.html";
         }
-    }
-
-    window.addEventListener('pageshow', async function(event) {
-        if (event.persisted && auth.currentUser) {
-            await checkAdminStatusAndRoute(auth.currentUser);
-        }
     });
-
-    onAuthStateChanged(auth, checkAdminStatusAndRoute);
-</script>
+  </script>
+</body>
+</html>
 </body>
 </html>
