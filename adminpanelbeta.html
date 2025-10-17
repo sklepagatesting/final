@@ -202,247 +202,239 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-        import { getFirestore, collection, doc, getDoc, setDoc, deleteDoc, onSnapshot, query, orderBy, limit, startAfter, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-        import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-functions.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getFirestore, collection, doc, getDoc, setDoc, deleteDoc, onSnapshot, query, orderBy, limit, startAfter, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-functions.js";
 
-        const firebaseConfig = { apiKey: "AIzaSyDZUVChTTWtGm4R40wMWGrTYwyUk0FDahs", authDomain: "sklepaga-8790e.firebaseapp.com", projectId: "sklepaga-8790e", storageBucket: "sklepaga-8790e.appspot.com", messagingSenderId: "815409129057", appId: "1:815409129057:web:9f6342be47e28c1f69ec20", measurementId: "G-9GH707G2WZ" };
+    const firebaseConfig = { apiKey: "AIzaSyDZUVChTTWtGm4R40wMWGrTYwyUk0FDahs", authDomain: "sklepaga-8790e.firebaseapp.com", projectId: "sklepaga-8790e", storageBucket: "sklepaga-8790e.appspot.com", messagingSenderId: "815409129057", appId: "1:815409129057:web:9f6342be47e28c1f69ec20", measurementId: "G-9GH707G2WZ" };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const functions = getFunctions(app);
-        let activeAdmin = null;
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const functions = getFunctions(app);
+    let activeAdmin = null;
 
-        // UI Elements
-        const adminInfoDiv = document.getElementById("adminInfo");
-        const signOutTab = document.getElementById("signOutTab");
-        const userListEl = document.getElementById("userList");
-        const searchInput = document.getElementById("searchInput");
-        const sortSelect = document.getElementById("sortSelect");
-        const loadMoreBtn = document.getElementById("loadMoreBtn");
-        const toastEl = document.getElementById("toast");
-        const toastBody = document.getElementById("toastBody");
-        const toastIcon = document.getElementById("toastIcon");
-        const toastText = document.getElementById("toastText");
+    // UI Elements
+    const adminInfoDiv = document.getElementById("adminInfo");
+    const signOutTab = document.getElementById("signOutTab");
+    const userListEl = document.getElementById("userList");
+    const searchInput = document.getElementById("searchInput");
+    const sortSelect = document.getElementById("sortSelect");
+    const loadMoreBtn = document.getElementById("loadMoreBtn");
+    const toastEl = document.getElementById("toast");
+    const toastBody = document.getElementById("toastBody");
+    const toastIcon = document.getElementById("toastIcon");
+    const toastText = document.getElementById("toastText");
 
-        // Modal Elements
-        const modalContainer = document.getElementById("modalContainer");
-        const modalTitle = document.getElementById("modalTitle");
-        const modalMessage = document.getElementById("modalMessage");
-        const modalCancelBtn = document.getElementById("modalCancelBtn");
-        const modalConfirmBtn = document.getElementById("modalConfirmBtn");
-        const modalIcon = document.getElementById("modalIcon");
+    // Modal Elements
+    const modalContainer = document.getElementById("modalContainer");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalMessage = document.getElementById("modalMessage");
+    const modalCancelBtn = document.getElementById("modalCancelBtn");
+    const modalConfirmBtn = document.getElementById("modalConfirmBtn");
+    const modalIcon = document.getElementById("modalIcon");
 
-        function toast(msg, type = "success") {
-            const icons = {
-                success: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.236 4.53L8.53 10.53a.75.75 0 00-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg>`,
-                warn: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.19-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>`,
-                error: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 00-1.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" /></svg>`
+    function toast(msg, type = "success") {
+        const icons = {
+            success: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.236 4.53L8.53 10.53a.75.75 0 00-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg>`,
+            warn: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.19-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>`,
+            error: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 00-1.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" /></svg>`
+        };
+        const colors = { success: "bg-gradient-to-r from-green-500 to-emerald-600", warn: "bg-gradient-to-r from-amber-500 to-orange-600", error: "bg-gradient-to-r from-red-500 to-rose-600" };
+        toastBody.className = `px-6 py-4 rounded-2xl text-white shadow-2xl backdrop-blur-lg flex items-center gap-3 min-w-[280px] ${colors[type]}`;
+        toastIcon.innerHTML = icons[type];
+        toastText.textContent = msg;
+        toastEl.classList.remove("hidden");
+        setTimeout(() => toastEl.classList.add("hidden"), 3000);
+    }
+
+    // New Sign Out tab logic
+    signOutTab.addEventListener("click", async (e) => {
+        e.preventDefault();
+        await signOut(auth);
+        window.location.href = "authentication.html";
+    });
+
+    function showModal(title, message) {
+        return new Promise(resolve => {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            modalContainer.classList.remove("hidden");
+            const cleanUp = () => {
+                modalContainer.classList.add("hidden");
+                modalConfirmBtn.onclick = null;
+                modalCancelBtn.onclick = null;
             };
-            const colors = { success: "bg-gradient-to-r from-green-500 to-emerald-600", warn: "bg-gradient-to-r from-amber-500 to-orange-600", error: "bg-gradient-to-r from-red-500 to-rose-600" };
-            toastBody.className = `px-6 py-4 rounded-2xl text-white shadow-2xl backdrop-blur-lg flex items-center gap-3 min-w-[280px] ${colors[type]}`;
-            toastIcon.innerHTML = icons[type];
-            toastText.textContent = msg;
-            toastEl.classList.remove("hidden");
-            setTimeout(() => toastEl.classList.add("hidden"), 3000);
-        }
-
-        // New Sign Out tab logic
-        signOutTab.addEventListener("click", async (e) => {
-            e.preventDefault();
-            await signOut(auth);
-            window.location.href = "authentication.html";
+            modalConfirmBtn.onclick = () => {
+                cleanUp();
+                resolve(true);
+            };
+            modalCancelBtn.onclick = () => {
+                cleanUp();
+                resolve(false);
+            };
         });
+    }
 
-        function showModal(title, message) {
-            return new Promise(resolve => {
-                modalTitle.textContent = title;
-                modalMessage.textContent = message;
-                modalContainer.classList.remove("hidden");
-                const cleanUp = () => {
-                    modalContainer.classList.add("hidden");
-                    modalConfirmBtn.onclick = null;
-                    modalCancelBtn.onclick = null;
-                };
-                modalConfirmBtn.onclick = () => {
-                    cleanUp();
-                    resolve(true);
-                };
-                modalCancelBtn.onclick = () => {
-                    cleanUp();
-                    resolve(false);
-                };
-            });
+    async function resignAdminRole() {
+        if (!activeAdmin) return;
+        const ok = await showModal("Resign Admin Role", "Are you sure you want to resign your admin role? You will lose access and be signed out.");
+        if (!ok) return;
+        try {
+            const adminRef = doc(db, "admin", activeAdmin.uid);
+            const adminSnap = await getDoc(adminRef);
+            if (!adminSnap.exists()) throw new Error("Admin document not found.");
+            const adminData = adminSnap.data();
+            await setDoc(doc(db, "accounts", activeAdmin.uid), { uid: adminData.uid, name: adminData.name || activeAdmin.displayName || "", email: adminData.email || activeAdmin.email || "", avatar: adminData.avatar || activeAdmin.photoURL || "", createdAt: adminData.createdAt || new Date().toISOString(), });
+            await deleteDoc(adminRef);
+            toast("Admin role resigned. Signing out...");
+            window.history.replaceState(null, '', window.location.href);
+            setTimeout(() => signOut(auth), 1500);
+        } catch (e) {
+            console.error(e);
+            toast("Failed to resign admin role", "error");
         }
+    }
 
-        async function resignAdminRole() {
-            if (!activeAdmin) return;
-            const ok = await showModal("Resign Admin Role", "Are you sure you want to resign your admin role? You will lose access and be signed out.");
-            if (!ok) return;
-            try {
-                const adminRef = doc(db, "admin", activeAdmin.uid);
-                const adminSnap = await getDoc(adminRef);
-                if (!adminSnap.exists()) throw new Error("Admin document not found.");
-                const adminData = adminSnap.data();
-                await setDoc(doc(db, "accounts", activeAdmin.uid), { uid: adminData.uid, name: adminData.name || activeAdmin.displayName || "", email: adminData.email || activeAdmin.email || "", avatar: adminData.avatar || activeAdmin.photoURL || "", createdAt: adminData.createdAt || new Date().toISOString(), });
-                await deleteDoc(adminRef);
-                toast("Admin role resigned. Signing out...");
-                window.history.replaceState(null, '', window.location.href);
-                setTimeout(() => signOut(auth), 1500);
-            } catch (e) {
-                console.error(e);
-                toast("Failed to resign admin role", "error");
-            }
+    function loadAdminInfo(user) {
+        adminInfoDiv.innerHTML = `<div class="flex items-center gap-6 w-full lg:w-auto"> <div class="relative"> <img src="${user.photoURL || 'https://ui-avatars.com/api/?background=667eea&color=fff&name=' + encodeURIComponent(user.displayName || 'A')}" class="w-20 h-20 rounded-2xl border-2 border-white shadow-lg object-cover"> <div class="absolute -top-1 -right-1 admin-badge">ADMIN</div> </div> <div class="flex-1 min-w-0"> <h3 class="subtext-title truncate text-slate-800">${user.displayName || "(no name)"}</h3> <p class="subtext text-gray-600 truncate flex items-center gap-2 mt-1"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"> <path d="M3 4a2 2 0 011.1-.992l1.4-.7a1 1 0 011.0 0L10 4.25l4.5-2.25a1 1 0 011.0 0l1.4.7A2 2 0 0118 4v8a2 2 0 01-1.1 1.992l-1.4.7a1 1 0 01-1.0 0L10 15.75l-4.5 2.25a1 1 0 01-1.0 0l-1.4-.7A2 2 0 012 12V4z" /> </svg> ${user.email || ""} </p> </div> </div> <div class="flex-1"></div> <button class="px-6 py-3 subtext rounded-2xl border-2 text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300 w-full lg:w-auto font-medium transition-all duration-200 text-slate-800" id="resignBtn"> Resign Admin Role </button>`;
+        document.getElementById("resignBtn").onclick = resignAdminRole;
+    }
+
+    const PAGE_SIZE = 18;
+    let cachedUsers = [];
+    let lastDocSnap = null;
+    let unsubUsers = null;
+
+    function renderUsers(list) {
+        userListEl.innerHTML = "";
+        if (!list.length) {
+            userListEl.innerHTML = `<div class="col-span-full text-center py-16 text-gray-400"> <div class="w-16 h-16 mx-auto rounded-2xl bg-slate-800 flex items-center justify-center mb-4"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-8 h-8 text-gray-500"> <path d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654z" /> </svg> </div> <h3 class="subtext-title text-white mb-2">No users found</h3> <p class="subtext text-gray-400">Try adjusting your search criteria</p> </div>`;
+            return;
         }
+        
+        // 🚨 IMPORTANT CHANGE: Using a new function name to reflect the new purpose
+        const deleteUserDataOnly = httpsCallable(functions, 'deleteUserDataOnly');
 
-        function loadAdminInfo(user) {
-            adminInfoDiv.innerHTML = `<div class="flex items-center gap-6 w-full lg:w-auto"> <div class="relative"> <img src="${user.photoURL || 'https://ui-avatars.com/api/?background=667eea&color=fff&name=' + encodeURIComponent(user.displayName || 'A')}" class="w-20 h-20 rounded-2xl border-2 border-white shadow-lg object-cover"> <div class="absolute -top-1 -right-1 admin-badge">ADMIN</div> </div> <div class="flex-1 min-w-0"> <h3 class="subtext-title truncate text-slate-800">${user.displayName || "(no name)"}</h3> <p class="subtext text-gray-600 truncate flex items-center gap-2 mt-1"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"> <path d="M3 4a2 2 0 011.1-.992l1.4-.7a1 1 0 011.0 0L10 4.25l4.5-2.25a1 1 0 011.0 0l1.4.7A2 2 0 0118 4v8a2 2 0 01-1.1 1.992l-1.4.7a1 1 0 01-1.0 0L10 15.75l-4.5 2.25a1 1 0 01-1.0 0l-1.4-.7A2 2 0 012 12V4z" /> </svg> ${user.email || ""} </p> </div> </div> <div class="flex-1"></div> <button class="px-6 py-3 subtext rounded-2xl border-2 text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300 w-full lg:w-auto font-medium transition-all duration-200 text-slate-800" id="resignBtn"> Resign Admin Role </button>`;
-            document.getElementById("resignBtn").onclick = resignAdminRole;
-        }
+        list.forEach((u, index) => {
+            const card = document.createElement("div");
+            card.className = "glass-card rounded-3xl p-6 flex flex-col card-hover fade-in text-slate-800";
+            card.style.animationDelay = `${index * 0.1}s`;
+            card.innerHTML = `<div class="flex items-start gap-4 flex-1"> <div class="flex-shrink-0 relative"> <img src="${u.avatar || 'https://ui-avatars.com/api/?background=667eea&color=fff&name=' + encodeURIComponent(u.name || 'U')}" class="w-14 h-14 rounded-full border-2 border-white shadow-lg object-cover"> ${u.uid === (activeAdmin ? activeAdmin.uid : '') ? '' : '<span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full ring-2 ring-white"></span>'} </div> <div class="flex-1 min-w-0"> <p class="font-bold subtext text-slate-800 truncate">${u.name || "(no name)"}</p> <p class="subtext text-gray-600 truncate mt-1 break-words-all">${u.email || ""}</p> <p class="context text-gray-500 mt-2">Joined: ${u.createdAt ? new Date(u.createdAt).toLocaleDateString() : "—"}</p> </div> </div> <div class="flex gap-3 mt-6 pt-4 border-t border-gray-100"> <button class="promoteBtn flex-1 px-4 py-3 subtext rounded-xl btn-primary text-white font-medium"> Promote </button> <button class="deleteBtn flex-1 px-4 py-3 subtext rounded-xl btn-danger text-white font-medium"> Delete </button> </div>`;
 
-        const PAGE_SIZE = 18;
-        let cachedUsers = [];
-        let lastDocSnap = null;
-        let unsubUsers = null;
+            // PROMOTE BUTTON LOGIC (Unchanged)
+            card.querySelector(".promoteBtn").onclick = async () => {
+                const ok = await showModal("Promote User", `Are you sure you want to promote ${u.name || u.email} to an administrator? This action is permanent and will remove them from the general user list.`);
+                if (!ok) return;
+                try {
+                    await setDoc(doc(db, "admin", u.uid), { uid: u.uid, name: u.name || "", email: u.email || "", avatar: u.avatar || "", createdAt: new Date().toISOString(), createdBy: activeAdmin.uid });
+                    await deleteDoc(doc(db, "accounts", u.uid));
+                    toast("User promoted to admin");
+                } catch (e) {
+                    console.error(e);
+                    toast("Promotion failed", "error");
+                }
+            };
 
-        function renderUsers(list) {
-            userListEl.innerHTML = "";
-            if (!list.length) {
-                userListEl.innerHTML = `<div class="col-span-full text-center py-16 text-gray-400"> <div class="w-16 h-16 mx-auto rounded-2xl bg-slate-800 flex items-center justify-center mb-4"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-8 h-8 text-gray-500"> <path d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654z" /> </svg> </div> <h3 class="subtext-title text-white mb-2">No users found</h3> <p class="subtext text-gray-400">Try adjusting your search criteria</p> </div>`;
-                return;
-            }
-            const deleteUser = httpsCallable(functions, 'deleteUserAndData'); // Define the Callable Function
+            // DELETE BUTTON LOGIC (MODIFIED for Data-Only Deletion)
+            card.querySelector(".deleteBtn").onclick = async () => {
+                const ok = await showModal("Wipe User Data", `Are you sure you want to permanently delete ALL records and conversations for ${u.name || u.email} from the database? The user's login account will remain active.`);
+                if (!ok) return;
+                try {
+                    // Call the NEW Cloud Function to handle data cleanup only
+                    await deleteUserDataOnly({ uid: u.uid });
 
-            list.forEach((u, index) => {
-                const card = document.createElement("div");
-                card.className = "glass-card rounded-3xl p-6 flex flex-col card-hover fade-in text-slate-800";
-                card.style.animationDelay = `${index * 0.1}s`;
-                card.innerHTML = `<div class="flex items-start gap-4 flex-1"> <div class="flex-shrink-0 relative"> <img src="${u.avatar || 'https://ui-avatars.com/api/?background=667eea&color=fff&name=' + encodeURIComponent(u.name || 'U')}" class="w-14 h-14 rounded-full border-2 border-white shadow-lg object-cover"> ${u.uid === (activeAdmin ? activeAdmin.uid : '') ? '' : '<span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full ring-2 ring-white"></span>'} </div> <div class="flex-1 min-w-0"> <p class="font-bold subtext text-slate-800 truncate">${u.name || "(no name)"}</p> <p class="subtext text-gray-600 truncate mt-1 break-words-all">${u.email || ""}</p> <p class="context text-gray-500 mt-2">Joined: ${u.createdAt ? new Date(u.createdAt).toLocaleDateString() : "—"}</p> </div> </div> <div class="flex gap-3 mt-6 pt-4 border-t border-gray-100"> <button class="promoteBtn flex-1 px-4 py-3 subtext rounded-xl btn-primary text-white font-medium"> Promote </button> <button class="deleteBtn flex-1 px-4 py-3 subtext rounded-xl btn-danger text-white font-medium"> Delete </button> </div>`;
+                    // The list will refresh automatically via the Firestore listener after the cloud function deletes the 'accounts' document.
+                    toast("User's data wiped successfully. Authentication record preserved.");
+                } catch (e) {
+                    console.error("Cloud Function Error:", e);
+                    const errorMsg = e.details?.message || e.message;
+                    toast(`Data wipe failed: ${errorMsg}`, "error");
+                }
+            };
+            userListEl.appendChild(card);
+        });
+    }
 
-                // PROMOTE BUTTON LOGIC
-                card.querySelector(".promoteBtn").onclick = async () => {
-                    const ok = await showModal("Promote User", `Are you sure you want to promote ${u.name || u.email} to an administrator? This action is permanent and will remove them from the general user list.`);
-                    if (!ok) return;
-                    try {
-                        await setDoc(doc(db, "admin", u.uid), { uid: u.uid, name: u.name || "", email: u.email || "", avatar: u.avatar || "", createdAt: new Date().toISOString(), createdBy: activeAdmin.uid });
-                        await deleteDoc(doc(db, "accounts", u.uid));
-                        toast("User promoted to admin");
-                    } catch (e) {
-                        console.error(e);
-                        toast("Promotion failed", "error");
-                    }
-                };
+    function applySearchAndSort() {
+        const q = (searchInput.value || "").toLowerCase().trim();
+        let list = cachedUsers.filter(u => (u.name || "").toLowerCase().includes(q) || (u.email || "").toLowerCase().includes(q));
+        const sort = sortSelect.value;
+        if (sort === "name-asc") list.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+        if (sort === "name-desc") list.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
+        if (sort === "time-desc") list.sort((a, b) => (new Date(b.createdAt || 0)) - (new Date(a.createdAt || 0)));
+        if (sort === "time-asc") list.sort((a, b) => (new Date(a.createdAt || 0)) - (new Date(b.createdAt || 0)));
+        renderUsers(list);
+    }
+    searchInput.addEventListener("input", applySearchAndSort);
+    sortSelect.addEventListener("change", applySearchAndSort);
 
-                // DELETE BUTTON LOGIC
-                card.querySelector(".deleteBtn").onclick = async () => {
-                    const ok = await showModal("Delete User", `Are you sure you want to permanently delete the user account for ${u.name || u.email} AND all their associated data (Auth account, accounts document, and conversations)? This cannot be undone.`);
-                    if (!ok) return;
-                    try {
-                        // Call the Callable Cloud Function to handle Auth deletion and data cleanup
-                        await deleteUser({ uid: u.uid });
-
-                        toast("User and all linked data removed securely.");
-                    } catch (e) {
-                        console.error("Cloud Function Error:", e);
-                        // Check for a specific error message from the cloud function
-                        const errorMsg = e.details?.message || e.message;
-                        toast(`Removal failed: ${errorMsg}`, "error");
-                    }
-                };
-                userListEl.appendChild(card);
-            });
-        }
-
-        function applySearchAndSort() {
-            const q = (searchInput.value || "").toLowerCase().trim();
-            let list = cachedUsers.filter(u => (u.name || "").toLowerCase().includes(q) || (u.email || "").toLowerCase().includes(q));
-            const sort = sortSelect.value;
-            if (sort === "name-asc") list.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
-            if (sort === "name-desc") list.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
-            if (sort === "time-desc") list.sort((a, b) => (new Date(b.createdAt || 0)) - (new Date(a.createdAt || 0)));
-            if (sort === "time-asc") list.sort((a, b) => (new Date(a.createdAt || 0)) - (new Date(b.createdAt || 0)));
-            renderUsers(list);
-        }
-        searchInput.addEventListener("input", applySearchAndSort);
-        sortSelect.addEventListener("change", applySearchAndSort);
-
-        async function initialLoad() {
-            if (unsubUsers) unsubUsers();
-            const q1 = query(collection(db, "accounts"), orderBy("createdAt", "desc"), limit(PAGE_SIZE));
-            unsubUsers = onSnapshot(q1, snap => {
-                cachedUsers = snap.docs.map(d => ({ uid: d.id, ...d.data() }));
-                lastDocSnap = snap.docs[snap.docs.length - 1] || null;
-                loadMoreBtn.style.display = snap.docs.length < PAGE_SIZE ? 'none' : 'inline-flex';
-                applySearchAndSort();
-            });
-        }
-
-        loadMoreBtn.addEventListener("click", async () => {
-            if (!lastDocSnap) {
-                toast("No more users", "warn");
-                loadMoreBtn.style.display = 'none';
-                return;
-            }
-            const q2 = query(collection(db, "accounts"), orderBy("createdAt", "desc"), startAfter(lastDocSnap), limit(PAGE_SIZE));
-            const next = await getDocs(q2);
-            const more = next.docs.map(d => ({ uid: d.id, ...d.data() }));
-            if (more.length === 0) {
-                toast("No more users to load", "warn");
-                loadMoreBtn.style.display = 'none';
-                return;
-            }
-            cachedUsers = cachedUsers.concat(more);
-            lastDocSnap = next.docs[next.docs.length - 1] || null;
-            if (next.docs.length < PAGE_SIZE) loadMoreBtn.style.display = 'none';
+    async function initialLoad() {
+        if (unsubUsers) unsubUsers();
+        const q1 = query(collection(db, "accounts"), orderBy("createdAt", "desc"), limit(PAGE_SIZE));
+        unsubUsers = onSnapshot(q1, snap => {
+            cachedUsers = snap.docs.map(d => ({ uid: d.id, ...d.data() }));
+            lastDocSnap = snap.docs[snap.docs.length - 1] || null;
+            loadMoreBtn.style.display = snap.docs.length < PAGE_SIZE ? 'none' : 'inline-flex';
             applySearchAndSort();
         });
+    }
 
-        // ----------------------------------------------------------------------------------
-        // 🔥 VALIDATION CHECK: Dedicated function to validate and route the current user
-        // ----------------------------------------------------------------------------------
-        async function checkAdminStatusAndRoute(user) {
-            if (!user) {
-                // No authenticated user, redirect to login
-                window.location.href = "authentication.html";
-                return;
-            }
+    loadMoreBtn.addEventListener("click", async () => {
+        if (!lastDocSnap) {
+            toast("No more users", "warn");
+            loadMoreBtn.style.display = 'none';
+            return;
+        }
+        const q2 = query(collection(db, "accounts"), orderBy("createdAt", "desc"), startAfter(lastDocSnap), limit(PAGE_SIZE));
+        const next = await getDocs(q2);
+        const more = next.docs.map(d => ({ uid: d.id, ...d.data() }));
+        if (more.length === 0) {
+            toast("No more users to load", "warn");
+            loadMoreBtn.style.display = 'none';
+            return;
+        }
+        cachedUsers = cachedUsers.concat(more);
+        lastDocSnap = next.docs[next.docs.length - 1] || null;
+        if (next.docs.length < PAGE_SIZE) loadMoreBtn.style.display = 'none';
+        applySearchAndSort();
+    });
 
-            try {
-                const adminDoc = await getDoc(doc(db, "admin", user.uid));
+    // VALIDATION CHECK (Unchanged)
+    async function checkAdminStatusAndRoute(user) {
+        if (!user) {
+            window.location.href = "authentication.html";
+            return;
+        }
 
-                if (adminDoc.exists()) {
-                    // Admin role confirmed. Load the panel.
-                    activeAdmin = user;
-                    loadAdminInfo(activeAdmin);
-                    initialLoad();
-                } else {
-                    // User is authenticated but is NOT in the 'admin' collection (or was removed)
-                    toast("Admin role revoked. Signing out...", "error");
-                    // Clean up session and redirect
-                    await signOut(auth);
-                    window.location.href = "authentication.html";
-                }
-            } catch (error) {
-                console.error("Database check failed:", error);
-                toast("Failed to verify admin status. Please try again.", "error");
-                // For critical errors, sign out to force a clean login
+        try {
+            const adminDoc = await getDoc(doc(db, "admin", user.uid));
+
+            if (adminDoc.exists()) {
+                activeAdmin = user;
+                loadAdminInfo(activeAdmin);
+                initialLoad();
+            } else {
+                toast("Admin role revoked. Signing out...", "error");
                 await signOut(auth);
                 window.location.href = "authentication.html";
             }
+        } catch (error) {
+            console.error("Database check failed:", error);
+            toast("Failed to verify admin status. Please try again.", "error");
+            await signOut(auth);
+            window.location.href = "authentication.html";
         }
+    }
 
-        // Ensure the admin check is run whenever the page is loaded from cache (e.g., back button)
-        window.addEventListener('pageshow', async function(event) {
-            if (event.persisted && auth.currentUser) {
-                // Use the dedicated check function on back-navigation/cache load
-                await checkAdminStatusAndRoute(auth.currentUser);
-            }
-        });
+    window.addEventListener('pageshow', async function(event) {
+        if (event.persisted && auth.currentUser) {
+            await checkAdminStatusAndRoute(auth.currentUser);
+        }
+    });
 
-        // The main entry point for user authentication
-        onAuthStateChanged(auth, checkAdminStatusAndRoute);
-    </script>
+    onAuthStateChanged(auth, checkAdminStatusAndRoute);
+</script>
 </body>
 </html>
