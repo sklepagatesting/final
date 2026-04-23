@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,190 +7,250 @@
     <title>Quick Copy Pro | Hyper-Focus</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        :root {
-            --bg: #0b0f1a;
-            --surface: #161e2d;
-            --primary: #38bdf8;
-            --success: #ffee00;
-            --text-main: #f1f5f9;
-            --glass: rgba(22, 30, 45, 0.8);
-            --modal-bg: rgba(15, 23, 42, 0.95);
-        }
+<style>
+:root {
+    --bg: #0b0f1a;
+    --surface: #161e2d;
+    --primary: #38bdf8;
+    --success: #ffee00;
+    --text-main: #f1f5f9;
+    --glass: rgba(22, 30, 45, 0.8);
+    --modal-bg: rgba(15, 23, 42, 0.95);
+}
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
-            margin: 0;
-            padding: 80px 10px 25vh 10px;
-            display: flex;
-            justify-content: center;
-            overflow-x: hidden;
-            transition: background-color 0.3s ease;
-        }
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text-main);
+    margin: 0;
+    padding: 80px 10px 25vh 10px;
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease;
+}
 
-        body.copy-flash { background-color: #565e12; }
+body.copy-flash { background-color: #565e12; }
 
-        .top-nav { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 3000; }
-        .top-btn {
-            width: 46px; height: 46px;
-            background: var(--surface);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 14px;
-            color: white;
-            backdrop-filter: blur(10px);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .top-btn:hover { background: var(--primary); color: var(--bg); transform: translateY(-2px); }
+.top-nav { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 3000; }
 
-        .container {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-            background: var(--surface);
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-        }
+.top-btn {
+    width: 46px; height: 46px;
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    color: white;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        #highlighter {
-            position: absolute;
-            left: 8px;
-            right: 8px;
-            border: 2px solid var(--primary);
-            background-color: rgba(56, 189, 248, 0.15);
-            border-radius: 12px;
-            pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-            z-index: 1;
-            opacity: 0;
-        }
+.top-btn:hover { background: var(--primary); color: var(--bg); transform: translateY(-2px); }
 
-        h2 {
-            font-size: 0.7rem;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            margin: 30px 0 10px 10px;
-            opacity: 0.6;
-        }
+.container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    background: var(--surface);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
 
-        .item-row {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px;
-            margin: 4px 0;
-            cursor: pointer;
-            border-radius: 12px;
-            transition: transform 0.2s ease;
-        }
+#highlighter {
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    border: 2px solid var(--primary);
+    background-color: rgba(56, 189, 248, 0.15);
+    border-radius: 12px;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    z-index: 1;
+    opacity: 0;
+}
 
-        .text-content { font-size: 0.95rem; font-weight: 500; }
-        .text-active { color: var(--primary); text-shadow: 0 0 12px rgba(56, 189, 248, 0.5); }
+h2 {
+    font-size: 0.7rem;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin: 30px 0 10px 10px;
+    opacity: 0.6;
+}
 
-        .bottom-zone {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 25vh;
-            z-index: 2000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
+.item-row {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px;
+    margin: 4px 0;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+}
 
-        .btn-main-copy {
-            width: 160px;
-            height: 70px;
-            background: var(--primary);
-            color: var(--bg);
-            border: none;
-            border-radius: 35px;
-            font-weight: 800;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-        }
+.text-content { font-size: 0.95rem; font-weight: 500; }
+.text-active { color: var(--primary); text-shadow: 0 0 12px rgba(56, 189, 248, 0.5); }
 
-        .bottom-zone:hover .btn-main-copy {
-            width: 250px;
-            height: 120px;
-            font-size: 1.2rem;
-            background-color: #6feeff;
-        }
+.bottom-zone {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 25vh;
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
 
-        .bottom-zone:hover .btn-main-copy:not(.success-state) {
-            background-color: #6feeff;
-        }
+.btn-main-copy {
+    width: 160px;
+    height: 70px;
+    background: var(--primary);
+    color: var(--bg);
+    border: none;
+    border-radius: 35px;
+    font-weight: 800;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+}
 
-        @keyframes idleFloat {
-            0%, 100% { transform: translate(0,0) rotate(0); }
-            50% { transform: translate(0,-4px) rotate(1deg); }
-        }
-        .btn-main-copy.idle { animation: idleFloat 3.5s ease-in-out infinite; }
+/* ✅ FIXED HOVER (no override when success) */
+.bottom-zone:hover .btn-main-copy:not(.success-state) {
+    width: 250px;
+    height: 120px;
+    font-size: 1.2rem;
+    background-color: #6feeff;
+}
 
-        /* --- STYLIZED MODAL --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
-            display: none; justify-content: center; align-items: center; z-index: 4000;
-        }
-        .modal-content {
-            background: var(--modal-bg); width: 90%; max-width: 380px;
-            padding: 40px 30px; border-radius: 32px; 
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            position: relative; text-align: center;
-            box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(56, 189, 248, 0.05);
-        }
-        .modal-content h3 { 
-            margin-top: 0; font-weight: 800; letter-spacing: 1px; 
-            color: var(--primary); font-size: 1.2rem; margin-bottom: 25px;
-        }
-        .input-group { margin-bottom: 15px; text-align: left; }
-        .input-group label { font-size: 0.65rem; color: var(--primary); opacity: 0.8; margin-left: 10px; font-weight: 800; }
-        .modal-content input {
-            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
-            padding: 16px; margin-top: 5px; border-radius: 16px; color: white;
-            font-size: 1.2rem; box-sizing: border-box; text-align: center;
-            transition: border 0.3s ease; font-weight: 600;
-        }
-        .modal-content input:focus { outline: none; border-color: var(--primary); }
-        
-        .modal-result { 
-            margin: 25px 0; padding: 20px; 
-            background: linear-gradient(145deg, rgba(56, 189, 248, 0.1), rgba(0,0,0,0)); 
-            border-radius: 20px; border: 1px dashed rgba(56, 189, 248, 0.3);
-        }
-        .modal-result label { font-size: 0.7rem; color: var(--primary); display: block; margin-bottom: 8px; letter-spacing: 2px; }
-        #finalDiscount { font-size: 2.2rem; font-weight: 800; color: var(--success); text-shadow: 0 0 15px rgba(255, 238, 0, 0.3); }
-        
-        .modal-copy-zone { 
-            height: 60px; display: flex; justify-content: center; align-items: center; 
-            cursor: pointer; margin-top: 10px; background: var(--primary); 
-            color: var(--bg); border-radius: 16px; font-weight: 800; letter-spacing: 1px;
-            transition: all 0.2s ease;
-        }
-        .modal-copy-zone:hover { transform: scale(1.02); background: #6feeff; }
-        .modal-copy-zone.success-state { background: var(--success); }
+/* ✅ SUCCESS STATE (yellow now works) */
+.btn-main-copy.success-state {
+    background: var(--success);
+    box-shadow: 0 0 25px rgba(255, 238, 0, 0.6);
+}
 
-        .modal-close-btn {
-            margin-top: 20px; background: transparent; border: none; color: #64748b;
-            cursor: pointer; font-size: 0.8rem; font-weight: 600; text-decoration: underline;
-        }
-    </style>
+@keyframes idleFloat {
+    0%, 100% { transform: translate(0,0) rotate(0); }
+    50% { transform: translate(0,-4px) rotate(1deg); }
+}
+
+.btn-main-copy.idle { animation: idleFloat 3.5s ease-in-out infinite; }
+
+/* --- MODAL --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
+    display: none; justify-content: center; align-items: center; z-index: 4000;
+}
+
+.modal-content {
+    background: var(--modal-bg); width: 90%; max-width: 380px;
+    padding: 40px 30px; border-radius: 32px; 
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    position: relative; text-align: center;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(56, 189, 248, 0.05);
+}
+
+.modal-content h3 { 
+    margin-top: 0; font-weight: 800; letter-spacing: 1px; 
+    color: var(--primary); font-size: 1.2rem; margin-bottom: 25px;
+}
+
+.input-group { margin-bottom: 15px; text-align: left; }
+
+.input-group label {
+    font-size: 0.65rem;
+    color: var(--primary);
+    opacity: 0.8;
+    margin-left: 10px;
+    font-weight: 800;
+}
+
+.modal-content input {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 16px;
+    margin-top: 5px;
+    border-radius: 16px;
+    color: white;
+    font-size: 1.2rem;
+    box-sizing: border-box;
+    text-align: center;
+    transition: border 0.3s ease;
+    font-weight: 600;
+}
+
+.modal-content input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.modal-result { 
+    margin: 25px 0;
+    padding: 20px; 
+    background: linear-gradient(145deg, rgba(56, 189, 248, 0.1), rgba(0,0,0,0)); 
+    border-radius: 20px;
+    border: 1px dashed rgba(56, 189, 248, 0.3);
+}
+
+.modal-result label {
+    font-size: 0.7rem;
+    color: var(--primary);
+    display: block;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+}
+
+#finalDiscount {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--success);
+    text-shadow: 0 0 15px rgba(255, 238, 0, 0.3);
+}
+
+.modal-copy-zone { 
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    cursor: pointer;
+    margin-top: 10px;
+    background: var(--primary); 
+    color: var(--bg);
+    border-radius: 16px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+}
+
+.modal-copy-zone:hover { transform: scale(1.02); background: #6feeff; }
+
+.modal-copy-zone.success-state { background: var(--success); }
+
+.modal-close-btn {
+    margin-top: 20px;
+    background: transparent;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: underline;
+}
+</style>
 </head>
 <body onmouseleave="resetMagnet()">
 
