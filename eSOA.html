@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quick Copy Pro | Hyper-Focus</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-        <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
             --bg: #0b0f1a;
@@ -16,6 +14,7 @@
             --success: #ffee00;
             --text-main: #f1f5f9;
             --glass: rgba(22, 30, 45, 0.8);
+            --modal-bg: rgba(15, 23, 42, 0.95);
         }
 
         body {
@@ -23,22 +22,20 @@
             background-color: var(--bg);
             color: var(--text-main);
             margin: 0;
-            padding: 80px 10px 25vh 10px; /* Space for top and bottom zones */
+            padding: 80px 10px 25vh 10px;
             display: flex;
             justify-content: center;
             overflow-x: hidden;
             transition: background-color 0.3s ease;
         }
 
-        body.copy-flash {
-            background-color: #565e12; /* Slight green tint flash */
-        }
+        body.copy-flash { background-color: #565e12; }
 
-         .top-nav { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 3000; }
+        .top-nav { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 3000; }
         .top-btn {
             width: 46px; height: 46px;
             background: var(--surface);
-            border: 1px solid var(--glass-border);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 14px;
             color: white;
             backdrop-filter: blur(10px);
@@ -95,56 +92,19 @@
             transition: transform 0.2s ease;
         }
 
-        .text-content {
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
+        .text-content { font-size: 0.95rem; font-weight: 500; }
+        .text-active { color: var(--primary); text-shadow: 0 0 12px rgba(56, 189, 248, 0.5); }
 
-        .text-active {
-            color: var(--primary);
-            text-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
-        }
-
-        /* Top Navigation */
-        .top-nav {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 3000;
-        }
-
-        .top-btn {
-            width: 45px;
-            height: 45px;
-            background: var(--glass);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: white;
-            backdrop-filter: blur(10px);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: all 0.2s ease;
-        }
-
-        .top-btn:hover { background: var(--primary); color: var(--bg); }
-
-        /* Hyper-Magnet Bottom Copy Button */
         .bottom-zone {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 25vh; /* 1/4 window */
+            height: 25vh;
             z-index: 2000;
             display: flex;
             justify-content: center;
             align-items: center;
-            pointer-events: auto;
             cursor: pointer;
         }
 
@@ -160,11 +120,8 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4);
-            transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                        height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                        background-color 0.3s ease, 
-                        transform 0.1s ease-out;
-            pointer-events: none; /* Let clicks hit the bottom-zone div */
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
         }
 
         .bottom-zone:hover .btn-main-copy {
@@ -172,88 +129,91 @@
             height: 120px;
             font-size: 1.2rem;
             background-color: #6feeff;
-            box-shadow: 0 15px 40px rgba(56, 189, 248, 0.6);
         }
 
-        .btn-main-copy.success-state {
-            background: var(--success);
-            box-shadow: 0 15px 40px rgba(34, 197, 94, 0.6);
-        }
-        /* 🐾 PLAYFUL RESTING (ADDED ONLY) */
+        .btn-main-copy.success-state { background: var(--success); }
+
         @keyframes idleFloat {
-            0% { transform: translate(0,0) rotate(0); }
-            25% { transform: translate(0,-4px) rotate(-1deg); }
-            50% { transform: translate(0,0) rotate(1deg); }
-            75% { transform: translate(0,-3px) rotate(-0.5deg); }
-            100% { transform: translate(0,0) rotate(0); }
+            0%, 100% { transform: translate(0,0) rotate(0); }
+            50% { transform: translate(0,-4px) rotate(1deg); }
         }
+        .btn-main-copy.idle { animation: idleFloat 3.5s ease-in-out infinite; }
 
-        @keyframes curiousNudge {
-            0% { transform: translate(0,0); }
-            30% { transform: translate(6px,-2px); }
-            60% { transform: translate(-5px,2px); }
-            100% { transform: translate(0,0); }
+        /* --- STYLIZED MODAL --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
+            display: none; justify-content: center; align-items: center; z-index: 4000;
         }
-
-        .btn-main-copy.idle {
-            animation: idleFloat 3.5s ease-in-out infinite;
+        .modal-content {
+            background: var(--modal-bg); width: 90%; max-width: 380px;
+            padding: 40px 30px; border-radius: 32px; 
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            position: relative; text-align: center;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(56, 189, 248, 0.05);
         }
+        .modal-content h3 { 
+            margin-top: 0; font-weight: 800; letter-spacing: 1px; 
+            color: var(--primary); font-size: 1.2rem; margin-bottom: 25px;
+        }
+        .input-group { margin-bottom: 15px; text-align: left; }
+        .input-group label { font-size: 0.65rem; color: var(--primary); opacity: 0.8; margin-left: 10px; font-weight: 800; }
+        .modal-content input {
+            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
+            padding: 16px; margin-top: 5px; border-radius: 16px; color: white;
+            font-size: 1.2rem; box-sizing: border-box; text-align: center;
+            transition: border 0.3s ease; font-weight: 600;
+        }
+        .modal-content input:focus { outline: none; border-color: var(--primary); }
+        
+        .modal-result { 
+            margin: 25px 0; padding: 20px; 
+            background: linear-gradient(145deg, rgba(56, 189, 248, 0.1), rgba(0,0,0,0)); 
+            border-radius: 20px; border: 1px dashed rgba(56, 189, 248, 0.3);
+        }
+        .modal-result label { font-size: 0.7rem; color: var(--primary); display: block; margin-bottom: 8px; letter-spacing: 2px; }
+        #finalDiscount { font-size: 2.2rem; font-weight: 800; color: var(--success); text-shadow: 0 0 15px rgba(255, 238, 0, 0.3); }
+        
+        .modal-copy-zone { 
+            height: 60px; display: flex; justify-content: center; align-items: center; 
+            cursor: pointer; margin-top: 10px; background: var(--primary); 
+            color: var(--bg); border-radius: 16px; font-weight: 800; letter-spacing: 1px;
+            transition: all 0.2s ease;
+        }
+        .modal-copy-zone:hover { transform: scale(1.02); background: #6feeff; }
+        .modal-copy-zone.success-state { background: var(--success); }
 
-        .btn-main-copy.nudge {
-            animation: curiousNudge 0.6s ease;
+        .modal-close-btn {
+            margin-top: 20px; background: transparent; border: none; color: #64748b;
+            cursor: pointer; font-size: 0.8rem; font-weight: 600; text-decoration: underline;
         }
     </style>
 </head>
 <body onmouseleave="resetMagnet()">
 
 <div class="top-nav">
-    <button class="top-btn" title="Reset" onclick="resetFocus()"><i data-lucide="refresh-cw" size="18"></i></button>
-    <button class="top-btn" title="Next" onclick="nextFocus()"><i data-lucide="chevron-down" size="18"></i></button>
+    <button class="top-btn" title="Reset" onclick="resetFocus()"><i data-lucide="refresh-cw"></i></button>
+    <button class="top-btn" title="Senior Discount" onclick="toggleModal(true)"><i data-lucide="user-check"></i></button>
+    <button class="top-btn" title="Next" onclick="nextFocus()"><i data-lucide="chevron-down"></i></button>
+    
 </div>
 
 <div class="container" id="mainContainer">
     <div id="highlighter"></div>
-
-        <h2>DISCOUNT</h2>
-
-    <div class="item-row" id="reset-target" data-val="H-DISCOUNT">
-        <span class="text-content">H-DISCOUNT</span>
-        
-    </div>
-
+    
+    <h2>DISCOUNT</h2>
+    <div class="item-row" id="reset-target" data-val="H-DISCOUNT"><span class="text-content">H-DISCOUNT</span></div>
+    
     <h2>RIZALINO C. URBANO JR.</h2>
-
-    <div class="item-row" data-val="110098112460">
-        <span class="text-content">110098112460</span>
-        
-    </div>
-
+    <div class="item-row" data-val="110098112460"><span class="text-content">110098112460</span></div>
 
     <h2>Laboratory & Diagnostic</h2>
-    <div class="item-row" data-val="CHEMISTRY: FBS">
-        <span class="text-content">CHEMISTRY: FBS</span>
-        
-    </div>
-    <div class="item-row" data-val="CHEMISTRY: URIC ACID">
-        <span class="text-content">CHEMISTRY: URIC ACID</span>
-        
-    </div>
-    <div class="item-row" data-val="CHEMISTRY: TOTAL CHOLESTEROL">
-        <span class="text-content">CHEMISTRY: TOTAL CHOLESTEROL</span>
-        
-    </div>
-    <div class="item-row" data-val="CHEMISTRY: CREATININE">
-        <span class="text-content">CHEMISTRY: CREATININE</span>
-        
-    </div>
-    <div class="item-row" data-val="MICROSCOPY: URINE-URINALYSIS">
-        <span class="text-content">MICROSCOPY: URINE-URINALYSIS</span>
-        
-    </div>
-    <div class="item-row" data-val="HEMATOLOGY: CBC">
-        <span class="text-content">HEMATOLOGY: CBC</span>
-        
-    </div>
+    <div class="item-row" data-val="CHEMISTRY: FBS"><span class="text-content">CHEMISTRY: FBS</span></div>
+    <div class="item-row" data-val="CHEMISTRY: URIC ACID"><span class="text-content">CHEMISTRY: URIC ACID</span></div>
+    <div class="item-row" data-val="CHEMISTRY: TOTAL CHOLESTEROL"><span class="text-content">CHEMISTRY: TOTAL CHOLESTEROL</span></div>
+    <div class="item-row" data-val="CHEMISTRY: CREATININE"><span class="text-content">CHEMISTRY: CREATININE</span></div>
+    <div class="item-row" data-val="MICROSCOPY: URINE-URINALYSIS"><span class="text-content">MICROSCOPY: URINE-URINALYSIS</span></div>
+    <div class="item-row" data-val="HEMATOLOGY: CBC"><span class="text-content">HEMATOLOGY: CBC</span></div>
 
     <h2>Medical Supplies</h2>
     <div class="item-row" data-val="IV CATHETER G. 20"><span class="text-content">IV CATHETER G. 20</span></div>
@@ -284,6 +244,33 @@
     <button class="btn-main-copy" id="magnetBtn">COPY</button>
 </div>
 
+<div class="modal-overlay" id="srModal">
+    <div class="modal-content" id="modalBox">
+        <h3>DISCOUNT CALCULATOR</h3>
+        
+        <div class="input-group">
+            <label>HOSPITAL CHARGES</label>
+            <input id="hospCharges" type="number" placeholder="0.00" oninput="calcSr()">
+        </div>
+
+        <div class="input-group">
+            <label>CASE RATE (PHIC)</label>
+            <input id="caseRate" type="number" placeholder="0.00" oninput="calcSr()">
+        </div>
+
+        <div class="modal-result">
+            <label>FINAL DISCOUNT</label>
+            <div id="finalDiscount">0.00</div>
+        </div>
+
+        <div class="modal-copy-zone" id="modalCopyBtn" onclick="copyModalValue()">
+            COPY RESULT
+        </div>
+
+        <button class="modal-close-btn" onclick="toggleModal(false)">Dismiss</button>
+    </div>
+</div>
+
 <script>
     let textTimeout;
     let currentFocusedIndex = 0;
@@ -291,104 +278,123 @@
     const highlighter = document.getElementById('highlighter');
     const container = document.getElementById('mainContainer');
     const magnetBtn = document.getElementById('magnetBtn');
+    const modalCopyBtn = document.getElementById('modalCopyBtn');
+    const srModal = document.getElementById('srModal');
+    const modalBox = document.getElementById('modalBox');
 
     window.onload = () => {
         setTimeout(() => updateFocus(0), 100);
         allRows.forEach((row, idx) => {
             row.addEventListener('click', () => executeCopy(row, row.getAttribute('data-val'), idx));
         });
+        lucide.createIcons();
+    };
 
-        lucide.createIcons(); // ✅ FIXED ICONS
-};
+    function toggleModal(show) {
+        srModal.style.display = show ? 'flex' : 'none';
+        if(show) {
+            document.getElementById('hospCharges').focus();
+        } else {
+            resetCalculator();
+        }
+    }
 
+    // Auto-close when clicking background overlay
+    srModal.addEventListener('click', (e) => {
+        if (e.target === srModal) toggleModal(false);
+    });
 
-    /* 🐾 IDLE SYSTEM (ADDED ONLY) */
-let idleTimer, nudgeTimer;
+    function resetCalculator() {
+        document.getElementById('hospCharges').value = "";
+        document.getElementById('caseRate').value = "";
+        document.getElementById('finalDiscount').innerText = "0.00";
+    }
 
-function startIdle() {
-    magnetBtn.classList.add('idle');
-    nudgeTimer = setInterval(() => {
-        magnetBtn.classList.add('nudge');
-        setTimeout(() => magnetBtn.classList.remove('nudge'), 600);
-    }, 4000);
-}
+    function calcSr() {
+        const charges = parseFloat(document.getElementById('hospCharges').value) || 0;
+        const rate = parseFloat(document.getElementById('caseRate').value) || 0;
+        const discount = charges - ((charges * 0.20) + rate);
+        document.getElementById('finalDiscount').innerText = discount.toFixed(2);
+    }
 
-function stopIdle() {
-    magnetBtn.classList.remove('idle', 'nudge');
-    clearInterval(nudgeTimer);
-}
+    function copyModalValue() {
+        const val = document.getElementById('finalDiscount').innerText;
+        navigator.clipboard.writeText(val).then(() => {
+            modalCopyBtn.innerText = "COPIED!";
+            modalCopyBtn.classList.add('success-state');
+            setTimeout(() => {
+                modalCopyBtn.innerText = "COPY RESULT";
+                modalCopyBtn.classList.remove('success-state');
+                toggleModal(false); // Auto-close after copy
+            }, 600);
+        });
+    }
 
-function resetIdle() {
-    stopIdle();
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(startIdle, 1500);
-}
+    /* 🐾 IDLE SYSTEM */
+    let idleTimer, nudgeTimer;
+    function startIdle() {
+        magnetBtn.classList.add('idle');
+        nudgeTimer = setInterval(() => {
+            magnetBtn.classList.add('nudge');
+            setTimeout(() => magnetBtn.classList.remove('nudge'), 600);
+        }, 4000);
+    }
+    function stopIdle() {
+        magnetBtn.classList.remove('idle', 'nudge');
+        clearInterval(nudgeTimer);
+    }
+    function resetIdle() {
+        stopIdle();
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(startIdle, 1500);
+    }
+    ['mousemove','click','scroll'].forEach(e => document.addEventListener(e, resetIdle));
+    setTimeout(startIdle, 1200);
 
-['mousemove','click','scroll'].forEach(e => {
-    document.addEventListener(e, resetIdle);
-});
-
-setTimeout(startIdle, 1200);
-    // --- MAGNET & ZONE LOGIC ---
+    /* MAGNET LOGIC */
     document.addEventListener('mousemove', (e) => {
         const threshold = window.innerHeight * 0.75;
         if (e.clientY > threshold) {
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight - (window.innerHeight * 0.125);
-            
-            // Stronger pull factor
             const pullX = (e.clientX - centerX) * 0.3;
             const pullY = (e.clientY - centerY) * 0.4;
-
             magnetBtn.style.transform = `translate(${pullX}px, ${pullY}px)`;
         } else {
             resetMagnet();
         }
     });
 
-    function resetMagnet() {
-        magnetBtn.style.transform = `translate(0, 0)`;
-    }
+    function resetMagnet() { magnetBtn.style.transform = `translate(0, 0)`; }
 
     function updateFocus(index) {
         currentFocusedIndex = index;
         const targetRow = allRows[index];
         const rect = targetRow.getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
-
         highlighter.style.opacity = "1";
         highlighter.style.top = (rect.top - containerRect.top) + "px";
         highlighter.style.height = rect.height + "px";
-
         targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     function executeCopy(row, text, index) {
         updateFocus(index);
         navigator.clipboard.writeText(text).then(() => {
-            // Text Feedback
             document.querySelectorAll('.text-content').forEach(el => el.classList.remove('text-active'));
             clearTimeout(textTimeout);
             const textElement = row.querySelector('.text-content');
             textElement.classList.add('text-active');
-
-            // Button & Body Feedback
             magnetBtn.innerText = "COPIED!";
             magnetBtn.classList.add('success-state');
             document.body.classList.add('copy-flash');
-
             setTimeout(() => {
                 magnetBtn.innerText = "COPY";
                 magnetBtn.classList.remove('success-state');
                 document.body.classList.remove('copy-flash');
             }, 600);
-
-            // Auto-Next
             setTimeout(() => nextFocus(), 400);
-
-            textTimeout = setTimeout(() => {
-                textElement.classList.remove('text-active');
-            }, 8000);
+            textTimeout = setTimeout(() => textElement.classList.remove('text-active'), 8000);
         });
     }
 
@@ -408,6 +414,5 @@ setTimeout(startIdle, 1200);
         updateFocus(fbsIndex);
     }
 </script>
-
 </body>
 </html>
