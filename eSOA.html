@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>eSOA Secure Access</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: radial-gradient(circle, #111, #000);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    h1 {
+        font-size: 52px;
+        margin-bottom: 20px;
+    }
+
+    button {
+        padding: 12px 26px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 10px;
+        background: #22c55e;
+        color: white;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        transform: scale(1.05);
+    }
+
+    /* Modal */
+    .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.85);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: #141414;
+        padding: 28px;
+        border-radius: 14px;
+        width: 420px;
+        text-align: center;
+        box-shadow: 0 0 30px rgba(0,255,150,0.2);
+    }
+
+    input {
+        width: 90%;
+        padding: 12px;
+        margin-top: 15px;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+        text-align: center;
+        font-size: 15px;
+    }
+
+    .shake {
+        animation: shake 0.25s;
+    }
+
+    @keyframes shake {
+        0% { transform: translateX(0); }
+        25% { transform: translateX(-6px); }
+        50% { transform: translateX(6px); }
+        75% { transform: translateX(-6px); }
+        100% { transform: translateX(0); }
+    }
+
+    .progress {
+        margin-top: 10px;
+        font-size: 13px;
+        opacity: 0.8;
+    }
+
+    .hint {
+        font-size: 11px;
+        opacity: 0.5;
+        margin-top: 6px;
+    }
+</style>
+</head>
+<body>
+
+<h1 id="mainText"></h1>
+<button id="enterBtn">Enter Security Gate</button>
+
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h3 id="question">Loading...</h3>
+
+        <input type="text" id="answer" placeholder="Enter answer...">
+
+        <br><br>
+        <button id="submitBtn">Submit</button>
+
+        <div class="progress" id="progress"></div>
+        <div class="hint">Hint: only one answer works for everything</div>
+    </div>
+</div>
+
+<script>
+// DAY CHECK
+const today = new Date().getDay();
+document.getElementById("mainText").innerText =
+    today === 6 ? "Day Off" : "eSOA Secure Access";
+
+// QUESTION BANK (50 VARIED QUESTIONS ABOUT "JAY")
+const questions = [
+"Jay's favorite car brand?",
+"What brand does Jay always mention?",
+"Jay's go-to dream car?",
+"If Jay had one car, what is it?",
+"What keyword unlocks Jay's memory?",
+"Jay's coded password vehicle?",
+"Jay’s imaginary garage favorite?",
+"What does Jay always answer in tests?",
+"Jay’s secret security word?",
+"What does Jay associate with speed?",
+"Jay’s favorite automotive symbol?",
+"What unlocks Jay’s profile?",
+"Jay’s default answer in interviews?",
+"Jay’s hidden passphrase?",
+"Jay’s dream steering wheel brand?",
+"What car name follows Jay everywhere?",
+"Jay’s mental reset word?",
+"Jay’s system override key?",
+"What is Jay’s one constant answer?",
+"Jay’s joke answer to everything?",
+"Jay’s favorite 4-letter code?",
+"Jay’s fallback response?",
+"What does Jay always type?",
+"Jay’s signature word?",
+"Jay’s brain auto-fill answer?",
+"What unlocks Jay’s login?",
+"Jay’s default security answer?",
+"What is Jay’s cheat code?",
+"Jay’s emotional trigger word?",
+"What is always correct for Jay?",
+"Jay’s system password hint?",
+"What does Jay never change?",
+"Jay’s universal response?",
+"What is Jay’s favorite illusion?",
+"Jay’s backup answer for everything?",
+"What does Jay always trust?",
+"Jay’s locked memory key?",
+"What is Jay’s safe word?",
+"Jay’s favorite “incorrect but correct” answer?",
+"What does Jay always rely on?",
+"Jay’s override phrase?",
+"What is Jay’s constant?",
+"Jay’s default truth?",
+"What does Jay always fallback to?",
+"Jay’s identity keyword?",
+"What is Jay’s universal key?",
+"Jay’s secret unlock phrase?",
+"What is Jay’s always-correct response?",
+"Jay’s final answer to life?",
+"What is Jay’s system truth?"
+];
+
+const correctAnswer = "ford";
+
+let index = 0;
+let correctCount = 0;
+
+// ELEMENTS
+const modal = document.getElementById("modal");
+const enterBtn = document.getElementById("enterBtn");
+const submitBtn = document.getElementById("submitBtn");
+const questionText = document.getElementById("question");
+const answerInput = document.getElementById("answer");
+const progress = document.getElementById("progress");
+
+// OPEN MODAL
+enterBtn.onclick = () => {
+    modal.style.display = "flex";
+    loadQuestion();
+};
+
+// LOAD QUESTION
+function loadQuestion() {
+    if (index >= questions.length) {
+        if (correctCount === 50) {
+            window.location.href = "eSOAverified.html";
+        } else {
+            questionText.innerText = "ACCESS DENIED";
+            submitBtn.disabled = true;
+        }
+        return;
+    }
+
+    questionText.innerText = questions[index];
+    progress.innerText = `Progress: ${correctCount}/50 verified`;
+    answerInput.value = "";
+}
+
+// SHAKE EFFECT
+function shake() {
+    submitBtn.classList.add("shake");
+    setTimeout(() => submitBtn.classList.remove("shake"), 250);
+}
+
+// SUBMIT
+submitBtn.onclick = () => {
+    const val = answerInput.value.trim().toLowerCase();
+
+    if (val === correctAnswer) {
+        correctCount++;
+    } else {
+        shake();
+    }
+
+    index++;
+    loadQuestion();
+};
+
+// CLOSE MODAL OUTSIDE
+window.onclick = (e) => {
+    if (e.target === modal) {
+        modal.style.display = "none";
+    }
+};
+</script>
+
+</body>
+</html>
