@@ -1,1 +1,481 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="color-scheme" content="light dark"></head><body><div class="line-gutter-backdrop"></div><form autocomplete="off"><label class="line-wrap-control">Line wrap<input type="checkbox" aria-label="Line wrap"></label></form><table><tbody><tr><td class="line-number" value="1"></td><td class="line-content"><span class="html-doctype">&lt;!DOCTYPE html&gt;</span></td></tr><tr><td class="line-number" value="2"></td><td class="line-content"><span class="html-tag">&lt;html <span class="html-attribute-name">lang</span>="<span class="html-attribute-value">en</span>"&gt;</span></td></tr><tr><td class="line-number" value="3"></td><td class="line-content"><span class="html-tag">&lt;head&gt;</span></td></tr><tr><td class="line-number" value="4"></td><td class="line-content">    <span class="html-tag">&lt;meta <span class="html-attribute-name">charset</span>="<span class="html-attribute-value">UTF-8</span>"&gt;</span></td></tr><tr><td class="line-number" value="5"></td><td class="line-content">    <span class="html-tag">&lt;meta <span class="html-attribute-name">name</span>="<span class="html-attribute-value">viewport</span>" <span class="html-attribute-name">content</span>="<span class="html-attribute-value">width=device-width, initial-scale=1.0</span>"&gt;</span></td></tr><tr><td class="line-number" value="6"></td><td class="line-content">    <span class="html-tag">&lt;title&gt;</span>eSOA<span class="html-tag">&lt;/title&gt;</span></td></tr><tr><td class="line-number" value="7"></td><td class="line-content">    <span class="html-tag">&lt;link <span class="html-attribute-name">href</span>="<a class="html-attribute-value html-resource-link" target="_blank" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;display=swap" rel="noreferrer noopener">https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;display=swap</a>" <span class="html-attribute-name">rel</span>="<span class="html-attribute-value">stylesheet</span>"&gt;</span></td></tr><tr><td class="line-number" value="8"></td><td class="line-content">    <span class="html-tag">&lt;script <span class="html-attribute-name">src</span>="<a class="html-attribute-value html-resource-link" target="_blank" href="https://unpkg.com/lucide@latest" rel="noreferrer noopener">https://unpkg.com/lucide@latest</a>"&gt;</span><span class="html-tag">&lt;/script&gt;</span></td></tr><tr><td class="line-number" value="9"></td><td class="line-content"><span class="html-tag">&lt;style&gt;</span></td></tr><tr><td class="line-number" value="10"></td><td class="line-content">:root {</td></tr><tr><td class="line-number" value="11"></td><td class="line-content">    --bg: #0b0f1a;</td></tr><tr><td class="line-number" value="12"></td><td class="line-content">    --surface: #161e2d;</td></tr><tr><td class="line-number" value="13"></td><td class="line-content">    --primary: #38bdf8;</td></tr><tr><td class="line-number" value="14"></td><td class="line-content">    --success: #ffee00;</td></tr><tr><td class="line-number" value="15"></td><td class="line-content">    --text-main: #f1f5f9;</td></tr><tr><td class="line-number" value="16"></td><td class="line-content">    --glass: rgba(22, 30, 45, 0.8);</td></tr><tr><td class="line-number" value="17"></td><td class="line-content">    --modal-bg: rgba(15, 23, 42, 0.95);</td></tr><tr><td class="line-number" value="18"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="19"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="20"></td><td class="line-content">body {</td></tr><tr><td class="line-number" value="21"></td><td class="line-content">    font-family: 'Inter', sans-serif;</td></tr><tr><td class="line-number" value="22"></td><td class="line-content">    background-color: var(--bg);</td></tr><tr><td class="line-number" value="23"></td><td class="line-content">    color: var(--text-main);</td></tr><tr><td class="line-number" value="24"></td><td class="line-content">    margin: 0;</td></tr><tr><td class="line-number" value="25"></td><td class="line-content">    padding: 80px 10px 25vh 10px;</td></tr><tr><td class="line-number" value="26"></td><td class="line-content">    display: flex;</td></tr><tr><td class="line-number" value="27"></td><td class="line-content">    justify-content: center;</td></tr><tr><td class="line-number" value="28"></td><td class="line-content">    overflow-x: hidden;</td></tr><tr><td class="line-number" value="29"></td><td class="line-content">    transition: background-color 0.3s ease;</td></tr><tr><td class="line-number" value="30"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="31"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="32"></td><td class="line-content">body.copy-flash { background-color: #565e12; }</td></tr><tr><td class="line-number" value="33"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="34"></td><td class="line-content">.top-nav { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 3000; }</td></tr><tr><td class="line-number" value="35"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="36"></td><td class="line-content">.top-btn {</td></tr><tr><td class="line-number" value="37"></td><td class="line-content">    width: 46px; height: 46px;</td></tr><tr><td class="line-number" value="38"></td><td class="line-content">    background: var(--surface);</td></tr><tr><td class="line-number" value="39"></td><td class="line-content">    border: 1px solid rgba(255,255,255,0.1);</td></tr><tr><td class="line-number" value="40"></td><td class="line-content">    border-radius: 14px;</td></tr><tr><td class="line-number" value="41"></td><td class="line-content">    color: white;</td></tr><tr><td class="line-number" value="42"></td><td class="line-content">    backdrop-filter: blur(10px);</td></tr><tr><td class="line-number" value="43"></td><td class="line-content">    cursor: pointer;</td></tr><tr><td class="line-number" value="44"></td><td class="line-content">    display: flex;</td></tr><tr><td class="line-number" value="45"></td><td class="line-content">    align-items: center;</td></tr><tr><td class="line-number" value="46"></td><td class="line-content">    justify-content: center;</td></tr><tr><td class="line-number" value="47"></td><td class="line-content">    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);</td></tr><tr><td class="line-number" value="48"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="49"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="50"></td><td class="line-content">.top-btn:hover { background: var(--primary); color: var(--bg); transform: translateY(-2px); }</td></tr><tr><td class="line-number" value="51"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="52"></td><td class="line-content">.container {</td></tr><tr><td class="line-number" value="53"></td><td class="line-content">    position: relative;</td></tr><tr><td class="line-number" value="54"></td><td class="line-content">    width: 100%;</td></tr><tr><td class="line-number" value="55"></td><td class="line-content">    max-width: 400px;</td></tr><tr><td class="line-number" value="56"></td><td class="line-content">    background: var(--surface);</td></tr><tr><td class="line-number" value="57"></td><td class="line-content">    padding: 20px;</td></tr><tr><td class="line-number" value="58"></td><td class="line-content">    border-radius: 20px;</td></tr><tr><td class="line-number" value="59"></td><td class="line-content">    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);</td></tr><tr><td class="line-number" value="60"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="61"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="62"></td><td class="line-content">#highlighter {</td></tr><tr><td class="line-number" value="63"></td><td class="line-content">    position: absolute;</td></tr><tr><td class="line-number" value="64"></td><td class="line-content">    left: 8px;</td></tr><tr><td class="line-number" value="65"></td><td class="line-content">    right: 8px;</td></tr><tr><td class="line-number" value="66"></td><td class="line-content">    border: 2px solid var(--primary);</td></tr><tr><td class="line-number" value="67"></td><td class="line-content">    background-color: rgba(56, 189, 248, 0.15);</td></tr><tr><td class="line-number" value="68"></td><td class="line-content">    border-radius: 12px;</td></tr><tr><td class="line-number" value="69"></td><td class="line-content">    pointer-events: none;</td></tr><tr><td class="line-number" value="70"></td><td class="line-content">    transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);</td></tr><tr><td class="line-number" value="71"></td><td class="line-content">    z-index: 1;</td></tr><tr><td class="line-number" value="72"></td><td class="line-content">    opacity: 0;</td></tr><tr><td class="line-number" value="73"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="74"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="75"></td><td class="line-content">h2 {</td></tr><tr><td class="line-number" value="76"></td><td class="line-content">    font-size: 0.7rem;</td></tr><tr><td class="line-number" value="77"></td><td class="line-content">    color: var(--primary);</td></tr><tr><td class="line-number" value="78"></td><td class="line-content">    text-transform: uppercase;</td></tr><tr><td class="line-number" value="79"></td><td class="line-content">    letter-spacing: 0.15em;</td></tr><tr><td class="line-number" value="80"></td><td class="line-content">    margin: 30px 0 10px 10px;</td></tr><tr><td class="line-number" value="81"></td><td class="line-content">    opacity: 0.6;</td></tr><tr><td class="line-number" value="82"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="83"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="84"></td><td class="line-content">.item-row {</td></tr><tr><td class="line-number" value="85"></td><td class="line-content">    position: relative;</td></tr><tr><td class="line-number" value="86"></td><td class="line-content">    z-index: 2;</td></tr><tr><td class="line-number" value="87"></td><td class="line-content">    display: flex;</td></tr><tr><td class="line-number" value="88"></td><td class="line-content">    align-items: center;</td></tr><tr><td class="line-number" value="89"></td><td class="line-content">    justify-content: space-between;</td></tr><tr><td class="line-number" value="90"></td><td class="line-content">    padding: 14px;</td></tr><tr><td class="line-number" value="91"></td><td class="line-content">    margin: 4px 0;</td></tr><tr><td class="line-number" value="92"></td><td class="line-content">    cursor: pointer;</td></tr><tr><td class="line-number" value="93"></td><td class="line-content">    border-radius: 12px;</td></tr><tr><td class="line-number" value="94"></td><td class="line-content">    transition: transform 0.2s ease;</td></tr><tr><td class="line-number" value="95"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="96"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="97"></td><td class="line-content">.text-content { font-size: 0.95rem; font-weight: 500; }</td></tr><tr><td class="line-number" value="98"></td><td class="line-content">.text-active { color: var(--primary); text-shadow: 0 0 12px rgba(56, 189, 248, 0.5); }</td></tr><tr><td class="line-number" value="99"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="100"></td><td class="line-content">.bottom-zone {</td></tr><tr><td class="line-number" value="101"></td><td class="line-content">    position: fixed;</td></tr><tr><td class="line-number" value="102"></td><td class="line-content">    bottom: 0;</td></tr><tr><td class="line-number" value="103"></td><td class="line-content">    left: 0;</td></tr><tr><td class="line-number" value="104"></td><td class="line-content">    width: 100%;</td></tr><tr><td class="line-number" value="105"></td><td class="line-content">    height: 25vh;</td></tr><tr><td class="line-number" value="106"></td><td class="line-content">    z-index: 2000;</td></tr><tr><td class="line-number" value="107"></td><td class="line-content">    display: flex;</td></tr><tr><td class="line-number" value="108"></td><td class="line-content">    justify-content: center;</td></tr><tr><td class="line-number" value="109"></td><td class="line-content">    align-items: center;</td></tr><tr><td class="line-number" value="110"></td><td class="line-content">    cursor: pointer;</td></tr><tr><td class="line-number" value="111"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="112"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="113"></td><td class="line-content">.btn-main-copy {</td></tr><tr><td class="line-number" value="114"></td><td class="line-content">    width: 160px;</td></tr><tr><td class="line-number" value="115"></td><td class="line-content">    height: 70px;</td></tr><tr><td class="line-number" value="116"></td><td class="line-content">    background: var(--primary);</td></tr><tr><td class="line-number" value="117"></td><td class="line-content">    color: var(--bg);</td></tr><tr><td class="line-number" value="118"></td><td class="line-content">    border: none;</td></tr><tr><td class="line-number" value="119"></td><td class="line-content">    border-radius: 35px;</td></tr><tr><td class="line-number" value="120"></td><td class="line-content">    font-weight: 800;</td></tr><tr><td class="line-number" value="121"></td><td class="line-content">    font-size: 1rem;</td></tr><tr><td class="line-number" value="122"></td><td class="line-content">    text-transform: uppercase;</td></tr><tr><td class="line-number" value="123"></td><td class="line-content">    letter-spacing: 2px;</td></tr><tr><td class="line-number" value="124"></td><td class="line-content">    box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4);</td></tr><tr><td class="line-number" value="125"></td><td class="line-content">    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);</td></tr><tr><td class="line-number" value="126"></td><td class="line-content">    pointer-events: none;</td></tr><tr><td class="line-number" value="127"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="128"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="129"></td><td class="line-content">/* ✅ FIXED HOVER (no override when success) */</td></tr><tr><td class="line-number" value="130"></td><td class="line-content">.bottom-zone:hover .btn-main-copy:not(.success-state) {</td></tr><tr><td class="line-number" value="131"></td><td class="line-content">    width: 250px;</td></tr><tr><td class="line-number" value="132"></td><td class="line-content">    height: 120px;</td></tr><tr><td class="line-number" value="133"></td><td class="line-content">    font-size: 1.2rem;</td></tr><tr><td class="line-number" value="134"></td><td class="line-content">    background-color: #6feeff;</td></tr><tr><td class="line-number" value="135"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="136"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="137"></td><td class="line-content">/* ✅ SUCCESS STATE (yellow now works) */</td></tr><tr><td class="line-number" value="138"></td><td class="line-content">.btn-main-copy.success-state {</td></tr><tr><td class="line-number" value="139"></td><td class="line-content">    background: var(--success);</td></tr><tr><td class="line-number" value="140"></td><td class="line-content">    box-shadow: 0 0 25px rgba(255, 238, 0, 0.6);</td></tr><tr><td class="line-number" value="141"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="142"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="143"></td><td class="line-content">@keyframes idleFloat {</td></tr><tr><td class="line-number" value="144"></td><td class="line-content">    0%, 100% { transform: translate(0,0) rotate(0); }</td></tr><tr><td class="line-number" value="145"></td><td class="line-content">    50% { transform: translate(0,-4px) rotate(1deg); }</td></tr><tr><td class="line-number" value="146"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="147"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="148"></td><td class="line-content">.btn-main-copy.idle { animation: idleFloat 3.5s ease-in-out infinite; }</td></tr><tr><td class="line-number" value="149"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="150"></td><td class="line-content">/* --- MODAL --- */</td></tr><tr><td class="line-number" value="151"></td><td class="line-content">.modal-overlay {</td></tr><tr><td class="line-number" value="152"></td><td class="line-content">    position: fixed; top: 0; left: 0; width: 100%; height: 100%;</td></tr><tr><td class="line-number" value="153"></td><td class="line-content">    background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);</td></tr><tr><td class="line-number" value="154"></td><td class="line-content">    display: none; justify-content: center; align-items: center; z-index: 4000;</td></tr><tr><td class="line-number" value="155"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="156"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="157"></td><td class="line-content">.modal-content {</td></tr><tr><td class="line-number" value="158"></td><td class="line-content">    background: var(--modal-bg); width: 90%; max-width: 380px;</td></tr><tr><td class="line-number" value="159"></td><td class="line-content">    padding: 40px 30px; border-radius: 32px; </td></tr><tr><td class="line-number" value="160"></td><td class="line-content">    border: 1px solid rgba(56, 189, 248, 0.3);</td></tr><tr><td class="line-number" value="161"></td><td class="line-content">    position: relative; text-align: center;</td></tr><tr><td class="line-number" value="162"></td><td class="line-content">    box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(56, 189, 248, 0.05);</td></tr><tr><td class="line-number" value="163"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="164"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="165"></td><td class="line-content">.modal-content h3 { </td></tr><tr><td class="line-number" value="166"></td><td class="line-content">    margin-top: 0; font-weight: 800; letter-spacing: 1px; </td></tr><tr><td class="line-number" value="167"></td><td class="line-content">    color: var(--primary); font-size: 1.2rem; margin-bottom: 25px;</td></tr><tr><td class="line-number" value="168"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="169"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="170"></td><td class="line-content">.input-group { margin-bottom: 15px; text-align: left; }</td></tr><tr><td class="line-number" value="171"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="172"></td><td class="line-content">.input-group label {</td></tr><tr><td class="line-number" value="173"></td><td class="line-content">    font-size: 0.65rem;</td></tr><tr><td class="line-number" value="174"></td><td class="line-content">    color: var(--primary);</td></tr><tr><td class="line-number" value="175"></td><td class="line-content">    opacity: 0.8;</td></tr><tr><td class="line-number" value="176"></td><td class="line-content">    margin-left: 10px;</td></tr><tr><td class="line-number" value="177"></td><td class="line-content">    font-weight: 800;</td></tr><tr><td class="line-number" value="178"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="179"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="180"></td><td class="line-content">.modal-content input {</td></tr><tr><td class="line-number" value="181"></td><td class="line-content">    width: 100%;</td></tr><tr><td class="line-number" value="182"></td><td class="line-content">    background: rgba(0,0,0,0.3);</td></tr><tr><td class="line-number" value="183"></td><td class="line-content">    border: 1px solid rgba(255,255,255,0.1);</td></tr><tr><td class="line-number" value="184"></td><td class="line-content">    padding: 16px;</td></tr><tr><td class="line-number" value="185"></td><td class="line-content">    margin-top: 5px;</td></tr><tr><td class="line-number" value="186"></td><td class="line-content">    border-radius: 16px;</td></tr><tr><td class="line-number" value="187"></td><td class="line-content">    color: white;</td></tr><tr><td class="line-number" value="188"></td><td class="line-content">    font-size: 1.2rem;</td></tr><tr><td class="line-number" value="189"></td><td class="line-content">    box-sizing: border-box;</td></tr><tr><td class="line-number" value="190"></td><td class="line-content">    text-align: center;</td></tr><tr><td class="line-number" value="191"></td><td class="line-content">    transition: border 0.3s ease;</td></tr><tr><td class="line-number" value="192"></td><td class="line-content">    font-weight: 600;</td></tr><tr><td class="line-number" value="193"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="194"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="195"></td><td class="line-content">.modal-content input:focus {</td></tr><tr><td class="line-number" value="196"></td><td class="line-content">    outline: none;</td></tr><tr><td class="line-number" value="197"></td><td class="line-content">    border-color: var(--primary);</td></tr><tr><td class="line-number" value="198"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="199"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="200"></td><td class="line-content">.modal-result { </td></tr><tr><td class="line-number" value="201"></td><td class="line-content">    margin: 25px 0;</td></tr><tr><td class="line-number" value="202"></td><td class="line-content">    padding: 20px; </td></tr><tr><td class="line-number" value="203"></td><td class="line-content">    background: linear-gradient(145deg, rgba(56, 189, 248, 0.1), rgba(0,0,0,0)); </td></tr><tr><td class="line-number" value="204"></td><td class="line-content">    border-radius: 20px;</td></tr><tr><td class="line-number" value="205"></td><td class="line-content">    border: 1px dashed rgba(56, 189, 248, 0.3);</td></tr><tr><td class="line-number" value="206"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="207"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="208"></td><td class="line-content">.modal-result label {</td></tr><tr><td class="line-number" value="209"></td><td class="line-content">    font-size: 0.7rem;</td></tr><tr><td class="line-number" value="210"></td><td class="line-content">    color: var(--primary);</td></tr><tr><td class="line-number" value="211"></td><td class="line-content">    display: block;</td></tr><tr><td class="line-number" value="212"></td><td class="line-content">    margin-bottom: 8px;</td></tr><tr><td class="line-number" value="213"></td><td class="line-content">    letter-spacing: 2px;</td></tr><tr><td class="line-number" value="214"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="215"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="216"></td><td class="line-content">#finalDiscount {</td></tr><tr><td class="line-number" value="217"></td><td class="line-content">    font-size: 2.2rem;</td></tr><tr><td class="line-number" value="218"></td><td class="line-content">    font-weight: 800;</td></tr><tr><td class="line-number" value="219"></td><td class="line-content">    color: var(--success);</td></tr><tr><td class="line-number" value="220"></td><td class="line-content">    text-shadow: 0 0 15px rgba(255, 238, 0, 0.3);</td></tr><tr><td class="line-number" value="221"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="222"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="223"></td><td class="line-content">.modal-copy-zone { </td></tr><tr><td class="line-number" value="224"></td><td class="line-content">    height: 60px;</td></tr><tr><td class="line-number" value="225"></td><td class="line-content">    display: flex;</td></tr><tr><td class="line-number" value="226"></td><td class="line-content">    justify-content: center;</td></tr><tr><td class="line-number" value="227"></td><td class="line-content">    align-items: center; </td></tr><tr><td class="line-number" value="228"></td><td class="line-content">    cursor: pointer;</td></tr><tr><td class="line-number" value="229"></td><td class="line-content">    margin-top: 10px;</td></tr><tr><td class="line-number" value="230"></td><td class="line-content">    background: var(--primary); </td></tr><tr><td class="line-number" value="231"></td><td class="line-content">    color: var(--bg);</td></tr><tr><td class="line-number" value="232"></td><td class="line-content">    border-radius: 16px;</td></tr><tr><td class="line-number" value="233"></td><td class="line-content">    font-weight: 800;</td></tr><tr><td class="line-number" value="234"></td><td class="line-content">    letter-spacing: 1px;</td></tr><tr><td class="line-number" value="235"></td><td class="line-content">    transition: all 0.2s ease;</td></tr><tr><td class="line-number" value="236"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="237"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="238"></td><td class="line-content">.modal-copy-zone:hover { transform: scale(1.02); background: #6feeff; }</td></tr><tr><td class="line-number" value="239"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="240"></td><td class="line-content">.modal-copy-zone.success-state { background: var(--success); }</td></tr><tr><td class="line-number" value="241"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="242"></td><td class="line-content">.modal-close-btn {</td></tr><tr><td class="line-number" value="243"></td><td class="line-content">    margin-top: 20px;</td></tr><tr><td class="line-number" value="244"></td><td class="line-content">    background: transparent;</td></tr><tr><td class="line-number" value="245"></td><td class="line-content">    border: none;</td></tr><tr><td class="line-number" value="246"></td><td class="line-content">    color: #64748b;</td></tr><tr><td class="line-number" value="247"></td><td class="line-content">    cursor: pointer;</td></tr><tr><td class="line-number" value="248"></td><td class="line-content">    font-size: 0.8rem;</td></tr><tr><td class="line-number" value="249"></td><td class="line-content">    font-weight: 600;</td></tr><tr><td class="line-number" value="250"></td><td class="line-content">    text-decoration: underline;</td></tr><tr><td class="line-number" value="251"></td><td class="line-content">}</td></tr><tr><td class="line-number" value="252"></td><td class="line-content"><span class="html-tag">&lt;/style&gt;</span></td></tr><tr><td class="line-number" value="253"></td><td class="line-content"><span class="html-tag">&lt;/head&gt;</span></td></tr><tr><td class="line-number" value="254"></td><td class="line-content"><span class="html-tag">&lt;body <span class="html-attribute-name">onmouseleave</span>="<span class="html-attribute-value">resetMagnet()</span>"&gt;</span></td></tr><tr><td class="line-number" value="255"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="256"></td><td class="line-content"><span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">top-nav</span>"&gt;</span></td></tr><tr><td class="line-number" value="257"></td><td class="line-content">    <span class="html-tag">&lt;button <span class="html-attribute-name">class</span>="<span class="html-attribute-value">top-btn</span>" <span class="html-attribute-name">title</span>="<span class="html-attribute-value">Reset</span>" <span class="html-attribute-name">onclick</span>="<span class="html-attribute-value">resetFocus()</span>"&gt;</span><span class="html-tag">&lt;i <span class="html-attribute-name">data-lucide</span>="<span class="html-attribute-value">refresh-cw</span>"&gt;</span><span class="html-tag">&lt;/i&gt;</span><span class="html-tag">&lt;/button&gt;</span></td></tr><tr><td class="line-number" value="258"></td><td class="line-content">    <span class="html-tag">&lt;button <span class="html-attribute-name">class</span>="<span class="html-attribute-value">top-btn</span>" <span class="html-attribute-name">title</span>="<span class="html-attribute-value">Senior Discount</span>" <span class="html-attribute-name">onclick</span>="<span class="html-attribute-value">toggleModal(true)</span>"&gt;</span><span class="html-tag">&lt;i <span class="html-attribute-name">data-lucide</span>="<span class="html-attribute-value">user-check</span>"&gt;</span><span class="html-tag">&lt;/i&gt;</span><span class="html-tag">&lt;/button&gt;</span></td></tr><tr><td class="line-number" value="259"></td><td class="line-content">    <span class="html-tag">&lt;button <span class="html-attribute-name">class</span>="<span class="html-attribute-value">top-btn</span>" <span class="html-attribute-name">title</span>="<span class="html-attribute-value">Next</span>" <span class="html-attribute-name">onclick</span>="<span class="html-attribute-value">nextFocus()</span>"&gt;</span><span class="html-tag">&lt;i <span class="html-attribute-name">data-lucide</span>="<span class="html-attribute-value">chevron-down</span>"&gt;</span><span class="html-tag">&lt;/i&gt;</span><span class="html-tag">&lt;/button&gt;</span></td></tr><tr><td class="line-number" value="260"></td><td class="line-content">    </td></tr><tr><td class="line-number" value="261"></td><td class="line-content"><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="262"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="263"></td><td class="line-content"><span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">container</span>" <span class="html-attribute-name">id</span>="<span class="html-attribute-value">mainContainer</span>"&gt;</span></td></tr><tr><td class="line-number" value="264"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">id</span>="<span class="html-attribute-value">highlighter</span>"&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="265"></td><td class="line-content">    </td></tr><tr><td class="line-number" value="266"></td><td class="line-content">    <span class="html-tag">&lt;h2&gt;</span>DISCOUNT<span class="html-tag">&lt;/h2&gt;</span></td></tr><tr><td class="line-number" value="267"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">id</span>="<span class="html-attribute-value">reset-target</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">H-DISCOUNT</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>H-DISCOUNT<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="268"></td><td class="line-content">    </td></tr><tr><td class="line-number" value="269"></td><td class="line-content">    <span class="html-tag">&lt;h2&gt;</span>RIZALINO C. URBANO JR.<span class="html-tag">&lt;/h2&gt;</span></td></tr><tr><td class="line-number" value="270"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">110098112460</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>110098112460<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="271"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="272"></td><td class="line-content">    <span class="html-tag">&lt;h2&gt;</span>Laboratory &amp; Diagnostic<span class="html-tag">&lt;/h2&gt;</span></td></tr><tr><td class="line-number" value="273"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">CHEMISTRY: FBS</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>CHEMISTRY: FBS<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="274"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">CHEMISTRY: URIC ACID</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>CHEMISTRY: URIC ACID<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="275"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">CHEMISTRY: TOTAL CHOLESTEROL</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>CHEMISTRY: TOTAL CHOLESTEROL<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="276"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">CHEMISTRY: CREATININE</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>CHEMISTRY: CREATININE<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="277"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">MICROSCOPY: URINE-URINALYSIS</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>MICROSCOPY: URINE-URINALYSIS<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="278"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">HEMATOLOGY: CBC</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>HEMATOLOGY: CBC<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="279"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="280"></td><td class="line-content">    <span class="html-tag">&lt;h2&gt;</span>Medical Supplies<span class="html-tag">&lt;/h2&gt;</span></td></tr><tr><td class="line-number" value="281"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">IV CATHETER G. 20</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>IV CATHETER G. 20<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="282"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">IV CATHETER G. 24</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>IV CATHETER G. 24<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="283"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">MICROSET</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>MICROSET<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="284"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">MACROSET</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>MACROSET<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="285"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">SYRINGE DISPOSABLE (10 CC)</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>SYRINGE DISPOSABLE (10 CC)<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="286"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">SURGICAL PAPER TAPE 2X10 YARD (5CMX9.1INCH)</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>SURGICAL PAPER TAPE 2X10 YARD<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="287"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="288"></td><td class="line-content">    <span class="html-tag">&lt;h2&gt;</span>Others<span class="html-tag">&lt;/h2&gt;</span></td></tr><tr><td class="line-number" value="289"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">ER FEE</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>ER FEE<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="290"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">ADMISSION FEE</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>ADMISSION FEE<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="291"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">MISCELLANEOUS</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>MISCELLANEOUS<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="292"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">BED SHEET</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>BED SHEET<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="293"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">HM-VITAMIN B-COMPLEX</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>HM-VITAMIN B-COMPLEX<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="294"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">HM-CETIRIZINE</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>HM-CETIRIZINE<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="295"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">HM-CEFUROXIME</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>HM-CEFUROXIME<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="296"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">HM-MULTIVITAMINS</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>HM-MULTIVITAMINS<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="297"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">HM-CELECOXIB</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>HM-CELECOXIB<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="298"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">HM-LOSARTAN</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>HM-LOSARTAN<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="299"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">HM-ASCORBIC ACID</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>HM-ASCORBIC ACID<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="300"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">HM-CO-AMOXICLAV</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>HM-CO-AMOXICLAV<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="301"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">HM-PARACETAMOL</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>HM-PARACETAMOL<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="302"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">X-RAY</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>X-RAY<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="303"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">item-row</span>" <span class="html-attribute-name">data-val</span>="<span class="html-attribute-value">ULTRASOUND</span>"&gt;</span><span class="html-tag">&lt;span <span class="html-attribute-name">class</span>="<span class="html-attribute-value">text-content</span>"&gt;</span>ULTRASOUND<span class="html-tag">&lt;/span&gt;</span><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="304"></td><td class="line-content"><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="305"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="306"></td><td class="line-content"><span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">bottom-zone</span>" <span class="html-attribute-name">id</span>="<span class="html-attribute-value">copyZone</span>" <span class="html-attribute-name">onclick</span>="<span class="html-attribute-value">copyFocusedItem()</span>"&gt;</span></td></tr><tr><td class="line-number" value="307"></td><td class="line-content">    <span class="html-tag">&lt;button <span class="html-attribute-name">class</span>="<span class="html-attribute-value">btn-main-copy</span>" <span class="html-attribute-name">id</span>="<span class="html-attribute-value">magnetBtn</span>"&gt;</span>COPY<span class="html-tag">&lt;/button&gt;</span></td></tr><tr><td class="line-number" value="308"></td><td class="line-content"><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="309"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="310"></td><td class="line-content"><span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">modal-overlay</span>" <span class="html-attribute-name">id</span>="<span class="html-attribute-value">srModal</span>"&gt;</span></td></tr><tr><td class="line-number" value="311"></td><td class="line-content">    <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">modal-content</span>" <span class="html-attribute-name">id</span>="<span class="html-attribute-value">modalBox</span>"&gt;</span></td></tr><tr><td class="line-number" value="312"></td><td class="line-content">        <span class="html-tag">&lt;h3&gt;</span>DISCOUNT CALCULATOR<span class="html-tag">&lt;/h3&gt;</span></td></tr><tr><td class="line-number" value="313"></td><td class="line-content">        </td></tr><tr><td class="line-number" value="314"></td><td class="line-content">        <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">input-group</span>"&gt;</span></td></tr><tr><td class="line-number" value="315"></td><td class="line-content">            <span class="html-tag">&lt;label&gt;</span>HOSPITAL CHARGES<span class="html-tag">&lt;/label&gt;</span></td></tr><tr><td class="line-number" value="316"></td><td class="line-content">            <span class="html-tag">&lt;input <span class="html-attribute-name">id</span>="<span class="html-attribute-value">hospCharges</span>" <span class="html-attribute-name">type</span>="<span class="html-attribute-value">number</span>" <span class="html-attribute-name">placeholder</span>="<span class="html-attribute-value">0.00</span>" <span class="html-attribute-name">oninput</span>="<span class="html-attribute-value">calcSr()</span>"&gt;</span></td></tr><tr><td class="line-number" value="317"></td><td class="line-content">        <span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="318"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="319"></td><td class="line-content">        <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">input-group</span>"&gt;</span></td></tr><tr><td class="line-number" value="320"></td><td class="line-content">            <span class="html-tag">&lt;label&gt;</span>CASE RATE (PHIC)<span class="html-tag">&lt;/label&gt;</span></td></tr><tr><td class="line-number" value="321"></td><td class="line-content">            <span class="html-tag">&lt;input <span class="html-attribute-name">id</span>="<span class="html-attribute-value">caseRate</span>" <span class="html-attribute-name">type</span>="<span class="html-attribute-value">number</span>" <span class="html-attribute-name">placeholder</span>="<span class="html-attribute-value">0.00</span>" <span class="html-attribute-name">oninput</span>="<span class="html-attribute-value">calcSr()</span>"&gt;</span></td></tr><tr><td class="line-number" value="322"></td><td class="line-content">        <span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="323"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="324"></td><td class="line-content">        <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">modal-result</span>"&gt;</span></td></tr><tr><td class="line-number" value="325"></td><td class="line-content">            <span class="html-tag">&lt;label&gt;</span>FINAL DISCOUNT<span class="html-tag">&lt;/label&gt;</span></td></tr><tr><td class="line-number" value="326"></td><td class="line-content">            <span class="html-tag">&lt;div <span class="html-attribute-name">id</span>="<span class="html-attribute-value">finalDiscount</span>"&gt;</span>0.00<span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="327"></td><td class="line-content">        <span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="328"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="329"></td><td class="line-content">        <span class="html-tag">&lt;div <span class="html-attribute-name">class</span>="<span class="html-attribute-value">modal-copy-zone</span>" <span class="html-attribute-name">id</span>="<span class="html-attribute-value">modalCopyBtn</span>" <span class="html-attribute-name">onclick</span>="<span class="html-attribute-value">copyModalValue()</span>"&gt;</span></td></tr><tr><td class="line-number" value="330"></td><td class="line-content">            COPY RESULT</td></tr><tr><td class="line-number" value="331"></td><td class="line-content">        <span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="332"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="333"></td><td class="line-content">        <span class="html-tag">&lt;button <span class="html-attribute-name">class</span>="<span class="html-attribute-value">modal-close-btn</span>" <span class="html-attribute-name">onclick</span>="<span class="html-attribute-value">toggleModal(false)</span>"&gt;</span>Dismiss<span class="html-tag">&lt;/button&gt;</span></td></tr><tr><td class="line-number" value="334"></td><td class="line-content">    <span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="335"></td><td class="line-content"><span class="html-tag">&lt;/div&gt;</span></td></tr><tr><td class="line-number" value="336"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="337"></td><td class="line-content"><span class="html-tag">&lt;script&gt;</span></td></tr><tr><td class="line-number" value="338"></td><td class="line-content">    let textTimeout;</td></tr><tr><td class="line-number" value="339"></td><td class="line-content">    let currentFocusedIndex = 0;</td></tr><tr><td class="line-number" value="340"></td><td class="line-content">    const allRows = document.querySelectorAll('.item-row');</td></tr><tr><td class="line-number" value="341"></td><td class="line-content">    const highlighter = document.getElementById('highlighter');</td></tr><tr><td class="line-number" value="342"></td><td class="line-content">    const container = document.getElementById('mainContainer');</td></tr><tr><td class="line-number" value="343"></td><td class="line-content">    const magnetBtn = document.getElementById('magnetBtn');</td></tr><tr><td class="line-number" value="344"></td><td class="line-content">    const modalCopyBtn = document.getElementById('modalCopyBtn');</td></tr><tr><td class="line-number" value="345"></td><td class="line-content">    const srModal = document.getElementById('srModal');</td></tr><tr><td class="line-number" value="346"></td><td class="line-content">    const modalBox = document.getElementById('modalBox');</td></tr><tr><td class="line-number" value="347"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="348"></td><td class="line-content">    window.onload = () =&gt; {</td></tr><tr><td class="line-number" value="349"></td><td class="line-content">        setTimeout(() =&gt; updateFocus(0), 100);</td></tr><tr><td class="line-number" value="350"></td><td class="line-content">        allRows.forEach((row, idx) =&gt; {</td></tr><tr><td class="line-number" value="351"></td><td class="line-content">            row.addEventListener('click', () =&gt; executeCopy(row, row.getAttribute('data-val'), idx));</td></tr><tr><td class="line-number" value="352"></td><td class="line-content">        });</td></tr><tr><td class="line-number" value="353"></td><td class="line-content">        lucide.createIcons();</td></tr><tr><td class="line-number" value="354"></td><td class="line-content">    };</td></tr><tr><td class="line-number" value="355"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="356"></td><td class="line-content">    function toggleModal(show) {</td></tr><tr><td class="line-number" value="357"></td><td class="line-content">        srModal.style.display = show ? 'flex' : 'none';</td></tr><tr><td class="line-number" value="358"></td><td class="line-content">        if(show) {</td></tr><tr><td class="line-number" value="359"></td><td class="line-content">            document.getElementById('hospCharges').focus();</td></tr><tr><td class="line-number" value="360"></td><td class="line-content">        } else {</td></tr><tr><td class="line-number" value="361"></td><td class="line-content">            resetCalculator();</td></tr><tr><td class="line-number" value="362"></td><td class="line-content">        }</td></tr><tr><td class="line-number" value="363"></td><td class="line-content">    }</td></tr><tr><td class="line-number" value="364"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="365"></td><td class="line-content">    // Auto-close when clicking background overlay</td></tr><tr><td class="line-number" value="366"></td><td class="line-content">    srModal.addEventListener('click', (e) =&gt; {</td></tr><tr><td class="line-number" value="367"></td><td class="line-content">        if (e.target === srModal) toggleModal(false);</td></tr><tr><td class="line-number" value="368"></td><td class="line-content">    });</td></tr><tr><td class="line-number" value="369"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="370"></td><td class="line-content">    function resetCalculator() {</td></tr><tr><td class="line-number" value="371"></td><td class="line-content">        document.getElementById('hospCharges').value = "";</td></tr><tr><td class="line-number" value="372"></td><td class="line-content">        document.getElementById('caseRate').value = "";</td></tr><tr><td class="line-number" value="373"></td><td class="line-content">        document.getElementById('finalDiscount').innerText = "0.00";</td></tr><tr><td class="line-number" value="374"></td><td class="line-content">    }</td></tr><tr><td class="line-number" value="375"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="376"></td><td class="line-content">    function calcSr() {</td></tr><tr><td class="line-number" value="377"></td><td class="line-content">        const charges = parseFloat(document.getElementById('hospCharges').value) || 0;</td></tr><tr><td class="line-number" value="378"></td><td class="line-content">        const rate = parseFloat(document.getElementById('caseRate').value) || 0;</td></tr><tr><td class="line-number" value="379"></td><td class="line-content">        const discount = charges - ((charges * 0.20) + rate);</td></tr><tr><td class="line-number" value="380"></td><td class="line-content">        document.getElementById('finalDiscount').innerText = discount.toFixed(2);</td></tr><tr><td class="line-number" value="381"></td><td class="line-content">    }</td></tr><tr><td class="line-number" value="382"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="383"></td><td class="line-content">    function copyModalValue() {</td></tr><tr><td class="line-number" value="384"></td><td class="line-content">        const val = document.getElementById('finalDiscount').innerText;</td></tr><tr><td class="line-number" value="385"></td><td class="line-content">        navigator.clipboard.writeText(val).then(() =&gt; {</td></tr><tr><td class="line-number" value="386"></td><td class="line-content">            modalCopyBtn.innerText = "COPIED!";</td></tr><tr><td class="line-number" value="387"></td><td class="line-content">            modalCopyBtn.classList.add('success-state');</td></tr><tr><td class="line-number" value="388"></td><td class="line-content">            setTimeout(() =&gt; {</td></tr><tr><td class="line-number" value="389"></td><td class="line-content">                modalCopyBtn.innerText = "COPY RESULT";</td></tr><tr><td class="line-number" value="390"></td><td class="line-content">                modalCopyBtn.classList.remove('success-state');</td></tr><tr><td class="line-number" value="391"></td><td class="line-content">                toggleModal(false); // Auto-close after copy</td></tr><tr><td class="line-number" value="392"></td><td class="line-content">            }, 600);</td></tr><tr><td class="line-number" value="393"></td><td class="line-content">        });</td></tr><tr><td class="line-number" value="394"></td><td class="line-content">    }</td></tr><tr><td class="line-number" value="395"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="396"></td><td class="line-content">    /* 🐾 IDLE SYSTEM */</td></tr><tr><td class="line-number" value="397"></td><td class="line-content">    let idleTimer, nudgeTimer;</td></tr><tr><td class="line-number" value="398"></td><td class="line-content">    function startIdle() {</td></tr><tr><td class="line-number" value="399"></td><td class="line-content">        magnetBtn.classList.add('idle');</td></tr><tr><td class="line-number" value="400"></td><td class="line-content">        nudgeTimer = setInterval(() =&gt; {</td></tr><tr><td class="line-number" value="401"></td><td class="line-content">            magnetBtn.classList.add('nudge');</td></tr><tr><td class="line-number" value="402"></td><td class="line-content">            setTimeout(() =&gt; magnetBtn.classList.remove('nudge'), 600);</td></tr><tr><td class="line-number" value="403"></td><td class="line-content">        }, 4000);</td></tr><tr><td class="line-number" value="404"></td><td class="line-content">    }</td></tr><tr><td class="line-number" value="405"></td><td class="line-content">    function stopIdle() {</td></tr><tr><td class="line-number" value="406"></td><td class="line-content">        magnetBtn.classList.remove('idle', 'nudge');</td></tr><tr><td class="line-number" value="407"></td><td class="line-content">        clearInterval(nudgeTimer);</td></tr><tr><td class="line-number" value="408"></td><td class="line-content">    }</td></tr><tr><td class="line-number" value="409"></td><td class="line-content">    function resetIdle() {</td></tr><tr><td class="line-number" value="410"></td><td class="line-content">        stopIdle();</td></tr><tr><td class="line-number" value="411"></td><td class="line-content">        clearTimeout(idleTimer);</td></tr><tr><td class="line-number" value="412"></td><td class="line-content">        idleTimer = setTimeout(startIdle, 1500);</td></tr><tr><td class="line-number" value="413"></td><td class="line-content">    }</td></tr><tr><td class="line-number" value="414"></td><td class="line-content">    ['mousemove','click','scroll'].forEach(e =&gt; document.addEventListener(e, resetIdle));</td></tr><tr><td class="line-number" value="415"></td><td class="line-content">    setTimeout(startIdle, 1200);</td></tr><tr><td class="line-number" value="416"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="417"></td><td class="line-content">    /* MAGNET LOGIC */</td></tr><tr><td class="line-number" value="418"></td><td class="line-content">    document.addEventListener('mousemove', (e) =&gt; {</td></tr><tr><td class="line-number" value="419"></td><td class="line-content">        const threshold = window.innerHeight * 0.75;</td></tr><tr><td class="line-number" value="420"></td><td class="line-content">        if (e.clientY &gt; threshold) {</td></tr><tr><td class="line-number" value="421"></td><td class="line-content">            const centerX = window.innerWidth / 2;</td></tr><tr><td class="line-number" value="422"></td><td class="line-content">            const centerY = window.innerHeight - (window.innerHeight * 0.125);</td></tr><tr><td class="line-number" value="423"></td><td class="line-content">            const pullX = (e.clientX - centerX) * 0.3;</td></tr><tr><td class="line-number" value="424"></td><td class="line-content">            const pullY = (e.clientY - centerY) * 0.4;</td></tr><tr><td class="line-number" value="425"></td><td class="line-content">            magnetBtn.style.transform = `translate(${pullX}px, ${pullY}px)`;</td></tr><tr><td class="line-number" value="426"></td><td class="line-content">        } else {</td></tr><tr><td class="line-number" value="427"></td><td class="line-content">            resetMagnet();</td></tr><tr><td class="line-number" value="428"></td><td class="line-content">        }</td></tr><tr><td class="line-number" value="429"></td><td class="line-content">    });</td></tr><tr><td class="line-number" value="430"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="431"></td><td class="line-content">    function resetMagnet() { magnetBtn.style.transform = `translate(0, 0)`; }</td></tr><tr><td class="line-number" value="432"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="433"></td><td class="line-content">    function updateFocus(index) {</td></tr><tr><td class="line-number" value="434"></td><td class="line-content">        currentFocusedIndex = index;</td></tr><tr><td class="line-number" value="435"></td><td class="line-content">        const targetRow = allRows[index];</td></tr><tr><td class="line-number" value="436"></td><td class="line-content">        const rect = targetRow.getBoundingClientRect();</td></tr><tr><td class="line-number" value="437"></td><td class="line-content">        const containerRect = container.getBoundingClientRect();</td></tr><tr><td class="line-number" value="438"></td><td class="line-content">        highlighter.style.opacity = "1";</td></tr><tr><td class="line-number" value="439"></td><td class="line-content">        highlighter.style.top = (rect.top - containerRect.top) + "px";</td></tr><tr><td class="line-number" value="440"></td><td class="line-content">        highlighter.style.height = rect.height + "px";</td></tr><tr><td class="line-number" value="441"></td><td class="line-content">        targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });</td></tr><tr><td class="line-number" value="442"></td><td class="line-content">    }</td></tr><tr><td class="line-number" value="443"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="444"></td><td class="line-content">    function executeCopy(row, text, index) {</td></tr><tr><td class="line-number" value="445"></td><td class="line-content">        updateFocus(index);</td></tr><tr><td class="line-number" value="446"></td><td class="line-content">        navigator.clipboard.writeText(text).then(() =&gt; {</td></tr><tr><td class="line-number" value="447"></td><td class="line-content">            document.querySelectorAll('.text-content').forEach(el =&gt; el.classList.remove('text-active'));</td></tr><tr><td class="line-number" value="448"></td><td class="line-content">            clearTimeout(textTimeout);</td></tr><tr><td class="line-number" value="449"></td><td class="line-content">            const textElement = row.querySelector('.text-content');</td></tr><tr><td class="line-number" value="450"></td><td class="line-content">            textElement.classList.add('text-active');</td></tr><tr><td class="line-number" value="451"></td><td class="line-content">            magnetBtn.innerText = "COPIED!";</td></tr><tr><td class="line-number" value="452"></td><td class="line-content">            magnetBtn.classList.add('success-state');</td></tr><tr><td class="line-number" value="453"></td><td class="line-content">            document.body.classList.add('copy-flash');</td></tr><tr><td class="line-number" value="454"></td><td class="line-content">            setTimeout(() =&gt; {</td></tr><tr><td class="line-number" value="455"></td><td class="line-content">                magnetBtn.innerText = "COPY";</td></tr><tr><td class="line-number" value="456"></td><td class="line-content">                magnetBtn.classList.remove('success-state');</td></tr><tr><td class="line-number" value="457"></td><td class="line-content">                document.body.classList.remove('copy-flash');</td></tr><tr><td class="line-number" value="458"></td><td class="line-content">            }, 600);</td></tr><tr><td class="line-number" value="459"></td><td class="line-content">            setTimeout(() =&gt; nextFocus(), 400);</td></tr><tr><td class="line-number" value="460"></td><td class="line-content">            textTimeout = setTimeout(() =&gt; textElement.classList.remove('text-active'), 8000);</td></tr><tr><td class="line-number" value="461"></td><td class="line-content">        });</td></tr><tr><td class="line-number" value="462"></td><td class="line-content">    }</td></tr><tr><td class="line-number" value="463"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="464"></td><td class="line-content">    function copyFocusedItem() {</td></tr><tr><td class="line-number" value="465"></td><td class="line-content">        const activeRow = allRows[currentFocusedIndex];</td></tr><tr><td class="line-number" value="466"></td><td class="line-content">        executeCopy(activeRow, activeRow.getAttribute('data-val'), currentFocusedIndex);</td></tr><tr><td class="line-number" value="467"></td><td class="line-content">    }</td></tr><tr><td class="line-number" value="468"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="469"></td><td class="line-content">    function nextFocus() {</td></tr><tr><td class="line-number" value="470"></td><td class="line-content">        currentFocusedIndex = (currentFocusedIndex + 1) % allRows.length;</td></tr><tr><td class="line-number" value="471"></td><td class="line-content">        updateFocus(currentFocusedIndex);</td></tr><tr><td class="line-number" value="472"></td><td class="line-content">    }</td></tr><tr><td class="line-number" value="473"></td><td class="line-content"><br></td></tr><tr><td class="line-number" value="474"></td><td class="line-content">    function resetFocus() {</td></tr><tr><td class="line-number" value="475"></td><td class="line-content">        const fbsElement = document.getElementById('reset-target');</td></tr><tr><td class="line-number" value="476"></td><td class="line-content">        const fbsIndex = Array.from(allRows).indexOf(fbsElement);</td></tr><tr><td class="line-number" value="477"></td><td class="line-content">        updateFocus(fbsIndex);</td></tr><tr><td class="line-number" value="478"></td><td class="line-content">    }</td></tr><tr><td class="line-number" value="479"></td><td class="line-content"><span class="html-tag">&lt;/script&gt;</span></td></tr><tr><td class="line-number" value="480"></td><td class="line-content"><span class="html-tag">&lt;/body&gt;</span></td></tr><tr><td class="line-number" value="481"></td><td class="line-content"><span class="html-tag">&lt;/html&gt;</span></td></tr><tr><td class="line-number" value="482"></td><td class="line-content"></td></tr></tbody></table></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eSOA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root {
+    --bg: #0b0f1a;
+    --surface: #161e2d;
+    --primary: #38bdf8;
+    --success: #ffee00;
+    --text-main: #f1f5f9;
+    --glass: rgba(22, 30, 45, 0.8);
+    --modal-bg: rgba(15, 23, 42, 0.95);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text-main);
+    margin: 0;
+    padding: 80px 10px 25vh 10px;
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease;
+}
+
+body.copy-flash { background-color: #565e12; }
+
+.top-nav { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 3000; }
+
+.top-btn {
+    width: 46px; height: 46px;
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    color: white;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.top-btn:hover { background: var(--primary); color: var(--bg); transform: translateY(-2px); }
+
+.container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    background: var(--surface);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+#highlighter {
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    border: 2px solid var(--primary);
+    background-color: rgba(56, 189, 248, 0.15);
+    border-radius: 12px;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    z-index: 1;
+    opacity: 0;
+}
+
+h2 {
+    font-size: 0.7rem;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin: 30px 0 10px 10px;
+    opacity: 0.6;
+}
+
+.item-row {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px;
+    margin: 4px 0;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+}
+
+.text-content { font-size: 0.95rem; font-weight: 500; }
+.text-active { color: var(--primary); text-shadow: 0 0 12px rgba(56, 189, 248, 0.5); }
+
+.bottom-zone {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 25vh;
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.btn-main-copy {
+    width: 160px;
+    height: 70px;
+    background: var(--primary);
+    color: var(--bg);
+    border: none;
+    border-radius: 35px;
+    font-weight: 800;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+}
+
+/* ✅ FIXED HOVER (no override when success) */
+.bottom-zone:hover .btn-main-copy:not(.success-state) {
+    width: 250px;
+    height: 120px;
+    font-size: 1.2rem;
+    background-color: #6feeff;
+}
+
+/* ✅ SUCCESS STATE (yellow now works) */
+.btn-main-copy.success-state {
+    background: var(--success);
+    box-shadow: 0 0 25px rgba(255, 238, 0, 0.6);
+}
+
+@keyframes idleFloat {
+    0%, 100% { transform: translate(0,0) rotate(0); }
+    50% { transform: translate(0,-4px) rotate(1deg); }
+}
+
+.btn-main-copy.idle { animation: idleFloat 3.5s ease-in-out infinite; }
+
+/* --- MODAL --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
+    display: none; justify-content: center; align-items: center; z-index: 4000;
+}
+
+.modal-content {
+    background: var(--modal-bg); width: 90%; max-width: 380px;
+    padding: 40px 30px; border-radius: 32px; 
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    position: relative; text-align: center;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(56, 189, 248, 0.05);
+}
+
+.modal-content h3 { 
+    margin-top: 0; font-weight: 800; letter-spacing: 1px; 
+    color: var(--primary); font-size: 1.2rem; margin-bottom: 25px;
+}
+
+.input-group { margin-bottom: 15px; text-align: left; }
+
+.input-group label {
+    font-size: 0.65rem;
+    color: var(--primary);
+    opacity: 0.8;
+    margin-left: 10px;
+    font-weight: 800;
+}
+
+.modal-content input {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 16px;
+    margin-top: 5px;
+    border-radius: 16px;
+    color: white;
+    font-size: 1.2rem;
+    box-sizing: border-box;
+    text-align: center;
+    transition: border 0.3s ease;
+    font-weight: 600;
+}
+
+.modal-content input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.modal-result { 
+    margin: 25px 0;
+    padding: 20px; 
+    background: linear-gradient(145deg, rgba(56, 189, 248, 0.1), rgba(0,0,0,0)); 
+    border-radius: 20px;
+    border: 1px dashed rgba(56, 189, 248, 0.3);
+}
+
+.modal-result label {
+    font-size: 0.7rem;
+    color: var(--primary);
+    display: block;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+}
+
+#finalDiscount {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--success);
+    text-shadow: 0 0 15px rgba(255, 238, 0, 0.3);
+}
+
+.modal-copy-zone { 
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    cursor: pointer;
+    margin-top: 10px;
+    background: var(--primary); 
+    color: var(--bg);
+    border-radius: 16px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+}
+
+.modal-copy-zone:hover { transform: scale(1.02); background: #6feeff; }
+
+.modal-copy-zone.success-state { background: var(--success); }
+
+.modal-close-btn {
+    margin-top: 20px;
+    background: transparent;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: underline;
+}
+</style>
+</head>
+<body onmouseleave="resetMagnet()">
+
+<div class="top-nav">
+    <button class="top-btn" title="Reset" onclick="resetFocus()"><i data-lucide="refresh-cw"></i></button>
+    <button class="top-btn" title="Senior Discount" onclick="toggleModal(true)"><i data-lucide="user-check"></i></button>
+    <button class="top-btn" title="Next" onclick="nextFocus()"><i data-lucide="chevron-down"></i></button>
+    
+</div>
+
+<div class="container" id="mainContainer">
+    <div id="highlighter"></div>
+    
+    <h2>DISCOUNT</h2>
+    <div class="item-row" id="reset-target" data-val="H-DISCOUNT"><span class="text-content">H-DISCOUNT</span></div>
+    
+    <h2>RIZALINO C. URBANO JR.</h2>
+    <div class="item-row" data-val="110098112460"><span class="text-content">110098112460</span></div>
+
+    <h2>Laboratory & Diagnostic</h2>
+    <div class="item-row" data-val="CHEMISTRY: FBS"><span class="text-content">CHEMISTRY: FBS</span></div>
+    <div class="item-row" data-val="CHEMISTRY: URIC ACID"><span class="text-content">CHEMISTRY: URIC ACID</span></div>
+    <div class="item-row" data-val="CHEMISTRY: TOTAL CHOLESTEROL"><span class="text-content">CHEMISTRY: TOTAL CHOLESTEROL</span></div>
+    <div class="item-row" data-val="CHEMISTRY: CREATININE"><span class="text-content">CHEMISTRY: CREATININE</span></div>
+    <div class="item-row" data-val="MICROSCOPY: URINE-URINALYSIS"><span class="text-content">MICROSCOPY: URINE-URINALYSIS</span></div>
+    <div class="item-row" data-val="HEMATOLOGY: CBC"><span class="text-content">HEMATOLOGY: CBC</span></div>
+
+    <h2>Medical Supplies</h2>
+    <div class="item-row" data-val="IV CATHETER G. 20"><span class="text-content">IV CATHETER G. 20</span></div>
+    <div class="item-row" data-val="IV CATHETER G. 24"><span class="text-content">IV CATHETER G. 24</span></div>
+    <div class="item-row" data-val="MICROSET"><span class="text-content">MICROSET</span></div>
+    <div class="item-row" data-val="MACROSET"><span class="text-content">MACROSET</span></div>
+    <div class="item-row" data-val="SYRINGE DISPOSABLE (10 CC)"><span class="text-content">SYRINGE DISPOSABLE (10 CC)</span></div>
+    <div class="item-row" data-val="SURGICAL PAPER TAPE 2X10 YARD (5CMX9.1INCH)"><span class="text-content">SURGICAL PAPER TAPE 2X10 YARD</span></div>
+
+    <h2>Others</h2>
+    <div class="item-row" data-val="ER FEE"><span class="text-content">ER FEE</span></div>
+    <div class="item-row" data-val="ADMISSION FEE"><span class="text-content">ADMISSION FEE</span></div>
+    <div class="item-row" data-val="MISCELLANEOUS"><span class="text-content">MISCELLANEOUS</span></div>
+    <div class="item-row" data-val="BED SHEET"><span class="text-content">BED SHEET</span></div>
+    <div class="item-row" data-val="HM-VITAMIN B-COMPLEX"><span class="text-content">HM-VITAMIN B-COMPLEX</span></div>
+    <div class="item-row" data-val="HM-CETIRIZINE"><span class="text-content">HM-CETIRIZINE</span></div>
+    <div class="item-row" data-val="HM-CEFUROXIME"><span class="text-content">HM-CEFUROXIME</span></div>
+    <div class="item-row" data-val="HM-MULTIVITAMINS"><span class="text-content">HM-MULTIVITAMINS</span></div>
+    <div class="item-row" data-val="HM-CELECOXIB"><span class="text-content">HM-CELECOXIB</span></div>
+    <div class="item-row" data-val="HM-LOSARTAN"><span class="text-content">HM-LOSARTAN</span></div>
+    <div class="item-row" data-val="HM-ASCORBIC ACID"><span class="text-content">HM-ASCORBIC ACID</span></div>
+    <div class="item-row" data-val="HM-CO-AMOXICLAV"><span class="text-content">HM-CO-AMOXICLAV</span></div>
+    <div class="item-row" data-val="HM-PARACETAMOL"><span class="text-content">HM-PARACETAMOL</span></div>
+    <div class="item-row" data-val="X-RAY"><span class="text-content">X-RAY</span></div>
+    <div class="item-row" data-val="ULTRASOUND"><span class="text-content">ULTRASOUND</span></div>
+</div>
+
+<div class="bottom-zone" id="copyZone" onclick="copyFocusedItem()">
+    <button class="btn-main-copy" id="magnetBtn">COPY</button>
+</div>
+
+<div class="modal-overlay" id="srModal">
+    <div class="modal-content" id="modalBox">
+        <h3>DISCOUNT CALCULATOR</h3>
+        
+        <div class="input-group">
+            <label>HOSPITAL CHARGES</label>
+            <input id="hospCharges" type="number" placeholder="0.00" oninput="calcSr()">
+        </div>
+
+        <div class="input-group">
+            <label>CASE RATE (PHIC)</label>
+            <input id="caseRate" type="number" placeholder="0.00" oninput="calcSr()">
+        </div>
+
+        <div class="modal-result">
+            <label>FINAL DISCOUNT</label>
+            <div id="finalDiscount">0.00</div>
+        </div>
+
+        <div class="modal-copy-zone" id="modalCopyBtn" onclick="copyModalValue()">
+            COPY RESULT
+        </div>
+
+        <button class="modal-close-btn" onclick="toggleModal(false)">Dismiss</button>
+    </div>
+</div>
+
+<script>
+    let textTimeout;
+    let currentFocusedIndex = 0;
+    const allRows = document.querySelectorAll('.item-row');
+    const highlighter = document.getElementById('highlighter');
+    const container = document.getElementById('mainContainer');
+    const magnetBtn = document.getElementById('magnetBtn');
+    const modalCopyBtn = document.getElementById('modalCopyBtn');
+    const srModal = document.getElementById('srModal');
+    const modalBox = document.getElementById('modalBox');
+
+    window.onload = () => {
+        setTimeout(() => updateFocus(0), 100);
+        allRows.forEach((row, idx) => {
+            row.addEventListener('click', () => executeCopy(row, row.getAttribute('data-val'), idx));
+        });
+        lucide.createIcons();
+    };
+
+    function toggleModal(show) {
+        srModal.style.display = show ? 'flex' : 'none';
+        if(show) {
+            document.getElementById('hospCharges').focus();
+        } else {
+            resetCalculator();
+        }
+    }
+
+    // Auto-close when clicking background overlay
+    srModal.addEventListener('click', (e) => {
+        if (e.target === srModal) toggleModal(false);
+    });
+
+    function resetCalculator() {
+        document.getElementById('hospCharges').value = "";
+        document.getElementById('caseRate').value = "";
+        document.getElementById('finalDiscount').innerText = "0.00";
+    }
+
+    function calcSr() {
+        const charges = parseFloat(document.getElementById('hospCharges').value) || 0;
+        const rate = parseFloat(document.getElementById('caseRate').value) || 0;
+        const discount = charges - ((charges * 0.20) + rate);
+        document.getElementById('finalDiscount').innerText = discount.toFixed(2);
+    }
+
+    function copyModalValue() {
+        const val = document.getElementById('finalDiscount').innerText;
+        navigator.clipboard.writeText(val).then(() => {
+            modalCopyBtn.innerText = "COPIED!";
+            modalCopyBtn.classList.add('success-state');
+            setTimeout(() => {
+                modalCopyBtn.innerText = "COPY RESULT";
+                modalCopyBtn.classList.remove('success-state');
+                toggleModal(false); // Auto-close after copy
+            }, 600);
+        });
+    }
+
+    /* 🐾 IDLE SYSTEM */
+    let idleTimer, nudgeTimer;
+    function startIdle() {
+        magnetBtn.classList.add('idle');
+        nudgeTimer = setInterval(() => {
+            magnetBtn.classList.add('nudge');
+            setTimeout(() => magnetBtn.classList.remove('nudge'), 600);
+        }, 4000);
+    }
+    function stopIdle() {
+        magnetBtn.classList.remove('idle', 'nudge');
+        clearInterval(nudgeTimer);
+    }
+    function resetIdle() {
+        stopIdle();
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(startIdle, 1500);
+    }
+    ['mousemove','click','scroll'].forEach(e => document.addEventListener(e, resetIdle));
+    setTimeout(startIdle, 1200);
+
+    /* MAGNET LOGIC */
+    document.addEventListener('mousemove', (e) => {
+        const threshold = window.innerHeight * 0.75;
+        if (e.clientY > threshold) {
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight - (window.innerHeight * 0.125);
+            const pullX = (e.clientX - centerX) * 0.3;
+            const pullY = (e.clientY - centerY) * 0.4;
+            magnetBtn.style.transform = `translate(${pullX}px, ${pullY}px)`;
+        } else {
+            resetMagnet();
+        }
+    });
+
+    function resetMagnet() { magnetBtn.style.transform = `translate(0, 0)`; }
+
+    function updateFocus(index) {
+        currentFocusedIndex = index;
+        const targetRow = allRows[index];
+        const rect = targetRow.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        highlighter.style.opacity = "1";
+        highlighter.style.top = (rect.top - containerRect.top) + "px";
+        highlighter.style.height = rect.height + "px";
+        targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function executeCopy(row, text, index) {
+        updateFocus(index);
+        navigator.clipboard.writeText(text).then(() => {
+            document.querySelectorAll('.text-content').forEach(el => el.classList.remove('text-active'));
+            clearTimeout(textTimeout);
+            const textElement = row.querySelector('.text-content');
+            textElement.classList.add('text-active');
+            magnetBtn.innerText = "COPIED!";
+            magnetBtn.classList.add('success-state');
+            document.body.classList.add('copy-flash');
+            setTimeout(() => {
+                magnetBtn.innerText = "COPY";
+                magnetBtn.classList.remove('success-state');
+                document.body.classList.remove('copy-flash');
+            }, 600);
+            setTimeout(() => nextFocus(), 400);
+            textTimeout = setTimeout(() => textElement.classList.remove('text-active'), 8000);
+        });
+    }
+
+    function copyFocusedItem() {
+        const activeRow = allRows[currentFocusedIndex];
+        executeCopy(activeRow, activeRow.getAttribute('data-val'), currentFocusedIndex);
+    }
+
+    function nextFocus() {
+        currentFocusedIndex = (currentFocusedIndex + 1) % allRows.length;
+        updateFocus(currentFocusedIndex);
+    }
+
+    function resetFocus() {
+        const fbsElement = document.getElementById('reset-target');
+        const fbsIndex = Array.from(allRows).indexOf(fbsElement);
+        updateFocus(fbsIndex);
+    }
+</script>
+</body>
+</html>
