@@ -369,8 +369,27 @@ h2 {
     function calcSr() {
         const charges = parseFloat(document.getElementById('hospCharges').value) || 0;
         const rate = parseFloat(document.getElementById('caseRate').value) || 0;
-        const discount = charges - ((charges * 0.20) + rate);
-        document.getElementById('finalDiscount').innerText = discount.toFixed(2);
+        
+        let discount = 0;
+    
+        if (charges > 0) {
+            // Calculate 20% of charges
+            const twentyPercent = charges * 0.20;
+    
+            if (rate > 0) {
+                // Case 1: Both fields have input
+                // Formula: Charges - (20% Discount + Case Rate)
+                discount = charges - (twentyPercent + rate);
+            } else {
+                // Case 2: Only Hospital Charges has input
+                // Formula: Charges - 20%
+                discount = charges - twentyPercent;
+            }
+        }
+    
+        // Ensure we don't display negative numbers if Case Rate > Charges
+        const finalValue = Math.max(0, discount);
+        document.getElementById('finalDiscount').innerText = finalValue.toFixed(2);
     }
 
     function copyModalValue() {
