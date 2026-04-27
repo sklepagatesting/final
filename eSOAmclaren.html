@@ -8,11 +8,11 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --bg: #1a0f0b; /* Dark brownish-black */
-            --surface: #140700; /* Deep amber-charcoal */
-            --primary: #ff7300; /* Bright Orange (Tailwind Orange 400) */
+            --bg: #1a0f0b;
+            --surface: #140700;
+            --primary: #ff7300;
             --primary-light: #ffedd5;
-            --success: #f97316; /* Vivid Orange */
+            --success: #f97316;
             --text-main: #fff7ed;
             --glass: rgb(255, 166, 118);
             --modal-bg: rgba(28, 15, 10, 0.95);
@@ -31,7 +31,7 @@
         }
 
         body.copy-flash {
-            background-color: #fffb00; /* Deep Burnt Orange flash */
+            background-color: #fffb00;
         }
 
         /* Navigation */
@@ -122,7 +122,7 @@
             text-shadow: 0 0 12px rgba(251, 146, 60, 0.8);
         }
 
-        /* Bottom Copy Button */
+        /* Bottom Copy Button Layering */
         .bottom-zone {
             position: fixed;
             bottom: 0;
@@ -145,29 +145,66 @@
             font-size: 1rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.4);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-            
-            background-image: url('https://sklepagatesting.github.io/resources/Images/mclaren.png');
-            background-size: cover;
-            background-position: center;
+            position: relative;
+            overflow: hidden;
+            background-color: transparent;
             color: white;
             text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            pointer-events: none;
+            filter: drop-shadow(0 10px 15px rgba(249, 115, 22, 0.6));
+            transition: 
+                width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                filter 0.4s ease, 
+                font-size 0.5s ease;
         }
 
-        .bottom-zone:hover .btn-main-copy:not(.success-state) {
-            width: 250px;
-            height: 120px;
-            font-size: 1.2rem;
-        }
-
-        .btn-main-copy.success-state {
-            background-image: none;
+        /* Success Background Layer */
+        .btn-main-copy::before {
+            content: '';
+            position: absolute;
+            inset: 0;
             background-color: var(--success);
-            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        /* McLaren Image Layer (Always Warm) */
+        .btn-main-copy::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('https://sklepagatesting.github.io/resources/Images/mclaren.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+        }
+
+        /* Text Layer */
+        .btn-main-copy span {
+            position: relative;
+            z-index: 3;
+        }
+
+        /* Hover Behavior */
+        .bottom-zone:hover .btn-main-copy:not(.success-state) {
+            width: 280px;
+            height: 140px;
+            font-size: 1.2rem;
+            filter: drop-shadow(0 15px 25px rgba(249, 115, 22, 0.8));
+        }
+
+        /* Success State */
+        .btn-main-copy.success-state::before { opacity: 1; }
+        .btn-main-copy.success-state::after { opacity: 0; }
+        .btn-main-copy.success-state {
+            width: 160px;
+            height: 70px;
             text-shadow: none;
-            box-shadow: 0 0 25px rgba(249, 115, 22, 0.6);
         }
 
         @keyframes idleFloat {
@@ -203,30 +240,10 @@
             border: 1px solid rgba(251, 146, 60, 0.3);
             position: relative;
             text-align: center;
-            box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(251, 146, 60, 0.05);
         }
 
-        .modal-content h3 {
-            margin-top: 0;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: var(--primary);
-            font-size: 1.2rem;
-            margin-bottom: 25px;
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .input-group label {
-            font-size: 0.65rem;
-            color: var(--primary);
-            opacity: 0.8;
-            margin-left: 10px;
-            font-weight: 800;
-        }
+        .input-group { margin-bottom: 15px; text-align: left; }
+        .input-group label { font-size: 0.65rem; color: var(--primary); font-weight: 800; margin-left: 10px; }
 
         .modal-content input {
             width: 100%;
@@ -239,13 +256,7 @@
             font-size: 1.2rem;
             box-sizing: border-box;
             text-align: center;
-            transition: border 0.3s ease;
             font-weight: 600;
-        }
-
-        .modal-content input:focus {
-            outline: none;
-            border-color: var(--primary);
         }
 
         .modal-result {
@@ -256,19 +267,10 @@
             border: 1px dashed rgba(251, 146, 60, 0.3);
         }
 
-        .modal-result label {
-            font-size: 0.7rem;
-            color: var(--primary);
-            display: block;
-            margin-bottom: 8px;
-            letter-spacing: 2px;
-        }
-
         #finalDiscount {
             font-size: 2.2rem;
             font-weight: 800;
             color: var(--primary);
-            text-shadow: 0 0 15px rgba(251, 146, 60, 0.3);
         }
 
         .modal-copy-zone {
@@ -277,24 +279,14 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            margin-top: 10px;
             background: var(--primary);
             color: var(--bg);
             border-radius: 16px;
             font-weight: 800;
-            letter-spacing: 1px;
             transition: all 0.2s ease;
         }
 
-        .modal-copy-zone:hover {
-            transform: scale(1.02);
-            background: #fdba74;
-        }
-
-        .modal-copy-zone.success-state {
-            background: var(--success);
-            color: white;
-        }
+        .modal-copy-zone.success-state { background: var(--success); color: white; }
 
         .modal-close-btn {
             margin-top: 20px;
@@ -303,12 +295,10 @@
             color: #94a3b8;
             cursor: pointer;
             font-size: 0.8rem;
-            font-weight: 600;
             text-decoration: underline;
         }
     </style>
 </head>
-
 <body onmouseleave="resetMagnet()">
 
     <div class="top-nav">
@@ -344,7 +334,7 @@
         <div class="item-row" data-val="MICROSET"><span class="text-content">MICROSET</span></div>
         <div class="item-row" data-val="MACROSET"><span class="text-content">MACROSET</span></div>
         <div class="item-row" data-val="SYRINGE DISPOSABLE (10 CC)"><span class="text-content">SYRINGE DISPOSABLE (10 CC)</span></div>
-        <div class="item-row" data-val="SURGICAL PAPER TAPE 2X10 YARD (5CMX9.1INCH)"><span class="text-content">SURGICAL PAPER TAPE 2X10 YARD</span></div>
+        <div class="item-row" data-val="SURGICAL PAPER TAPE 2X10 YARD"><span class="text-content">SURGICAL PAPER TAPE</span></div>
 
         <h2>Others</h2>
         <div class="item-row" data-val="ER FEE"><span class="text-content">ER FEE</span></div>
@@ -365,7 +355,9 @@
     </div>
 
     <div class="bottom-zone" id="copyZone" onclick="copyFocusedItem()">
-        <button class="btn-main-copy" id="magnetBtn"></button>
+        <button class="btn-main-copy" id="magnetBtn">
+            <span></span>
+        </button>
     </div>
 
     <div class="modal-overlay" id="srModal">
@@ -399,7 +391,6 @@
         const magnetBtn = document.getElementById('magnetBtn');
         const modalCopyBtn = document.getElementById('modalCopyBtn');
         const srModal = document.getElementById('srModal');
-        const modalBox = document.getElementById('modalBox');
 
         window.onload = () => {
             setTimeout(() => updateFocus(0), 100);
@@ -407,20 +398,16 @@
                 row.addEventListener('click', () => executeCopy(row, row.getAttribute('data-val'), idx));
             });
             lucide.createIcons();
+            startIdle();
         };
 
         function toggleModal(show) {
             srModal.style.display = show ? 'flex' : 'none';
-            if (show) {
-                document.getElementById('hospCharges').focus();
-            } else {
-                resetCalculator();
-            }
+            if (show) document.getElementById('hospCharges').focus();
+            else resetCalculator();
         }
 
-        srModal.addEventListener('click', (e) => {
-            if (e.target === srModal) toggleModal(false);
-        });
+        srModal.addEventListener('click', (e) => { if (e.target === srModal) toggleModal(false); });
 
         function resetCalculator() {
             document.getElementById('hospCharges').value = "";
@@ -448,31 +435,12 @@
             });
         }
 
-        /* Idle System */
-        let idleTimer, nudgeTimer;
-        function startIdle() {
-            magnetBtn.classList.add('idle');
-            nudgeTimer = setInterval(() => {
-                magnetBtn.classList.add('nudge');
-                setTimeout(() => magnetBtn.classList.remove('nudge'), 600);
-            }, 4000);
-        }
-
-        function stopIdle() {
-            magnetBtn.classList.remove('idle', 'nudge');
-            clearInterval(nudgeTimer);
-        }
-
-        function resetIdle() {
-            stopIdle();
-            clearTimeout(idleTimer);
-            idleTimer = setTimeout(startIdle, 1500);
-        }
-
+        let idleTimer;
+        function startIdle() { magnetBtn.classList.add('idle'); }
+        function stopIdle() { magnetBtn.classList.remove('idle'); }
+        function resetIdle() { stopIdle(); clearTimeout(idleTimer); idleTimer = setTimeout(startIdle, 1500); }
         ['mousemove', 'click', 'scroll'].forEach(e => document.addEventListener(e, resetIdle));
-        setTimeout(startIdle, 1200);
 
-        /* Magnet Logic */
         document.addEventListener('mousemove', (e) => {
             const threshold = window.innerHeight * 0.75;
             if (e.clientY > threshold) {
@@ -482,13 +450,9 @@
                 const pullY = (e.clientY - centerY) * 0.4;
                 magnetBtn.style.transform = `translate(${pullX}px, ${pullY}px)`;
             } else {
-                resetMagnet();
+                magnetBtn.style.transform = `translate(0, 0)`;
             }
         });
-
-        function resetMagnet() {
-            magnetBtn.style.transform = `translate(0, 0)`;
-        }
 
         function updateFocus(index) {
             currentFocusedIndex = index;
@@ -505,19 +469,21 @@
             updateFocus(index);
             navigator.clipboard.writeText(text).then(() => {
                 document.querySelectorAll('.text-content').forEach(el => el.classList.remove('text-active'));
-                clearTimeout(textTimeout);
                 const textElement = row.querySelector('.text-content');
+                const btnSpan = magnetBtn.querySelector('span');
+                
                 textElement.classList.add('text-active');
-                magnetBtn.innerText = "COPIED!";
+                btnSpan.innerText = "COPIED!";
                 magnetBtn.classList.add('success-state');
                 document.body.classList.add('copy-flash');
+                
                 setTimeout(() => {
-                    magnetBtn.innerText = "";
+                    btnSpan.innerText = "";
                     magnetBtn.classList.remove('success-state');
                     document.body.classList.remove('copy-flash');
                 }, 600);
+                
                 setTimeout(() => nextFocus(), 400);
-                textTimeout = setTimeout(() => textElement.classList.remove('text-active'), 8000);
             });
         }
 
@@ -536,6 +502,8 @@
             const fbsIndex = Array.from(allRows).indexOf(fbsElement);
             updateFocus(fbsIndex);
         }
+
+        function resetMagnet() { magnetBtn.style.transform = `translate(0, 0)`; }
     </script>
 </body>
 </html>
