@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eSOA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg: #0b0f1a;
+            --surface: #161e2d;
+            --primary: #38bdf8;
+            --success: #ffee00;
+            --text-main: #f1f5f9;
+            --glass: rgba(22, 30, 45, 0.8);
+            --modal-bg: rgba(15, 23, 42, 0.95);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 80px 10px 25vh 10px;
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        body.copy-flash {
+            background-color: #565e12;
+        }
+
+        /* Navigation */
+        .top-nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 3000;
+        }
+
+        .top-btn {
+            width: 46px;
+            height: 46px;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            color: white;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .top-btn:hover {
+            background: var(--primary);
+            color: var(--bg);
+            transform: translateY(-2px);
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        #highlighter {
+            position: absolute;
+            left: 8px;
+            right: 8px;
+            border: 2px solid var(--primary);
+            background-color: rgba(56, 189, 248, 0.15);
+            border-radius: 12px;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            z-index: 1;
+            opacity: 0;
+        }
+
+        h2 {
+            font-size: 0.7rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin: 30px 0 10px 10px;
+            opacity: 0.6;
+        }
+
+        .item-row {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px;
+            margin: 4px 0;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: transform 0.2s ease;
+        }
+
+        .text-content {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .text-active {
+            color: #facc15;
+            text-shadow: 0 0 12px rgba(250, 204, 21, 0.5);
+        }
+
+        /* Bottom Copy Button */
+        .bottom-zone {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 25vh;
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .btn-main-copy {
+            width: 160px;
+            height: 70px;
+            border: none;
+            border-radius: 35px;
+            font-weight: 800;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            
+            /* Image Fill Settings */
+            background-image: url('https://sklepagatesting.github.io/resources/Images/wenna.png'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .bottom-zone:hover .btn-main-copy:not(.success-state) {
+            width: 250px;
+            height: 120px;
+            font-size: 1.2rem;
+        }
+
+        .btn-main-copy.success-state {
+            background-image: none;
+            background-color: var(--success);
+            color: var(--bg);
+            text-shadow: none;
+            box-shadow: 0 0 25px rgba(255, 238, 0, 0.6);
+        }
+
+        @keyframes idleFloat {
+            0%, 100% { transform: translate(0,0) rotate(0); }
+            50% { transform: translate(0,-4px) rotate(1deg); }
+        }
+
+        .btn-main-copy.idle {
+            animation: idleFloat 3.5s ease-in-out infinite;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(12px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 4000;
+        }
+
+        .modal-content {
+            background: var(--modal-bg);
+            width: 90%;
+            max-width: 380px;
+            padding: 40px 30px;
+            border-radius: 32px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            position: relative;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(56, 189, 248, 0.05);
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            font-size: 0.65rem;
+            color: var(--primary);
+            opacity: 0.8;
+            margin-left: 10px;
+            font-weight: 800;
+        }
+
+        .modal-content input {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            margin-top: 5px;
+            border-radius: 16px;
+            color: white;
+            font-size: 1.2rem;
+            box-sizing: border-box;
+            text-align: center;
+            transition: border 0.3s ease;
+            font-weight: 600;
+        }
+
+        .modal-content input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .modal-result {
+            margin: 25px 0;
+            padding: 20px;
+            background: linear-gradient(145deg, rgba(56, 189, 248, 0.1), rgba(0,0,0,0));
+            border-radius: 20px;
+            border: 1px dashed rgba(56, 189, 248, 0.3);
+        }
+
+        .modal-result label {
+            font-size: 0.7rem;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+
+        #finalDiscount {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--success);
+            text-shadow: 0 0 15px rgba(255, 238, 0, 0.3);
+        }
+
+        .modal-copy-zone {
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin-top: 10px;
+            background: var(--primary);
+            color: var(--bg);
+            border-radius: 16px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+        }
+
+        .modal-copy-zone:hover {
+            transform: scale(1.02);
+            background: #6feeff;
+        }
+
+        .modal-copy-zone.success-state {
+            background: var(--success);
+        }
+
+        .modal-close-btn {
+            margin-top: 20px;
+            background: transparent;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body onmouseleave="resetMagnet()">
+
+    <div class="top-nav">
+        <button class="top-btn" title="Reset" onclick="resetFocus()"><i data-lucide="refresh-cw"></i></button>
+        <button class="top-btn" title="Senior Discount" onclick="toggleModal(true)"><i data-lucide="user-check"></i></button>
+        <button class="top-btn" title="Next" onclick="nextFocus()"><i data-lucide="chevron-down"></i></button>
+    </div>
+
+    <div class="container" id="mainContainer">
+        <div id="highlighter"></div>
+
+        <h2>DISCOUNT</h2>
+        <div class="item-row" id="reset-target" data-val="H-DISCOUNT">
+            <span class="text-content">H-DISCOUNT</span>
+        </div>
+
+        <h2>RIZALINO C. URBANO JR.</h2>
+        <div class="item-row" data-val="110098112460">
+            <span class="text-content">110098112460</span>
+        </div>
+
+        <h2>Laboratory & Diagnostic</h2>
+        <div class="item-row" data-val="CHEMISTRY: FBS"><span class="text-content">CHEMISTRY: FBS</span></div>
+        <div class="item-row" data-val="CHEMISTRY: URIC ACID"><span class="text-content">CHEMISTRY: URIC ACID</span></div>
+        <div class="item-row" data-val="CHEMISTRY: TOTAL CHOLESTEROL"><span class="text-content">CHEMISTRY: TOTAL CHOLESTEROL</span></div>
+        <div class="item-row" data-val="CHEMISTRY: CREATININE"><span class="text-content">CHEMISTRY: CREATININE</span></div>
+        <div class="item-row" data-val="MICROSCOPY: URINE-URINALYSIS"><span class="text-content">MICROSCOPY: URINE-URINALYSIS</span></div>
+        <div class="item-row" data-val="HEMATOLOGY: CBC"><span class="text-content">HEMATOLOGY: CBC</span></div>
+
+        <h2>Medical Supplies</h2>
+        <div class="item-row" data-val="IV CATHETER G. 20"><span class="text-content">IV CATHETER G. 20</span></div>
+        <div class="item-row" data-val="IV CATHETER G. 24"><span class="text-content">IV CATHETER G. 24</span></div>
+        <div class="item-row" data-val="MICROSET"><span class="text-content">MICROSET</span></div>
+        <div class="item-row" data-val="MACROSET"><span class="text-content">MACROSET</span></div>
+        <div class="item-row" data-val="SYRINGE DISPOSABLE (10 CC)"><span class="text-content">SYRINGE DISPOSABLE (10 CC)</span></div>
+        <div class="item-row" data-val="SURGICAL PAPER TAPE 2X10 YARD (5CMX9.1INCH)"><span class="text-content">SURGICAL PAPER TAPE 2X10 YARD</span></div>
+
+        <h2>Others</h2>
+        <div class="item-row" data-val="ER FEE"><span class="text-content">ER FEE</span></div>
+        <div class="item-row" data-val="ADMISSION FEE"><span class="text-content">ADMISSION FEE</span></div>
+        <div class="item-row" data-val="MISCELLANEOUS"><span class="text-content">MISCELLANEOUS</span></div>
+        <div class="item-row" data-val="BED SHEET"><span class="text-content">BED SHEET</span></div>
+        <div class="item-row" data-val="HM-VITAMIN B-COMPLEX"><span class="text-content">HM-VITAMIN B-COMPLEX</span></div>
+        <div class="item-row" data-val="HM-CETIRIZINE"><span class="text-content">HM-CETIRIZINE</span></div>
+        <div class="item-row" data-val="HM-CEFUROXIME"><span class="text-content">HM-CEFUROXIME</span></div>
+        <div class="item-row" data-val="HM-MULTIVITAMINS"><span class="text-content">HM-MULTIVITAMINS</span></div>
+        <div class="item-row" data-val="HM-CELECOXIB"><span class="text-content">HM-CELECOXIB</span></div>
+        <div class="item-row" data-val="HM-LOSARTAN"><span class="text-content">HM-LOSARTAN</span></div>
+        <div class="item-row" data-val="HM-ASCORBIC ACID"><span class="text-content">HM-ASCORBIC ACID</span></div>
+        <div class="item-row" data-val="HM-CO-AMOXICLAV"><span class="text-content">HM-CO-AMOXICLAV</span></div>
+        <div class="item-row" data-val="HM-PARACETAMOL"><span class="text-content">HM-PARACETAMOL</span></div>
+        <div class="item-row" data-val="X-RAY"><span class="text-content">X-RAY</span></div>
+        <div class="item-row" data-val="ULTRASOUND"><span class="text-content">ULTRASOUND</span></div>
+    </div>
+
+    <div class="bottom-zone" id="copyZone" onclick="copyFocusedItem()">
+        <button class="btn-main-copy" id="magnetBtn"></button>
+    </div>
+
+    <div class="modal-overlay" id="srModal">
+        <div class="modal-content" id="modalBox">
+            <h3>DISCOUNT CALCULATOR</h3>
+            <div class="input-group">
+                <label>HOSPITAL CHARGES</label>
+                <input id="hospCharges" type="number" placeholder="0.00" oninput="calcSr()">
+            </div>
+            <div class="input-group">
+                <label>CASE RATE (PHIC)</label>
+                <input id="caseRate" type="number" placeholder="0.00" oninput="calcSr()">
+            </div>
+            <div class="modal-result">
+                <label>FINAL DISCOUNT</label>
+                <div id="finalDiscount">0.00</div>
+            </div>
+            <div class="modal-copy-zone" id="modalCopyBtn" onclick="copyModalValue()">
+                COPY RESULT
+            </div>
+            <button class="modal-close-btn" onclick="toggleModal(false)">Dismiss</button>
+        </div>
+    </div>
+
+    <script>
+        let textTimeout;
+        let currentFocusedIndex = 0;
+        const allRows = document.querySelectorAll('.item-row');
+        const highlighter = document.getElementById('highlighter');
+        const container = document.getElementById('mainContainer');
+        const magnetBtn = document.getElementById('magnetBtn');
+        const modalCopyBtn = document.getElementById('modalCopyBtn');
+        const srModal = document.getElementById('srModal');
+        const modalBox = document.getElementById('modalBox');
+
+        window.onload = () => {
+            setTimeout(() => updateFocus(0), 100);
+            allRows.forEach((row, idx) => {
+                row.addEventListener('click', () => executeCopy(row, row.getAttribute('data-val'), idx));
+            });
+            lucide.createIcons();
+        };
+
+        function toggleModal(show) {
+            srModal.style.display = show ? 'flex' : 'none';
+            if (show) {
+                document.getElementById('hospCharges').focus();
+            } else {
+                resetCalculator();
+            }
+        }
+
+        srModal.addEventListener('click', (e) => {
+            if (e.target === srModal) toggleModal(false);
+        });
+
+        function resetCalculator() {
+            document.getElementById('hospCharges').value = "";
+            document.getElementById('caseRate').value = "";
+            document.getElementById('finalDiscount').innerText = "0.00";
+        }
+
+        function calcSr() {
+            const charges = parseFloat(document.getElementById('hospCharges').value) || 0;
+            const rate = parseFloat(document.getElementById('caseRate').value) || 0;
+            const discount = charges - ((charges * 0.20) + rate);
+            document.getElementById('finalDiscount').innerText = discount.toFixed(2);
+        }
+
+        function copyModalValue() {
+            const val = document.getElementById('finalDiscount').innerText;
+            navigator.clipboard.writeText(val).then(() => {
+                modalCopyBtn.innerText = "COPIED!";
+                modalCopyBtn.classList.add('success-state');
+                setTimeout(() => {
+                    modalCopyBtn.innerText = "COPY RESULT";
+                    modalCopyBtn.classList.remove('success-state');
+                    toggleModal(false);
+                }, 600);
+            });
+        }
+
+        /* Idle System */
+        let idleTimer, nudgeTimer;
+        function startIdle() {
+            magnetBtn.classList.add('idle');
+            nudgeTimer = setInterval(() => {
+                magnetBtn.classList.add('nudge');
+                setTimeout(() => magnetBtn.classList.remove('nudge'), 600);
+            }, 4000);
+        }
+
+        function stopIdle() {
+            magnetBtn.classList.remove('idle', 'nudge');
+            clearInterval(nudgeTimer);
+        }
+
+        function resetIdle() {
+            stopIdle();
+            clearTimeout(idleTimer);
+            idleTimer = setTimeout(startIdle, 1500);
+        }
+
+        ['mousemove', 'click', 'scroll'].forEach(e => document.addEventListener(e, resetIdle));
+        setTimeout(startIdle, 1200);
+
+        /* Magnet Logic */
+        document.addEventListener('mousemove', (e) => {
+            const threshold = window.innerHeight * 0.75;
+            if (e.clientY > threshold) {
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight - (window.innerHeight * 0.125);
+                const pullX = (e.clientX - centerX) * 0.3;
+                const pullY = (e.clientY - centerY) * 0.4;
+                magnetBtn.style.transform = `translate(${pullX}px, ${pullY}px)`;
+            } else {
+                resetMagnet();
+            }
+        });
+
+        function resetMagnet() {
+            magnetBtn.style.transform = `translate(0, 0)`;
+        }
+
+        function updateFocus(index) {
+            currentFocusedIndex = index;
+            const targetRow = allRows[index];
+            const rect = targetRow.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+            highlighter.style.opacity = "1";
+            highlighter.style.top = (rect.top - containerRect.top) + "px";
+            highlighter.style.height = rect.height + "px";
+            targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function executeCopy(row, text, index) {
+            updateFocus(index);
+            navigator.clipboard.writeText(text).then(() => {
+                document.querySelectorAll('.text-content').forEach(el => el.classList.remove('text-active'));
+                clearTimeout(textTimeout);
+                const textElement = row.querySelector('.text-content');
+                textElement.classList.add('text-active');
+                magnetBtn.innerText = "COPIED!";
+                magnetBtn.classList.add('success-state');
+                document.body.classList.add('copy-flash');
+                setTimeout(() => {
+                    magnetBtn.innerText = "";
+                    magnetBtn.classList.remove('success-state');
+                    document.body.classList.remove('copy-flash');
+                }, 600);
+                setTimeout(() => nextFocus(), 400);
+                textTimeout = setTimeout(() => textElement.classList.remove('text-active'), 8000);
+            });
+        }
+
+        function copyFocusedItem() {
+            const activeRow = allRows[currentFocusedIndex];
+            executeCopy(activeRow, activeRow.getAttribute('data-val'), currentFocusedIndex);
+        }
+
+        function nextFocus() {
+            currentFocusedIndex = (currentFocusedIndex + 1) % allRows.length;
+            updateFocus(currentFocusedIndex);
+        }
+
+        function resetFocus() {
+            const fbsElement = document.getElementById('reset-target');
+            const fbsIndex = Array.from(allRows).indexOf(fbsElement);
+            updateFocus(fbsIndex);
+        }
+    </script>
+</body>
+</html>
