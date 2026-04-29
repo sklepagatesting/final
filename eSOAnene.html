@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eSOA</title>
+    <title>eSOA - Full Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -17,6 +17,11 @@
             --modal-bg: rgba(15, 23, 42, 0.95);
         }
 
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: #2d3748; border-radius: 10px; border: 2px solid var(--bg); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
@@ -29,72 +34,46 @@
             transition: background-color 0.3s ease;
         }
 
-        body.copy-flash {
-            background-color: #565e12;
-        }
+        body.copy-flash { background-color: #565e12; }
 
         /* Navigation */
         .top-nav {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 3000;
+            position: fixed; top: 20px; right: 20px;
+            display: flex; gap: 10px; z-index: 3000;
         }
 
         .top-btn {
-            width: 46px;
-            height: 46px;
+            width: 46px; height: 46px;
             background: var(--surface);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 14px;
-            color: white;
-            backdrop-filter: blur(10px);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border-radius: 14px; color: white;
+            backdrop-filter: blur(10px); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .top-btn:hover {
-            background: var(--primary);
-            color: var(--bg);
-            transform: translateY(-2px);
-        }
+        .top-btn:hover { background: var(--primary); color: var(--bg); transform: translateY(-2px); }
 
         /* Main Container */
         .container {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-            background: var(--surface);
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            position: relative; width: 100%; max-width: 400px;
+            background: var(--surface); padding: 20px;
+            border-radius: 20px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
         #highlighter {
-            position: absolute;
-            left: 8px;
-            right: 8px;
+            position: absolute; left: 8px; right: 8px;
             border: 2px solid var(--primary);
             background-color: rgba(56, 189, 248, 0.15);
-            border-radius: 12px;
-            pointer-events: none;
+            border-radius: 12px; pointer-events: none;
             transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-            z-index: 1;
-            opacity: 0;
+            z-index: 1; opacity: 0;
         }
 
         h2 {
-            font-size: 0.7rem;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            margin: 30px 0 10px 10px;
-            opacity: 0.6;
+            font-size: 0.7rem; color: var(--primary);
+            text-transform: uppercase; letter-spacing: 0.15em;
+            margin: 30px 0 10px 10px; opacity: 0.6;
         }
 
         .item-row {
@@ -107,226 +86,105 @@
             margin: 4px 0;
             cursor: pointer;
             border-radius: 12px;
-            transition: transform 0.2s ease;
+            border: 1px solid transparent; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .text-content {
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
+        .item-row:hover { background: rgba(255, 255, 255, 0.05); }
 
-        .text-active {
-            color: #facc15;
-            text-shadow: 0 0 12px rgba(250, 204, 21, 0.5);
-        }
+        .text-content { font-size: 0.95rem; font-weight: 500; }
+        .text-active { color: #facc15; text-shadow: 0 0 12px rgba(250, 204, 21, 0.5); }
 
-        /* Bottom Copy Button */
+        .add-btn-circle {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: rgba(56, 189, 248, 0.1); border: 1px dashed var(--primary);
+            color: var(--primary); display: flex; align-items: center; justify-content: center;
+            cursor: pointer; margin: 10px 0 20px 10px; transition: all 0.2s ease;
+        }
+        .add-btn-circle:hover { background: var(--primary); color: var(--bg); transform: scale(1.1); }
+
+        /* Magnet Button */
         .bottom-zone {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 25vh;
-            z-index: 2000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 25vh;
+            z-index: 2000; display: flex; justify-content: center; align-items: center; cursor: pointer;
         }
 
         .btn-main-copy {
-            width: 160px;
-            height: 70px;
-            border: none;
-            border-radius: 35px;
-            font-weight: 800;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4);
+            width: 160px; height: 70px; border: none; border-radius: 35px;
+            font-weight: 800; font-size: 1rem; text-transform: uppercase;
+            letter-spacing: 2px; box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             pointer-events: none;
-            
-            /* Image Fill Settings */
-            background-image: url('https://sklepagatesting.github.io/resources/Images/nene.png'); /* Replace with your image URL */
-            background-size: cover;
-            background-position: center;
-            color: white;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            background-image: url('https://sklepagatesting.github.io/resources/Images/nene.png');
+            background-size: cover; background-position: center;
+            color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
-        .bottom-zone:hover .btn-main-copy:not(.success-state) {
-            width: 250px;
-            height: 120px;
-            font-size: 1.2rem;
-        }
+        .bottom-zone:hover .btn-main-copy:not(.success-state) { width: 250px; height: 120px; font-size: 1.2rem; }
+        .btn-main-copy.success-state { background-image: none; background-color: var(--success); color: var(--bg); text-shadow: none; box-shadow: 0 0 25px rgba(255, 238, 0, 0.6); }
 
-        .btn-main-copy.success-state {
-            background-image: none;
-            background-color: var(--success);
-            color: var(--bg);
-            text-shadow: none;
-            box-shadow: 0 0 25px rgba(255, 238, 0, 0.6);
-        }
+        @keyframes idleFloat { 0%, 100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(0,-4px) rotate(1deg); } }
+        .btn-main-copy.idle { animation: idleFloat 3.5s ease-in-out infinite; }
 
-        @keyframes idleFloat {
-            0%, 100% { transform: translate(0,0) rotate(0); }
-            50% { transform: translate(0,-4px) rotate(1deg); }
-        }
-
-        .btn-main-copy.idle {
-            animation: idleFloat 3.5s ease-in-out infinite;
-        }
-
-        /* Modal Styles */
+        /* --- LIQUID GLASS MODAL ANIMATION --- */
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(12px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 4000;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0); backdrop-filter: blur(0px);
+            display: none; justify-content: center; align-items: center; z-index: 4000;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(12px);
         }
 
         .modal-content {
-            background: var(--modal-bg);
-            width: 90%;
-            max-width: 380px;
-            padding: 40px 30px;
-            border-radius: 32px;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            position: relative;
-            text-align: center;
+            background: var(--modal-bg); width: 90%; max-width: 380px; padding: 40px 30px; border-radius: 32px;
+            border: 1px solid rgba(56, 189, 248, 0.3); position: relative; text-align: center;
             box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(56, 189, 248, 0.05);
+            opacity: 0; transform: scale(0.6) translateY(40px); filter: blur(15px);
+            transition: all 0.35s cubic-bezier(0.15, 1, 0.3, 1.1);
+            max-height: 80vh; overflow-y: auto;
         }
 
-        .modal-content h3 {
-            margin-top: 0;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: var(--primary);
-            font-size: 1.2rem;
-            margin-bottom: 25px;
+        .modal-overlay.active .modal-content {
+            opacity: 1; transform: scale(1) translateY(0); filter: blur(0px);
         }
 
-        .input-group {
-            margin-bottom: 15px;
-            text-align: left;
+        .list-item {
+            padding: 16px; margin: 8px 0; border-radius: 16px; text-align: left; 
+            cursor: pointer; transition: all 0.2s ease; color: var(--text-main);
         }
+        .list-item:hover { background: rgba(255,255,255,0.08); }
 
-        .input-group label {
-            font-size: 0.65rem;
-            color: var(--primary);
-            opacity: 0.8;
-            margin-left: 10px;
-            font-weight: 800;
-        }
-
-        .modal-content input {
-            width: 100%;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 16px;
-            margin-top: 5px;
-            border-radius: 16px;
-            color: white;
-            font-size: 1.2rem;
-            box-sizing: border-box;
-            text-align: center;
-            transition: border 0.3s ease;
-            font-weight: 600;
-        }
-
-        .modal-content input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .modal-result {
-            margin: 25px 0;
-            padding: 20px;
-            background: linear-gradient(145deg, rgba(56, 189, 248, 0.1), rgba(0,0,0,0));
-            border-radius: 20px;
-            border: 1px dashed rgba(56, 189, 248, 0.3);
-        }
-
-        .modal-result label {
-            font-size: 0.7rem;
-            color: var(--primary);
-            display: block;
-            margin-bottom: 8px;
-            letter-spacing: 2px;
-        }
-
-        #finalDiscount {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--success);
-            text-shadow: 0 0 15px rgba(255, 238, 0, 0.3);
-        }
-
-        .modal-copy-zone {
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            margin-top: 10px;
-            background: var(--primary);
-            color: var(--bg);
-            border-radius: 16px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            transition: all 0.2s ease;
-        }
-
-        .modal-copy-zone:hover {
-            transform: scale(1.02);
-            background: #6feeff;
-        }
-
-        .modal-copy-zone.success-state {
-            background: var(--success);
-        }
-
-        .modal-close-btn {
-            margin-top: 20px;
-            background: transparent;
-            border: none;
-            color: #64748b;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-decoration: underline;
-        }
+        /* Form Elements */
+        .input-group { margin-bottom: 15px; text-align: left; }
+        .input-group label { font-size: 0.65rem; color: var(--primary); opacity: 0.8; margin-left: 10px; font-weight: 800; }
+        .modal-content input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255, 255, 255, 0.1); padding: 16px; margin-top: 5px; border-radius: 16px; color: white; font-size: 1.2rem; box-sizing: border-box; text-align: center; transition: border 0.3s ease; font-weight: 600; }
+        .modal-content input:focus { outline: none; border-color: var(--primary); }
+        .modal-result { margin: 25px 0; padding: 20px; background: linear-gradient(145deg, rgba(56, 189, 248, 0.1), rgba(0,0,0,0)); border-radius: 20px; border: 1px dashed rgba(56, 189, 248, 0.3); }
+        #finalDiscount { font-size: 2.2rem; font-weight: 800; color: var(--success); text-shadow: 0 0 15px rgba(255, 238, 0, 0.3); }
+        .modal-copy-zone { height: 60px; display: flex; justify-content: center; align-items: center; cursor: pointer; margin-top: 10px; background: var(--primary); color: var(--bg); border-radius: 16px; font-weight: 800; letter-spacing: 1px; transition: all 0.2s ease; }
+        .modal-copy-zone:hover { transform: scale(1.02); background: #6feeff; }
+        .modal-copy-zone.success-state { background: var(--success); }
+        .modal-close-btn { margin-top: 20px; background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 0.8rem; font-weight: 600; text-decoration: underline; }
     </style>
 </head>
-
 <body onmouseleave="resetMagnet()">
-
     <div class="top-nav">
         <button class="top-btn" title="Reset" onclick="resetFocus()"><i data-lucide="refresh-cw"></i></button>
-        <button class="top-btn" title="Senior Discount" onclick="toggleModal(true)"><i data-lucide="user-check"></i></button>
+        <button class="top-btn" title="Senior Discount" onclick="toggleModal('srModal', true)"><i data-lucide="user-check"></i></button>
         <button class="top-btn" title="Next" onclick="nextFocus()"><i data-lucide="chevron-down"></i></button>
     </div>
 
     <div class="container" id="mainContainer">
         <div id="highlighter"></div>
-
+        
         <h2>DISCOUNT</h2>
-        <div class="item-row" id="reset-target" data-val="H-DISCOUNT">
-            <span class="text-content">H-DISCOUNT</span>
-        </div>
+        <div class="item-row" id="reset-target" data-val="H-DISCOUNT"><span class="text-content">H-DISCOUNT</span></div>
 
         <h2>RIZALINO C. URBANO JR.</h2>
-        <div class="item-row" data-val="110098112460">
-            <span class="text-content">110098112460</span>
-        </div>
+        <div class="item-row" data-val="110098112460"><span class="text-content">110098112460</span></div>
 
         <h2>Laboratory & Diagnostic</h2>
         <div class="item-row" data-val="CHEMISTRY: FBS"><span class="text-content">CHEMISTRY: FBS</span></div>
@@ -335,14 +193,16 @@
         <div class="item-row" data-val="CHEMISTRY: CREATININE"><span class="text-content">CHEMISTRY: CREATININE</span></div>
         <div class="item-row" data-val="MICROSCOPY: URINE-URINALYSIS"><span class="text-content">MICROSCOPY: URINE-URINALYSIS</span></div>
         <div class="item-row" data-val="HEMATOLOGY: CBC"><span class="text-content">HEMATOLOGY: CBC</span></div>
+        <div class="add-btn-circle" onclick="openList('lab')"><i data-lucide="plus"></i></div>
 
         <h2>Medical Supplies</h2>
-        <div class="item-row" data-val="IV CATHETER G. 20"><span class="text-content">IV CATHETER G. 20</span></div>
-        <div class="item-row" data-val="IV CATHETER G. 24"><span class="text-content">IV CATHETER G. 24</span></div>
-        <div class="item-row" data-val="MICROSET"><span class="text-content">MICROSET</span></div>
-        <div class="item-row" data-val="MACROSET"><span class="text-content">MACROSET</span></div>
+        <div class="item-row" id="row-iv20" data-val="IV CATHETER G. 20"><span class="text-content">IV CATHETER G. 20</span></div>
+        <div class="item-row" id="row-iv24" data-val="IV CATHETER G. 24"><span class="text-content">IV CATHETER G. 24</span></div>
+        <div class="item-row" id="row-micro" data-val="MICROSET"><span class="text-content">MICROSET</span></div>
+        <div class="item-row" id="row-macro" data-val="MACROSET"><span class="text-content">MACROSET</span></div>
         <div class="item-row" data-val="SYRINGE DISPOSABLE (10 CC)"><span class="text-content">SYRINGE DISPOSABLE (10 CC)</span></div>
         <div class="item-row" data-val="SURGICAL PAPER TAPE 2X10 YARD (5CMX9.1INCH)"><span class="text-content">SURGICAL PAPER TAPE 2X10 YARD</span></div>
+        <div class="add-btn-circle" onclick="openList('supply')"><i data-lucide="plus"></i></div>
 
         <h2>Others</h2>
         <div class="item-row" data-val="ER FEE"><span class="text-content">ER FEE</span></div>
@@ -360,14 +220,15 @@
         <div class="item-row" data-val="HM-PARACETAMOL"><span class="text-content">HM-PARACETAMOL</span></div>
         <div class="item-row" data-val="X-RAY"><span class="text-content">X-RAY</span></div>
         <div class="item-row" data-val="ULTRASOUND"><span class="text-content">ULTRASOUND</span></div>
+        <div class="add-btn-circle" onclick="openList('others')"><i data-lucide="plus"></i></div>
     </div>
 
     <div class="bottom-zone" id="copyZone" onclick="copyFocusedItem()">
         <button class="btn-main-copy" id="magnetBtn"></button>
     </div>
 
-    <div class="modal-overlay" id="srModal">
-        <div class="modal-content" id="modalBox">
+    <div class="modal-overlay" id="srModal" onclick="closeOutside(event, 'srModal')">
+        <div class="modal-content" id="modalBox" onclick="event.stopPropagation()">
             <h3>DISCOUNT CALCULATOR</h3>
             <div class="input-group">
                 <label>HOSPITAL CHARGES</label>
@@ -381,10 +242,16 @@
                 <label>FINAL DISCOUNT</label>
                 <div id="finalDiscount">0.00</div>
             </div>
-            <div class="modal-copy-zone" id="modalCopyBtn" onclick="copyModalValue()">
-                COPY RESULT
-            </div>
-            <button class="modal-close-btn" onclick="toggleModal(false)">Dismiss</button>
+            <div class="modal-copy-zone" id="modalCopyBtn" onclick="copyModalValue()">COPY RESULT</div>
+            <button class="modal-close-btn" onclick="toggleModal('srModal', false)">Dismiss</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="listModal" onclick="closeOutside(event, 'listModal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h3 id="listTitle">SELECT ITEM</h3>
+            <div id="listContainer"></div>
+            <button class="modal-close-btn" onclick="toggleModal('listModal', false)">Dismiss</button>
         </div>
     </div>
 
@@ -396,8 +263,12 @@
         const container = document.getElementById('mainContainer');
         const magnetBtn = document.getElementById('magnetBtn');
         const modalCopyBtn = document.getElementById('modalCopyBtn');
-        const srModal = document.getElementById('srModal');
-        const modalBox = document.getElementById('modalBox');
+                
+        const extraItems = {
+            lab: ["CHEMISTRY: TRIGLYCERIDES", "CHEMISTRY: HDL", "CHEMISTRY: DIRECT LDL", "CHEMISTRY: ALT"],
+            supply: ["NEBULIZING KIT COMPLETE SET W/T-PIECE & MOUTHPIECE", "NEBULIZING KIT WITH MASK (PEDIA)", "COTTON BALLS, 3'S/PACK", "OXYGEN CANNULA (ADULT)", "OXYGEN CANNULA (PEDIA)", "SYRINGE DISPOSABLE 1 CC", "SYRINGE DISPOSABLE ( 5.0 CC)"],
+            others: ["HM-AMLODIPINE", "HM-OMEPRAZOLE", "HM-COLCHICINE", "HM-SAMBONG", "HM-CEFIXIME", "HM-ACETYLCYSTEINE", "MEDICAL OXYGEN", "HBsAg", "DENGUE DUO", "SERUM ELECTROLYTES", "FECALYSIS", "H-PYLORI", "ECG", "TYPHIDOT", "TSH", "T3", "T4", "FT3", "FT4"]
+        };
 
         window.onload = () => {
             setTimeout(() => updateFocus(0), 100);
@@ -405,20 +276,27 @@
                 row.addEventListener('click', () => executeCopy(row, row.getAttribute('data-val'), idx));
             });
             lucide.createIcons();
+            startIdle();
         };
 
-        function toggleModal(show) {
-            srModal.style.display = show ? 'flex' : 'none';
+        function toggleModal(id, show) {
+            const modal = document.getElementById(id);
             if (show) {
-                document.getElementById('hospCharges').focus();
+                modal.style.display = 'flex';
+                setTimeout(() => {
+                    modal.classList.add('active');
+                    if (id === 'srModal') document.getElementById('hospCharges').focus();
+                }, 10);
             } else {
-                resetCalculator();
+                modal.classList.remove('active');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    if(id === 'srModal') resetCalculator();
+                }, 400); 
             }
         }
 
-        srModal.addEventListener('click', (e) => {
-            if (e.target === srModal) toggleModal(false);
-        });
+        function closeOutside(e, id) { if (e.target.id === id) toggleModal(id, false); }
 
         function resetCalculator() {
             document.getElementById('hospCharges').value = "";
@@ -441,34 +319,39 @@
                 setTimeout(() => {
                     modalCopyBtn.innerText = "COPY RESULT";
                     modalCopyBtn.classList.remove('success-state');
-                    toggleModal(false);
+                    toggleModal('srModal', false);
                 }, 600);
             });
         }
 
-        /* Idle System */
-        let idleTimer, nudgeTimer;
-        function startIdle() {
-            magnetBtn.classList.add('idle');
-            nudgeTimer = setInterval(() => {
-                magnetBtn.classList.add('nudge');
-                setTimeout(() => magnetBtn.classList.remove('nudge'), 600);
-            }, 4000);
+        function openList(cat) {
+            const listCont = document.getElementById('listContainer');
+            listCont.innerHTML = '';
+            document.getElementById('listTitle').innerText = cat.toUpperCase();
+            extraItems[cat].forEach(text => {
+                const div = document.createElement('div');
+                div.className = 'list-item';
+                div.innerText = text;
+                div.onclick = () => {
+                    navigator.clipboard.writeText(text);
+                    toggleModal('listModal', false);
+                    flashMagnet();
+                };
+                listCont.appendChild(div);
+            });
+            toggleModal('listModal', true);
         }
 
-        function stopIdle() {
-            magnetBtn.classList.remove('idle', 'nudge');
-            clearInterval(nudgeTimer);
+        function flashMagnet() {
+            magnetBtn.innerText = "COPIED!";
+            magnetBtn.classList.add('success-state');
+            document.body.classList.add('copy-flash');
+            setTimeout(() => {
+                magnetBtn.innerText = "";
+                magnetBtn.classList.remove('success-state');
+                document.body.classList.remove('copy-flash');
+            }, 600);
         }
-
-        function resetIdle() {
-            stopIdle();
-            clearTimeout(idleTimer);
-            idleTimer = setTimeout(startIdle, 1500);
-        }
-
-        ['mousemove', 'click', 'scroll'].forEach(e => document.addEventListener(e, resetIdle));
-        setTimeout(startIdle, 1200);
 
         /* Magnet Logic */
         document.addEventListener('mousemove', (e) => {
@@ -479,18 +362,15 @@
                 const pullX = (e.clientX - centerX) * 0.3;
                 const pullY = (e.clientY - centerY) * 0.4;
                 magnetBtn.style.transform = `translate(${pullX}px, ${pullY}px)`;
-            } else {
-                resetMagnet();
-            }
+            } else { resetMagnet(); }
         });
 
-        function resetMagnet() {
-            magnetBtn.style.transform = `translate(0, 0)`;
-        }
+        function resetMagnet() { magnetBtn.style.transform = `translate(0, 0)`; }
 
         function updateFocus(index) {
             currentFocusedIndex = index;
             const targetRow = allRows[index];
+            if(!targetRow) return;
             const rect = targetRow.getBoundingClientRect();
             const containerRect = container.getBoundingClientRect();
             highlighter.style.opacity = "1";
@@ -506,15 +386,14 @@
                 clearTimeout(textTimeout);
                 const textElement = row.querySelector('.text-content');
                 textElement.classList.add('text-active');
-                magnetBtn.innerText = "COPIED!";
-                magnetBtn.classList.add('success-state');
-                document.body.classList.add('copy-flash');
-                setTimeout(() => {
-                    magnetBtn.innerText = "";
-                    magnetBtn.classList.remove('success-state');
-                    document.body.classList.remove('copy-flash');
-                }, 600);
-                setTimeout(() => nextFocus(), 400);
+                flashMagnet();
+
+                let nextIdx = (index + 1) % allRows.length;
+                // Specific Item Logic
+                if(row.innerText.includes("IV CATHETER G. 20")) nextIdx = Array.from(allRows).findIndex(r => r.innerText.includes("MACROSET"));
+                if(row.innerText.includes("IV CATHETER G. 24")) nextIdx = Array.from(allRows).findIndex(r => r.innerText.includes("MICROSET"));
+                                
+                setTimeout(() => updateFocus(nextIdx), 400);
                 textTimeout = setTimeout(() => textElement.classList.remove('text-active'), 8000);
             });
         }
@@ -523,17 +402,16 @@
             const activeRow = allRows[currentFocusedIndex];
             executeCopy(activeRow, activeRow.getAttribute('data-val'), currentFocusedIndex);
         }
+        function nextFocus() { updateFocus((currentFocusedIndex + 1) % allRows.length); }
+        function resetFocus() { const idx = Array.from(allRows).indexOf(document.getElementById('reset-target')); updateFocus(idx); }
 
-        function nextFocus() {
-            currentFocusedIndex = (currentFocusedIndex + 1) % allRows.length;
-            updateFocus(currentFocusedIndex);
-        }
+        /* Idle State */
+        let idleTimer;
+        function startIdle() { magnetBtn.classList.add('idle'); }
+        function stopIdle() { magnetBtn.classList.remove('idle'); }
+        function resetIdle() { stopIdle(); clearTimeout(idleTimer); idleTimer = setTimeout(startIdle, 2000); }
+        ['mousemove', 'click', 'scroll'].forEach(e => document.addEventListener(e, resetIdle));
 
-        function resetFocus() {
-            const fbsElement = document.getElementById('reset-target');
-            const fbsIndex = Array.from(allRows).indexOf(fbsElement);
-            updateFocus(fbsIndex);
-        }
     </script>
 </body>
 </html>
