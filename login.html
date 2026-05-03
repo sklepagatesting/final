@@ -3,28 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eSOA Auth</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap" rel="stylesheet">
+    <title>eSOA - Gateway</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { background: #1a0f0b; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .auth-card { background: #140700; padding: 40px; border-radius: 32px; border: 1px solid #ff730033; width: 320px; text-align: center; }
-        input { width: 100%; background: #000; border: 1px solid #333; padding: 15px; margin: 10px 0; border-radius: 12px; color: white; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; background: #ff7300; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; margin-top: 10px; }
-        .toggle { font-size: 0.8rem; color: #666; margin-top: 20px; cursor: pointer; text-decoration: underline; }
+        :root {
+            --primary: #ff7300;
+            --bg: #1a0f0b;
+            --surface: #140700;
+            --glass: rgba(255, 115, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Profile Selection View */
+        .gateway-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .profile-card {
+            background: var(--surface);
+            border: 1px solid rgba(255,115,0,0.1);
+            padding: 20px;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            background: var(--glass);
+        }
+
+        .p-img { width: 60px; height: 60px; border-radius: 50%; background: #333; object-fit: cover; border: 2px solid var(--primary); }
+        .p-name { font-weight: 600; font-size: 0.9rem; }
+
+        /* Auth Card (Hidden by default) */
+        .auth-card {
+            background: var(--surface);
+            padding: 40px 30px;
+            border-radius: 32px;
+            border: 1px solid var(--glass);
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .auth-card.active { display: flex; animation: slideUp 0.4s cubic-bezier(0.15, 1, 0.3, 1.1); }
+
+        h2 { font-weight: 800; letter-spacing: -1px; margin-bottom: 25px; color: var(--primary); }
+
+        input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            padding: 16px;
+            margin: 8px 0;
+            border-radius: 16px;
+            color: white;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: border 0.3s;
+        }
+        input:focus { border-color: var(--primary); }
+
+        .btn-main {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            border: none;
+            border-radius: 18px;
+            font-weight: 800;
+            color: #000;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .setup-zone {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            text-align: left;
+        }
+
+        .setup-label { font-size: 0.7rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; display: block; }
+        
+        .hue-slider { width: 100%; accent-color: var(--primary); }
+
+        .img-preview-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+        .img-opt { width: 100%; aspect-ratio: 1; border-radius: 8px; cursor: pointer; border: 2px solid transparent; background: #111; object-fit: contain; }
+        .img-opt.selected { border-color: var(--primary); }
+
+        .back-link { margin-top: 20px; font-size: 0.8rem; opacity: 0.5; cursor: pointer; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
 <body>
-    <div class="auth-card">
-        <h2 id="title">WELCOME BACK</h2>
-        <input type="email" id="email" placeholder="Email">
+
+    <div class="gateway-container" id="gateway">
+        <h2 style="color: white;">CHOOSE PROFILE</h2>
+        <div class="profile-grid" id="profileGrid">
+            <!-- Dynamic Profiles -->
+            <div class="profile-card" onclick="openAuth(false)">
+                <div class="p-img" style="display:flex; align-items:center; justify-content:center;"><i data-lucide="plus"></i></div>
+                <span class="p-name">Add Profile</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-card" id="authCard">
+        <h2 id="authTitle">LOGIN</h2>
+        <input type="text" id="regName" placeholder="Full Name (for new profile)" style="display: none;">
+        <input type="email" id="email" placeholder="Email Address">
         <input type="password" id="pass" placeholder="Password">
-        <button class="btn" id="mainBtn" onclick="handleAuth()">LOGIN</button>
-        <div class="toggle" id="toggleLink" onclick="toggleMode()">Don't have an account? Register</div>
+
+        <!-- Setup for Registration -->
+        <div id="setupArea" class="setup-zone" style="display: none;">
+            <span class="setup-label">CUSTOMIZE THEME HUE</span>
+            <input type="range" min="0" max="360" value="27" class="hue-slider" id="hueInput" oninput="updatePreview(this.value)">
+            
+            <span class="setup-label" style="margin-top:15px">SELECT MAGNET BUTTON</span>
+            <div class="img-preview-grid" id="imgGrid"></div>
+        </div>
+
+        <button class="btn-main" id="mainBtn" onclick="handleAuth()">CONTINUE</button>
+        <div class="back-link" onclick="location.reload()"><i data-lucide="arrow-left" style="width:12px"></i> Back to selection</div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDaeNQF4qmW0vvwxUPp_NztnT0hoLzm1BQ",
@@ -37,27 +178,105 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
 
         let isLogin = true;
+        let selectedBtnUrl = "https://sklepagatesting.github.io/resources/Images/mclaren.png";
 
-        window.toggleMode = () => {
-            isLogin = !isLogin;
-            document.getElementById('title').innerText = isLogin ? "WELCOME BACK" : "CREATE ACCOUNT";
-            document.getElementById('mainBtn').innerText = isLogin ? "LOGIN" : "REGISTER";
-            document.getElementById('toggleLink').innerText = isLogin ? "Don't have an account? Register" : "Already have an account? Login";
+        // Initial Load
+        window.onload = async () => {
+            lucide.createIcons();
+            loadProfiles();
+            initImgGrid();
         };
+
+        async function loadProfiles() {
+            const grid = document.getElementById('profileGrid');
+            const querySnapshot = await getDocs(collection(db, "users"));
+            
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const card = document.createElement('div');
+                card.className = 'profile-card';
+                card.innerHTML = `
+                    <img src="${data.pfp || 'https://via.placeholder.com/150'}" class="p-img" style="border-color: hsl(${data.hue || 27}, 100%, 50%)">
+                    <span class="p-name">${data.name}</span>
+                `;
+                card.onclick = () => {
+                    openAuth(true);
+                    document.getElementById('email').value = data.email;
+                };
+                grid.prepend(card);
+            });
+        }
+
+        window.openAuth = (loginMode) => {
+            isLogin = loginMode;
+            document.getElementById('gateway').style.display = 'none';
+            document.getElementById('authCard').classList.add('active');
+            
+            document.getElementById('authTitle').innerText = isLogin ? "WELCOME BACK" : "NEW PROFILE";
+            document.getElementById('regName').style.display = isLogin ? 'none' : 'block';
+            document.getElementById('setupArea').style.display = isLogin ? 'none' : 'block';
+        };
+
+        window.updatePreview = (hue) => {
+            document.documentElement.style.setProperty('--primary', `hsl(${hue}, 100%, 50%)`);
+        };
+
+        function initImgGrid() {
+            const grid = document.getElementById('imgGrid');
+            for(let i=1; i<=8; i++) {
+                const url = `https://sklepagatesting.github.io/resources/Images/${i}.png`;
+                const img = document.createElement('img');
+                img.src = url;
+                img.className = 'img-opt';
+                img.onclick = () => {
+                    document.querySelectorAll('.img-opt').forEach(el => el.classList.remove('selected'));
+                    img.classList.add('selected');
+                    selectedBtnUrl = url;
+                };
+                grid.appendChild(img);
+            }
+        }
 
         window.handleAuth = async () => {
             const email = document.getElementById('email').value;
             const pass = document.getElementById('pass').value;
+            const name = document.getElementById('regName').value;
+            const hue = document.getElementById('hueInput').value;
 
             try {
+                let userCredential;
                 if(isLogin) {
-                    await signInWithEmailAndPassword(auth, email, pass);
+                    userCredential = await signInWithEmailAndPassword(auth, email, pass);
                 } else {
-                    await createUserWithEmailAndPassword(auth, email, pass);
+                    userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+                    // Save Theme Data to Firestore
+                    await setDoc(doc(db, "users", userCredential.user.uid), {
+                        name: name || "Dzey Autajay",
+                        email: email,
+                        hue: hue,
+                        btnImg: selectedBtnUrl,
+                        pfp: "https://via.placeholder.com/150"
+                    });
                 }
+
+                // Fetch data for LocalStorage before jumping
+                const userDoc = await getDoc(doc(db, "users", userCredential.user.uid));
+                const userData = userDoc.data();
+                
+                const settings = {
+                    name: userData.name,
+                    pfp: userData.pfp,
+                    hueP: userData.hue,
+                    hueB: 6,
+                    btn: userData.btnImg
+                };
+                
+                localStorage.setItem('eSOASettings_Pro', JSON.stringify(settings));
                 window.location.href = "eSOAbeta.html";
+
             } catch (err) {
                 alert(err.message);
             }
