@@ -235,7 +235,17 @@
 
         function toggleModal(id, show) {
             const modal = document.getElementById(id);
+            
             if (show) {
+                // --- CLEAR DATA ON OPEN ---
+                // Option A: If you have a specific form id
+                // document.getElementById('yourFormId').reset(); 
+        
+                // Option B: Manually clear specific fields
+                document.getElementById('hospCharges').value = '';
+                document.getElementById('caseRate').value = '';
+                document.getElementById('finalDiscount').innerText = '0.00';
+        
                 modal.style.display = 'flex';
                 setTimeout(() => modal.classList.add('active'), 10);
             } else {
