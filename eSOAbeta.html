@@ -8,11 +8,9 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            /* Dynamic Variables managed by JS */
             --primary-hue: 27;
             --bg-hue: 20;
             --surface-hue: 20;
-            
             --primary: hsl(var(--primary-hue), 100%, 50%);
             --bg: hsl(var(--bg-hue), 30%, 6%);
             --surface: hsl(var(--surface-hue), 40%, 4%);
@@ -40,7 +38,6 @@
 
         body.copy-flash { background-color: hsla(var(--primary-hue), 100%, 50%, 0.2); }
 
-        /* Profile Pill */
         .profile-pill {
             position: fixed; top: 20px; left: 20px; height: 46px;
             background: var(--surface); border: 1px solid var(--glass);
@@ -79,7 +76,6 @@
         }
 
         h2 { font-size: 0.7rem; color: var(--primary); text-transform: uppercase; letter-spacing: 0.15em; margin: 30px 0 10px 10px; opacity: 0.6; }
-        
         .item-row { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 14px; margin: 4px 0; cursor: pointer; border-radius: 12px; transition: all 0.3s ease; }
         .item-row:hover { background: rgba(255, 255, 255, 0.03); }
         .text-content { font-size: 0.95rem; font-weight: 500; transition: color 0.3s ease; }
@@ -101,7 +97,7 @@
             filter: drop-shadow(0 0 15px var(--glass));
             display: flex; align-items: center; justify-content: center;
         }
-        .btn-main-copy.success-state { background-image: none; background-color: var(--success); color: #000; }
+        .btn-main-copy.success-state { background-image: none !important; background-color: var(--success); color: #000; }
 
         @keyframes idleFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         .idle { animation: idleFloat 3s ease-in-out infinite; }
@@ -127,18 +123,15 @@
         .input-group { margin-bottom: 20px; text-align: left; }
         .input-group label { font-size: 0.65rem; color: var(--primary); margin-left: 10px; font-weight: 800; display: block; margin-bottom: 5px; }
         .modal-content input { width: 100%; background: #000; border: 1px solid #222; padding: 14px; border-radius: 16px; color: white; font-size: 1.1rem; box-sizing: border-box; text-align: center; font-weight: 700; outline: none; }
-        .modal-content input:focus { border-color: var(--primary); }
-
+        
         .slider-wrap { background: rgba(255,255,255,0.03); padding: 10px; border-radius: 12px; margin-top: 5px; }
         .color-slider { width: 100%; accent-color: var(--primary); }
 
         .img-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
         .img-choice { width: 100%; aspect-ratio: 1; border-radius: 12px; border: 2px solid transparent; cursor: pointer; object-fit: contain; background: #0a0a0a; transition: 0.2s; }
-        .img-choice:hover { transform: scale(1.05); }
         .img-choice.selected { border-color: var(--primary); background: var(--glass); }
 
         .save-btn { width: 100%; padding: 18px; background: var(--primary); border: none; border-radius: 20px; font-weight: 800; cursor: pointer; margin-top: 20px; color: #000; transition: 0.2s; }
-        .save-btn:hover { filter: brightness(1.2); transform: scale(1.02); }
     </style>
 </head>
 <body onmouseleave="resetMagnet()">
@@ -158,79 +151,47 @@
         <div id="highlighter"></div>
         
         <h2>DISCOUNT</h2>
-        <div class="item-row" id="reset-target" data-val="H-DISCOUNT"><span class="text-content">H-DISCOUNT</span></div>
+        <div class="item-row" data-val="H-DISCOUNT"><span class="text-content">H-DISCOUNT</span></div>
 
         <h2>ACCOUNT</h2>
         <div class="item-row" data-val="110098112460"><span class="text-content">110098112460</span></div>
 
-        <h2>Laboratory & Diagnostic</h2>
+        <h2>Laboratory</h2>
         <div class="item-row" data-val="CHEMISTRY: FBS"><span class="text-content">CHEMISTRY: FBS</span></div>
         <div class="item-row" data-val="CHEMISTRY: URIC ACID"><span class="text-content">CHEMISTRY: URIC ACID</span></div>
-        <div class="item-row" data-val="CHEMISTRY: TOTAL CHOLESTEROL"><span class="text-content">CHEMISTRY: TOTAL CHOLESTEROL</span></div>
-        <div class="item-row" data-val="CHEMISTRY: CREATININE"><span class="text-content">CHEMISTRY: CREATININE</span></div>
-        <div class="item-row" data-val="MICROSCOPY: URINE-URINALYSIS"><span class="text-content">MICROSCOPY: URINE-URINALYSIS</span></div>
         <div class="item-row" data-val="HEMATOLOGY: CBC"><span class="text-content">HEMATOLOGY: CBC</span></div>
         <div class="add-btn-circle" onclick="alert('Library logic here')"><i data-lucide="plus"></i></div>
 
-        <h2>Medical Supplies</h2>
+        <h2>Supplies</h2>
         <div class="item-row" data-val="IV CATHETER G. 20"><span class="text-content">IV CATHETER G. 20</span></div>
         <div class="item-row" data-val="IV CATHETER G. 24"><span class="text-content">IV CATHETER G. 24</span></div>
         <div class="item-row" data-val="MICROSET"><span class="text-content">MICROSET</span></div>
         <div class="item-row" data-val="MACROSET"><span class="text-content">MACROSET</span></div>
-        <div class="item-row" data-val="SYRINGE DISPOSABLE (10 CC)"><span class="text-content">SYRINGE DISPOSABLE (10 CC)</span></div>
         <div class="add-btn-circle" onclick="alert('Library logic here')"><i data-lucide="plus"></i></div>
-
-        <h2>Others</h2>
-        <div class="item-row" data-val="ER FEE"><span class="text-content">ER FEE</span></div>
-        <div class="item-row" data-val="ADMISSION FEE"><span class="text-content">ADMISSION FEE</span></div>
-        <div class="item-row" data-val="X-RAY"><span class="text-content">X-RAY</span></div>
     </div>
 
     <div class="bottom-zone" onclick="copyFocusedItem()">
         <button class="btn-main-copy" id="magnetBtn"></button>
     </div>
 
-    <!-- Discount Modal -->
     <div class="modal-overlay" id="srModal" onclick="closeOutside(event, 'srModal')">
         <div class="modal-content" onclick="event.stopPropagation()">
             <h3>DISCOUNT CALCULATOR</h3>
-            <div class="input-group">
-                <label>HOSPITAL CHARGES</label>
-                <input id="hospCharges" type="number" placeholder="0.00" oninput="calcSr()">
-            </div>
-            <div class="input-group">
-                <label>CASE RATE (PHIC)</label>
-                <input id="caseRate" type="number" placeholder="0.00" oninput="calcSr()">
-            </div>
-            <div style="font-size: 2.8rem; font-weight: 800; color: var(--primary); margin: 20px 0;" id="finalDiscount">0.00</div>
+            <div class="input-group"><label>CHARGES</label><input id="hospCharges" type="number" oninput="calcSr()"></div>
+            <div class="input-group"><label>PHIC</label><input id="caseRate" type="number" oninput="calcSr()"></div>
+            <div style="font-size: 2.8rem; font-weight: 800; color: var(--primary);" id="finalDiscount">0.00</div>
             <button class="save-btn" onclick="copyModalValue()">COPY RESULT</button>
         </div>
     </div>
 
-    <!-- Settings Modal -->
     <div class="modal-overlay" id="settingsModal" onclick="closeOutside(event, 'settingsModal')">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <h3 style="color: var(--primary);">THEME & PROFILE</h3>
-            
-            <div class="input-group">
-                <label>DISPLAY NAME</label>
-                <input id="set-name" type="text" placeholder="Your Name">
-            </div>
-
-            <div class="input-group">
-                <label>PRIMARY HUE</label>
-                <div class="slider-wrap"><input type="range" min="0" max="360" class="color-slider" id="huePrimary" oninput="applyLiveTheme()"></div>
-            </div>
-
-            <div class="input-group">
-                <label>BACKGROUND DARKNESS</label>
-                <div class="slider-wrap"><input type="range" min="0" max="100" class="color-slider" id="hueBG" oninput="applyLiveTheme()"></div>
-            </div>
-
-            <label style="font-size: 0.65rem; color: var(--primary); font-weight: 800; display: block; text-align: left; margin-left: 10px;">SELECT BUTTON IMAGE</label>
+            <h3 style="color: var(--primary);">SETTINGS</h3>
+            <div class="input-group"><label>NAME</label><input id="set-name" type="text"></div>
+            <div class="input-group"><label>HUE</label><div class="slider-wrap"><input type="range" min="0" max="360" class="color-slider" id="huePrimary" oninput="applyLiveTheme()"></div></div>
+            <div class="input-group"><label>DARKNESS</label><div class="slider-wrap"><input type="range" min="0" max="100" class="color-slider" id="hueBG" oninput="applyLiveTheme()"></div></div>
             <div class="img-grid" id="imageGrid"></div>
-
-            <button class="save-btn" onclick="saveSettings()">SAVE ALL CHANGES</button>
+            <button class="save-btn" onclick="saveSettings()">SAVE CHANGES</button>
         </div>
     </div>
 
@@ -244,36 +205,26 @@
             initImgGrid();
             updateFocus(0);
             lucide.createIcons();
-            
-            // Row Click Events
-            allRows.forEach((row, idx) => {
-                row.onclick = () => executeCopy(row, idx);
-            });
+            allRows.forEach((row, idx) => row.onclick = () => executeCopy(row, idx));
         };
 
         function loadSettings() {
-            const s = JSON.parse(localStorage.getItem('eSOASettings_Pro')) || {
-                name: "Dzey Autajay",
-                pfp: "https://via.placeholder.com/150",
-                hueP: 27,
-                hueB: 6,
-                btn: selectedImg
-            };
-            
-            document.getElementById('userName').innerText = s.name;
-            document.getElementById('set-name').value = s.name;
-            document.getElementById('huePrimary').value = s.hueP;
-            document.getElementById('hueBG').value = s.hueB;
-            selectedImg = s.btn;
+            const saved = localStorage.getItem('eSOASettings_Pro');
+            if (saved) {
+                const s = JSON.parse(saved);
+                document.getElementById('userName').innerText = s.name;
+                document.getElementById('set-name').value = s.name;
+                document.getElementById('huePrimary').value = s.hueP;
+                document.getElementById('hueBG').value = s.hueB;
+                selectedImg = s.btn;
+            }
             document.getElementById('magnetBtn').style.backgroundImage = `url('${selectedImg}')`;
-            
             applyLiveTheme();
         }
 
         function applyLiveTheme() {
             const hP = document.getElementById('huePrimary').value;
             const hB = document.getElementById('hueBG').value;
-            
             document.documentElement.style.setProperty('--primary-hue', hP);
             document.documentElement.style.setProperty('--bg-hue', hB);
             document.documentElement.style.setProperty('--surface-hue', hB);
@@ -287,7 +238,10 @@
                 btn: selectedImg
             };
             localStorage.setItem('eSOASettings_Pro', JSON.stringify(data));
-            location.reload();
+            document.getElementById('userName').innerText = data.name;
+            document.getElementById('magnetBtn').style.backgroundImage = `url('${selectedImg}')`;
+            toggleModal('settingsModal', false);
+            flashMagnet();
         }
 
         function initImgGrid() {
@@ -295,8 +249,7 @@
             for(let i=1; i<=8; i++) {
                 const url = `https://sklepagatesting.github.io/resources/Images/${i}.png`;
                 const img = document.createElement('img');
-                img.src = url;
-                img.className = 'img-choice';
+                img.src = url; img.className = 'img-choice';
                 if(url === selectedImg) img.classList.add('selected');
                 img.onclick = () => {
                     document.querySelectorAll('.img-choice').forEach(el => el.classList.remove('selected'));
@@ -310,18 +263,14 @@
         function executeCopy(row, index) {
             const text = row.getAttribute('data-val');
             navigator.clipboard.writeText(text).then(() => {
-                // Visual Feedback
                 document.querySelectorAll('.text-content').forEach(el => el.classList.remove('text-active'));
                 row.querySelector('.text-content').classList.add('text-active');
-                
                 flashMagnet();
                 updateFocus(index);
-
                 // Auto-advance logic
                 let nextIdx = (index + 1) % allRows.length;
                 if(text.includes("G. 20")) nextIdx = Array.from(allRows).findIndex(r => r.innerText.includes("MACROSET"));
                 if(text.includes("G. 24")) nextIdx = Array.from(allRows).findIndex(r => r.innerText.includes("MICROSET"));
-                
                 setTimeout(() => updateFocus(nextIdx), 400);
             });
         }
@@ -342,26 +291,20 @@
             const highlighter = document.getElementById('highlighter');
             const containerRect = document.getElementById('mainContainer').getBoundingClientRect();
             const rect = targetRow.getBoundingClientRect();
-            
             highlighter.style.opacity = "1";
             highlighter.style.top = (rect.top - containerRect.top) + "px";
             highlighter.style.height = rect.height + "px";
-            
             targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
-        function copyFocusedItem() {
-            executeCopy(allRows[currentFocusedIndex], currentFocusedIndex);
-        }
-
+        function copyFocusedItem() { executeCopy(allRows[currentFocusedIndex], currentFocusedIndex); }
         function nextFocus() { updateFocus((currentFocusedIndex + 1) % allRows.length); }
         function resetFocus() { updateFocus(0); }
 
         function toggleModal(id, show) {
             const m = document.getElementById(id);
-            m.style.display = show ? 'flex' : 'none';
-            if(show) setTimeout(() => m.classList.add('active'), 10);
-            else m.classList.remove('active');
+            if(show) { m.style.display = 'flex'; setTimeout(() => m.classList.add('active'), 10); }
+            else { m.classList.remove('active'); setTimeout(() => m.style.display = 'none', 300); }
         }
 
         function closeOutside(e, id) { if(e.target.id === id) toggleModal(id, false); }
@@ -374,11 +317,9 @@
 
         function copyModalValue() {
             navigator.clipboard.writeText(document.getElementById('finalDiscount').innerText);
-            toggleModal('srModal', false);
-            flashMagnet();
+            toggleModal('srModal', false); flashMagnet();
         }
 
-        // Magnet Motion
         document.addEventListener('mousemove', (e) => {
             const btn = document.getElementById('magnetBtn');
             if(e.clientY > window.innerHeight * 0.7) {
