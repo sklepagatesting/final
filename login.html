@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eSOA Auth</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap" rel="stylesheet">
+    <style>
+        body { background: #1a0f0b; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .auth-card { background: #140700; padding: 40px; border-radius: 32px; border: 1px solid #ff730033; width: 320px; text-align: center; }
+        input { width: 100%; background: #000; border: 1px solid #333; padding: 15px; margin: 10px 0; border-radius: 12px; color: white; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; background: #ff7300; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; margin-top: 10px; }
+        .toggle { font-size: 0.8rem; color: #666; margin-top: 20px; cursor: pointer; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <h2 id="title">WELCOME BACK</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="pass" placeholder="Password">
+        <button class="btn" id="mainBtn" onclick="handleAuth()">LOGIN</button>
+        <div class="toggle" id="toggleLink" onclick="toggleMode()">Don't have an account? Register</div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDaeNQF4qmW0vvwxUPp_NztnT0hoLzm1BQ",
+            authDomain: "svls-289ee.firebaseapp.com",
+            projectId: "svls-289ee",
+            storageBucket: "svls-289ee.firebasestorage.app",
+            messagingSenderId: "500705386198",
+            appId: "1:500705386198:web:96f189662bc2aa99cf7377"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        let isLogin = true;
+
+        window.toggleMode = () => {
+            isLogin = !isLogin;
+            document.getElementById('title').innerText = isLogin ? "WELCOME BACK" : "CREATE ACCOUNT";
+            document.getElementById('mainBtn').innerText = isLogin ? "LOGIN" : "REGISTER";
+            document.getElementById('toggleLink').innerText = isLogin ? "Don't have an account? Register" : "Already have an account? Login";
+        };
+
+        window.handleAuth = async () => {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('pass').value;
+
+            try {
+                if(isLogin) {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                } else {
+                    await createUserWithEmailAndPassword(auth, email, pass);
+                }
+                window.location.href = "eSOAbeta.html";
+            } catch (err) {
+                alert(err.message);
+            }
+        };
+    </script>
+</body>
+</html>
