@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,26 +13,25 @@
 }
 
 body{
-    background:#000000;
+    background:#050505;
     color:#f5f5f5;
     font-family:'Georgia', serif;
     overflow-x:hidden;
 }
 
-/* CONTAINER */
+/* MAIN WRAPPER */
 .memorial-container{
     width:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    background:#050505;
 }
 
 /* HERO */
 .hero-section{
     position:relative;
     width:100%;
-    height:78vh;
+
+    /* smoother than fixed vh */
+    height:clamp(60vh, 78vh, 85vh);
+
     background:#070707;
     display:flex;
     align-items:center;
@@ -42,30 +39,35 @@ body{
     overflow:hidden;
 }
 
-/* IMAGE DEFAULT = DESKTOP (NO CROP) */
+/* IMAGE */
 .memorial-image{
     width:100%;
     height:100%;
-    object-fit:contain;   /* 👈 desktop default */
-    display:block;
+    object-fit:contain;
+
+    /* keeps face centered */
+    object-position:center;
 
     filter: grayscale(70%) brightness(1.05);
+
+    /* smoother resize behavior */
+    transition: object-fit .5s ease;
 }
 
-/* FADE TRANSITION */
+/* GRADIENT OVERLAY */
 .hero-section::after{
     content:"";
     position:absolute;
     left:0;
     bottom:0;
     width:100%;
-    height:180px;
+    height:25%;
 
     background:linear-gradient(
         to bottom,
         rgba(5,5,5,0) 0%,
-        rgba(5,5,5,0.25) 35%,
-        rgba(5,5,5,0.65) 70%,
+        rgba(5,5,5,0.25) 40%,
+        rgba(5,5,5,0.7) 75%,
         #050505 100%
     );
 
@@ -76,24 +78,29 @@ body{
 .content{
     width:100%;
     max-width:850px;
-    padding:70px 28px 90px;
+    margin:0 auto;
+
+    padding:60px 24px 100px;
     text-align:center;
 }
 
+/* NAME */
 .name{
-    font-size:clamp(2.2rem, 5vw, 4.5rem);
-    font-weight:bold;
+    font-size:clamp(2rem, 5vw, 4.2rem);
+    font-weight:700;
     color:#fff;
-    margin-bottom:14px;
+    margin-bottom:10px;
 }
 
+/* YEARS */
 .years{
-    font-size:1.15rem;
+    font-size:1.1rem;
     color:#b8b8b8;
     letter-spacing:3px;
-    margin-bottom:45px;
+    margin-bottom:40px;
 }
 
+/* TEXT */
 .tribute-text{
     font-size:1.1rem;
     line-height:2;
@@ -101,7 +108,7 @@ body{
     text-align:justify;
 }
 
-/* 📱 MOBILE / SMALLER SCREENS = ALLOW CROPPING */
+/* MOBILE */
 @media (max-width: 900px){
 
     .hero-section{
@@ -109,20 +116,29 @@ body{
     }
 
     .memorial-image{
-        object-fit:cover;   /* 👈 switch to crop mode */
-    }
-
-    .hero-section::after{
-        height:140px;
+        object-fit:cover;
+        object-position:50% 30%; /* keeps face higher in frame */
     }
 
     .content{
-        padding-top:45px;
+        padding:40px 20px 80px;
     }
 
     .tribute-text{
         font-size:1rem;
-        line-height:1.9;
+        line-height:1.85;
+    }
+}
+
+/* SMALL PHONES */
+@media (max-width: 480px){
+
+    .hero-section{
+        height:65vh;
+    }
+
+    .years{
+        letter-spacing:2px;
     }
 }
 </style>
@@ -130,19 +146,18 @@ body{
 
 <body>
 
-<!-- HERO -->
-<div class="hero-section">
-    <img class="memorial-image"
-         src="https://sklepagatesting.github.io/resources/Images/jayautajay.png?q=80&w=1200&auto=format&fit=crop"
-         alt="In Loving Memory">
-</div>
-
-<!-- CONTENT -->
 <div class="memorial-container">
+
+    <!-- HERO -->
+    <div class="hero-section">
+        <img class="memorial-image"
+             src="https://sklepagatesting.github.io/resources/Images/jayautajay.png"
+             alt="In Loving Memory">
+    </div>
+
+    <!-- CONTENT -->
     <div class="content">
-
         <h1 class="name">Jay D. Autajay</h1>
-
         <div class="years">2003 – </div>
 
         <p class="tribute-text">
@@ -151,8 +166,8 @@ body{
             et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
             ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </p>
-
     </div>
+
 </div>
 
 </body>
