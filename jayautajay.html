@@ -100,30 +100,25 @@ body{
 @media (max-width: 900px){
 
     .hero-section{
-        height:75vh;
+        height:95vh;
     }
 
     .memorial-image{
         object-fit:cover;
-
-        /* 👇 FIX: keeps subject centered properly on most phones */
-        object-position:50% 25%;
-
-        /* smoother feel when resizing */
-        transform:scale(1.02);
-    }
-
-    .hero-section::after{
-        height:140px;
+        object-position:50% 30%;
     }
 
     .content{
-        padding-top:45px;
+        padding:0px 40px 100px;
+
+        /* ensures clean separation */
+        min-height:25vh;
     }
 
     .tribute-text{
         font-size:1rem;
-        line-height:1.9;
+        line-height:1.85;
+
     }
 }
 
@@ -136,10 +131,6 @@ body{
 
     .years{
         letter-spacing:2px;
-    }
-
-    .tribute-text{
-        margin-top:110px;
     }
 }
 </style>
