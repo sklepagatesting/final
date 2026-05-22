@@ -1,0 +1,159 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>In Loving Memory</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#000000;
+    color:#f5f5f5;
+    font-family:'Georgia', serif;
+    overflow-x:hidden;
+}
+
+/* CONTAINER */
+.memorial-container{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    background:#050505;
+}
+
+/* HERO */
+.hero-section{
+    position:relative;
+    width:100%;
+    height:78vh;
+    background:#060606;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+/* IMAGE DEFAULT = DESKTOP (NO CROP) */
+.memorial-image{
+    width:100%;
+    height:100%;
+    object-fit:contain;   /* 👈 desktop default */
+    display:block;
+
+    filter: grayscale(70%) brightness(1.05);
+}
+
+/* FADE TRANSITION */
+.hero-section::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:100%;
+    height:180px;
+
+    background:linear-gradient(
+        to bottom,
+        rgba(5,5,5,0) 0%,
+        rgba(5,5,5,0.25) 35%,
+        rgba(5,5,5,0.65) 70%,
+        #050505 100%
+    );
+
+    pointer-events:none;
+}
+
+/* CONTENT */
+.content{
+    width:100%;
+    max-width:850px;
+    padding:70px 28px 90px;
+    text-align:center;
+}
+
+.name{
+    font-size:clamp(2.2rem, 5vw, 4.5rem);
+    font-weight:bold;
+    color:#fff;
+    margin-bottom:14px;
+}
+
+.years{
+    font-size:1.15rem;
+    color:#b8b8b8;
+    letter-spacing:3px;
+    margin-bottom:45px;
+}
+
+.tribute-text{
+    font-size:1.1rem;
+    line-height:2;
+    color:#d4d4d4;
+    text-align:justify;
+}
+
+/* 📱 MOBILE / SMALLER SCREENS = ALLOW CROPPING */
+@media (max-width: 900px){
+
+    .hero-section{
+        height:75vh;
+    }
+
+    .memorial-image{
+        object-fit:cover;   /* 👈 switch to crop mode */
+    }
+
+    .hero-section::after{
+        height:140px;
+    }
+
+    .content{
+        padding-top:45px;
+    }
+
+    .tribute-text{
+        font-size:1rem;
+        line-height:1.9;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HERO -->
+<div class="hero-section">
+    <img class="memorial-image"
+         src="https://sklepagatesting.github.io/resources/Images/jayautajay.png?q=80&w=1200&auto=format&fit=crop"
+         alt="In Loving Memory">
+</div>
+
+<!-- CONTENT -->
+<div class="memorial-container">
+    <div class="content">
+
+        <h1 class="name">Jay D. Autajay</h1>
+
+        <div class="years">2003 – </div>
+
+        <p class="tribute-text">
+            A common form of Lorem ipsum reads: Lorem ipsum dolor sit amet,
+            consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+            ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+
+    </div>
+</div>
+
+</body>
+</html>
