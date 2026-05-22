@@ -12,6 +12,10 @@
     box-sizing:border-box;
 }
 
+html{
+    scroll-behavior:smooth;
+}
+
 body{
     background:#070707;
     color:#f5f5f5;
@@ -19,121 +23,193 @@ body{
     overflow-x:hidden;
 }
 
-/* MAIN WRAPPER */
+/* =========================
+   MAIN CONTAINER
+========================= */
 .memorial-container{
     width:100%;
+    min-height:100vh;
+    background:#070707;
 }
 
-/* HERO */
+/* =========================
+   HERO SECTION
+========================= */
 .hero-section{
     position:relative;
     width:100%;
-    height:clamp(60vh, 78vh, 85vh);
-    background:#070707;
+
+    /* desktop image height */
+    height:83vh;
+    min-height:620px;
+    max-height:920px;
+
     display:flex;
-    align-items:center;
+    align-items:flex-end;
     justify-content:center;
+
     overflow:hidden;
+    background:#070707;
+
+    transition:height .35s ease;
 }
 
 /* IMAGE */
 .memorial-image{
     width:100%;
     height:100%;
+
+    /* DESKTOP = FULL IMAGE */
     object-fit:contain;
-    object-position:center;
-    filter: grayscale(70%) brightness(1.05);
+
+    /* stable positioning */
+    object-position:center bottom;
+
+    filter:grayscale(70%) brightness(1.05);
+
+    transition:
+        object-position .35s ease,
+        transform .35s ease,
+        height .35s ease;
 }
 
-/* GRADIENT OVERLAY */
+/* SMOOTH FADE */
 .hero-section::after{
     content:"";
     position:absolute;
     left:0;
     bottom:0;
     width:100%;
-    height:25%;
+    height:28%;
+
     background:linear-gradient(
         to bottom,
-        rgba(5,5,5,0) 0%,
-        rgba(5,5,5,0.25) 40%,
-        rgba(5,5,5,0.7) 75%,
-        #050505 100%
+        rgba(7,7,7,0) 0%,
+        rgba(7,7,7,0.15) 35%,
+        rgba(7,7,7,0.55) 72%,
+        #070707 100%
     );
+
     pointer-events:none;
 }
 
-/* CONTENT */
+/* =========================
+   CONTENT
+========================= */
 .content{
-    width:100%;
-    max-width:850px;
+    width:min(100%, 900px);
+
     margin:0 auto;
-    padding:60px 24px 100px;
+
+    padding:
+        clamp(14px, 2vw, 24px)
+        clamp(22px, 5vw, 48px)
+        clamp(80px, 10vw, 130px);
+
     text-align:center;
+
+    transition:padding .35s ease;
 }
 
 /* NAME */
 .name{
-    font-size:clamp(2rem, 5vw, 4.2rem);
+    font-size:clamp(2.2rem, 5vw, 4.5rem);
+    line-height:1.08;
     font-weight:700;
-    color:#fff;
-    margin-bottom:10px;
+    color:#ffffff;
+
+    margin-bottom:14px;
+
+    transition:
+        font-size .35s ease,
+        margin .35s ease;
 }
 
 /* YEARS */
 .years{
-    font-size:1.1rem;
+    font-size:clamp(.95rem, 1.5vw, 1.15rem);
     color:#b8b8b8;
-    letter-spacing:3px;
-    margin-bottom:40px;
+
+    letter-spacing:clamp(2px, .35vw, 4px);
+
+    margin-bottom:clamp(28px, 5vw, 46px);
+
+    transition:
+        font-size .35s ease,
+        letter-spacing .35s ease,
+        margin .35s ease;
 }
 
-/* TEXT */
+/* PARAGRAPH */
 .tribute-text{
-    font-size:1.1rem;
-    line-height:2;
-    color:#d4d4d4;
+    font-size:clamp(1rem, 1.35vw, 1.12rem);
+
     text-align:justify;
+    text-wrap:pretty;
+
+    line-height:clamp(1.8, 2vw, 2);
+
+    color:#d2d2d2;
+
+    transition:
+        font-size .35s ease,
+        line-height .35s ease;
 }
 
-/* MOBILE */
-@media (max-width: 900px){
+/* =========================
+   TABLET
+========================= */
+@media (max-width:900px){
 
     .hero-section{
-        margin-top:20%;
-        height:95vh;
+        height:90vh;
+        min-height:800px;
     }
 
     .memorial-image{
+        /* mobile can crop smoothly */
         object-fit:cover;
-        object-position:50% 30%;
-    }
 
-    .name{
-        margin-top:20%;
-    margin-bottom:10px;
+        object-position:center 14%;
+    }
 }
 
+/* =========================
+   MOBILE
+========================= */
+@media (max-width:600px){
+
+    .hero-section{
+        height:85vh;
+        min-height:700px;
+    }
+
+    .memorial-image{
+        object-position:center 12%;
+    }
 
     .content{
-        padding:0px 40px 100px;
-
-        /* ensures clean separation */
-        min-height:25vh;
+        padding-left:24px;
+        padding-right:24px;
     }
 
     .tribute-text{
         font-size:1rem;
-        line-height:1.85;
-
     }
 }
 
-/* SMALL PHONES */
-@media (max-width: 480px){
+/* =========================
+   SMALL PHONE
+========================= */
+@media (max-width:420px){
 
     .hero-section{
-        height:65vh;
+        height:62vh;
+        min-height:430px;
+    }
+
+    .memorial-image{
+        object-position:center 10%;
     }
 
     .years{
@@ -148,16 +224,26 @@ body{
 <div class="memorial-container">
 
     <!-- HERO -->
-    <div class="hero-section">
-        <img class="memorial-image"
-             src="https://sklepagatesting.github.io/resources/Images/jayautajay.png"
-             alt="In Loving Memory">
-    </div>
+    <section class="hero-section">
+
+        <img
+            class="memorial-image"
+            src="https://sklepagatesting.github.io/resources/Images/jayautajay.png"
+            alt="In Loving Memory"
+        >
+
+    </section>
 
     <!-- CONTENT -->
-    <div class="content">
-        <h1 class="name">Jay D. Autajay</h1>
-        <div class="years">2003 – </div>
+    <section class="content">
+
+        <h1 class="name">
+            Jay D. Autajay
+        </h1>
+
+        <div class="years">
+            2003 –
+        </div>
 
         <p class="tribute-text">
             A common form of Lorem ipsum reads: Lorem ipsum dolor sit amet,
@@ -165,7 +251,8 @@ body{
             et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
             ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </p>
-    </div>
+
+    </section>
 
 </div>
 
