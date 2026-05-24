@@ -331,15 +331,8 @@ body.loaded .delay-3{
     left:50%;
     top:50%;
 
-    /*
-        slightly above the text center
-        so it overlaps the name naturally
-    */
     transform:translate(-50%, -72%);
 
-    /*
-        smaller than text width
-    */
     width:min(58vw, 520px);
 
     opacity:0;
@@ -348,7 +341,10 @@ body.loaded .delay-3{
         opacity 2s ease,
         transform 2s ease;
 
-    z-index:3;
+    /*
+        put behind text
+    */
+    z-index:1;
 
     pointer-events:none;
 }
@@ -364,9 +360,6 @@ body.loaded .delay-3{
 
     width:100%;
 
-    /*
-        signature ratio
-    */
     padding-bottom:38%;
 }
 
@@ -381,7 +374,10 @@ body.loaded .delay-3{
 
     object-fit:cover;
 
-    opacity:.92;
+    /*
+        90% opacity
+    */
+    opacity:.9;
 
     mix-blend-mode:screen;
 
