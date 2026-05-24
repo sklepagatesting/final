@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,6 +76,7 @@
                 opacity 1.8s cubic-bezier(0.25, 1, 0.5, 1),
                 transform 1.8s cubic-bezier(0.25, 1, 0.5, 1),
                 filter 1.8s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: transform, opacity;
         }
 
         body.loaded .memorial-image {
@@ -108,7 +110,6 @@
             width: 100%;
             height: 100%;
             z-index: 2;
-            /* Prevent scrolling or zooming gestures while drawing on mobile devices */
             touch-action: none; 
         }
 
@@ -145,6 +146,7 @@
             transition: 
                 opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1),
                 transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: transform, opacity;
         }
 
         body.loaded .fade-up {
@@ -214,6 +216,7 @@
             transition: 
                 filter 1s ease,
                 opacity .7s ease;
+            will-change: filter, opacity;
         }
 
         .memory-image.loaded-image {
@@ -227,6 +230,7 @@
         .memory-content {
             opacity: 0;
             transition: opacity .8s ease;
+            will-change: opacity;
         }
 
         .memory-content.visible {
@@ -265,9 +269,6 @@
             overflow: hidden;
         }
 
-        /* ==========================================================================
-           NAME
-           ========================================================================== */
         .rotating-name {
             font-family: 'Cormorant Garamond', serif;
             font-size: clamp(3rem, 9vw, 8rem);
@@ -284,7 +285,7 @@
         }
 
         /* ==========================================================================
-           SIGNATURE VIDEO
+           SIGNATURE VIDEO (FIXED SHIFT BOTTLENECK)
            ========================================================================== */
         .end-video-container {
             position: absolute;
@@ -293,16 +294,14 @@
             transform: translate(-50%, -72%);
             width: min(58vw, 520px);
             opacity: 0;
-            transition: 
-                opacity 2s ease,
-                transform 2s ease;
+            transition: opacity 2s ease; /* Removed transform animation to completely eliminate layout recalculation jumps */
             z-index: 1;
             pointer-events: none;
+            will-change: opacity;
         }
 
         .end-video-container.show {
             opacity: 1;
-            transform: translate(-50%, -72%);
         }
 
         .end-video-wrapper {
@@ -354,7 +353,7 @@
                 transform: translate(-50%, -66%);
             }
             .end-video-container.show {
-                transform: translate(-50%, -63%);
+                transform: translate(-50%, -66%); /* Fixed properties to keep element anchors completely stable on mobile activation */
             }
         }
 
@@ -381,11 +380,9 @@
 
     <!-- HERO -->
     <section class="hero-section">
-        <!-- Preloading baseline images securely hidden behind layout layers -->
         <img id="bgGrey" class="memorial-image" src="https://sklepagatesting.github.io/resources/Images/jayautajay.png" alt="Temple" style="display: none;">
         <img id="bgColored" src="https://sklepagatesting.github.io/resources/Images/jayautajaycolored.png" alt="Temple Colored" style="display: none;">
         
-        <!-- Interactive Reveal Surface -->
         <div class="hero-canvas-container" id="canvasContainer">
             <canvas id="brushCanvas"></canvas>
         </div>
@@ -404,7 +401,7 @@
     <section class="memory-section">
         <div class="memory-inner">
             <div class="memory-image-wrap">
-                <img class="memory-image scroll-image" src="https://sklepagatesting.github.io/resources/Images/daycare.png?q=80&w=1600&auto=format&fit=crop" alt="">
+                <img class="memory-image scroll-image" loading="lazy" src="https://sklepagatesting.github.io/resources/Images/daycare.png?q=80&w=1600&auto=format&fit=crop" alt="">
             </div>
             <div class="memory-content">
                 <div class="memory-year">1912</div>
@@ -419,7 +416,7 @@
     <section class="memory-section">
         <div class="memory-inner">
             <div class="memory-image-wrap">
-                <img class="memory-image scroll-image" src="https://sklepagatesting.github.io/resources/Images/graduation.jpg?q=80&w=1600&auto=format&fit=crop" alt="">
+                <img class="memory-image scroll-image" loading="lazy" src="https://sklepagatesting.github.io/resources/Images/graduation.jpg?q=80&w=1600&auto=format&fit=crop" alt="">
             </div>
             <div class="memory-content">
                 <div class="memory-year">1936</div>
@@ -432,15 +429,13 @@
 
     <!-- END -->
     <section class="end-section">
-        <!-- SIGNATURE VIDEO -->
         <div class="end-video-container" id="endVideoContainer">
             <div class="end-video-wrapper">
-                <video id="endVideo" playsinline muted>
+                <video id="endVideo" playsinline muted preload="none">
                     <source src="https://sklepagatesting.github.io/resources/Images/signature.mp4" type="video/mp4">
                 </video>
             </div>
         </div>
-        <!-- NAME -->
         <h2 class="rotating-name" id="rotatingText">Eternal Silence</h2>
     </section>
 
@@ -458,6 +453,7 @@
         setTimeout(() => {
             document.body.classList.add('loaded');
             initCanvas(); 
+            initScrollAnimations(); 
         }, 100);
     }
 
@@ -467,64 +463,62 @@
         } else {
             img.addEventListener('load', () => {
                 loadedCount++;
-                if (loadedCount === images.length) {
-                    finishLoading();
-                }
+                if (loadedCount === images.length) finishLoading();
             });
         }
     }
+    if (loadedCount === images.length) finishLoading();
 
-    if (loadedCount === images.length) {
-        finishLoading();
-    }
-
-    /* ==========================================================================
-       MEMORY SECTIONS IMAGE PRELOAD
-       ========================================================================== */
     const scrollImages = document.querySelectorAll('.scroll-image');
     scrollImages.forEach((img) => {
-        if (img.complete) {
-            img.classList.add('loaded-image');
-        } else {
-            img.addEventListener('load', () => {
-                img.classList.add('loaded-image');
-            });
-        }
+        if (img.complete) img.classList.add('loaded-image');
+        else img.addEventListener('load', () => img.classList.add('loaded-image'));
     });
 
     /* ==========================================================================
-       SCROLL ACTION LIFECYCLES
+       HIGH PERFORMANCE SCROLL ENGINE (OPTIMIZED WITH INTERSECTION OBSERVERS)
        ========================================================================== */
-    const memoryContent = document.querySelectorAll('.memory-content');
+    function initScrollAnimations() {
+        const memoryContents = document.querySelectorAll('.memory-content');
+        const rotatingText = document.getElementById('rotatingText');
+        let rotationTriggered = false;
 
-    function updateEffects() {
-        const vh = window.innerHeight;
-        
-        /* SCROLL IMAGE FILTERS */
-        scrollImages.forEach((img) => {
-            const rect = img.getBoundingClientRect();
-            const activeTop = vh * 0.3;
-            const activeBottom = vh * 0.7;
-            if (rect.top < activeBottom && rect.bottom > activeTop) {
-                img.classList.add('active');
-            } else {
-                img.classList.remove('active');
-            }
+        // Content Fade-In Observer
+        const staticObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.classList.contains('memory-content')) {
+                        entry.target.classList.add('visible');
+                        staticObserver.unobserve(entry.target);
+                    } else if (entry.target === rotatingText && !rotationTriggered) {
+                        rotationTriggered = true;
+                        startRotationLoop();
+                        staticObserver.unobserve(rotatingText);
+                    }
+                }
+            });
+        }, { rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+
+        memoryContents.forEach(content => staticObserver.observe(content));
+        staticObserver.observe(rotatingText);
+
+        // Native hardware-accelerated Image Visibility Observer (Replaces lagging requestAnimationFrame loop)
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                } else {
+                    entry.target.classList.remove('active');
+                }
+            });
+        }, {
+            root: null,
+            rootMargin: '-25% 0px -25% 0px', // Perfectly matches your 30% to 70% viewport bounds safely
+            threshold: 0
         });
 
-        /* CONTENT FADE REVEALS */
-        memoryContent.forEach((content) => {
-            const rect = content.getBoundingClientRect();
-            if (rect.top < vh * 0.92) {
-                content.classList.add('visible');
-            }
-        });
-
-        startRotationOnView();
+        scrollImages.forEach(img => imageObserver.observe(img));
     }
-
-    window.addEventListener('scroll', updateEffects);
-    window.addEventListener('load', updateEffects);
 
     /* ==========================================================================
        BRUSH WORKSPACE RENDERING ENGINES
@@ -537,64 +531,71 @@
         const imgGrey = document.getElementById('bgGrey');
         const imgColor = document.getElementById('bgColored');
         
-        // Virtual offscreen canvas to track brush mask visibility thresholds
         const maskCanvas = document.createElement('canvas');
         const maskCtx = maskCanvas.getContext('2d');
+
+        const offscreenCanvas = document.createElement('canvas');
+        const offCtx = offscreenCanvas.getContext('2d');
         
-        let lastX = null;
-        let lastY = null;
-        let lastTime = null;
+        let lastX = null, lastY = null, lastTime = null;
+        
+        const preserveCanvas = document.createElement('canvas');
+        const preserveCtx = preserveCanvas.getContext('2d');
         
         function resize() {
             const w = container.clientWidth;
             const h = container.clientHeight;
+            
+            if (maskCanvas.width > 0 && maskCanvas.height > 0) {
+                preserveCanvas.width = maskCanvas.width;
+                preserveCanvas.height = maskCanvas.height;
+                preserveCtx.drawImage(maskCanvas, 0, 0);
+            }
+            
             canvas.width = w;
             canvas.height = h;
+            offscreenCanvas.width = w;
+            offscreenCanvas.height = h;
+            
+            const oldW = maskCanvas.width;
+            const oldH = maskCanvas.height;
+            
             maskCanvas.width = w;
             maskCanvas.height = h;
             
             maskCtx.fillStyle = 'black';
             maskCtx.fillRect(0, 0, w, h);
+            
+            if (oldW > 0 && oldH > 0) {
+                maskCtx.drawImage(preserveCanvas, 0, 0, oldW, oldH, 0, 0, w, h);
+            }
         }
         window.addEventListener('resize', resize);
         resize();
 
-        // Object calculation properties mapping onto responsive visual CSS criteria
         function getImgMetrics(img) {
-            const cW = canvas.width;
-            const cH = canvas.height;
-            const iW = img.naturalWidth || 800;
-            const iH = img.naturalHeight || 600;
+            const cW = canvas.width, cH = canvas.height;
+            const iW = img.naturalWidth || 800, iH = img.naturalHeight || 600;
             
             let scale = Math.min(cW / iW, cH / iH);
-            if (window.innerWidth <= 900) {
-                scale = Math.max(cW / iW, cH / iH);
-            }
+            if (window.innerWidth <= 900) scale = Math.max(cW / iW, cH / iH);
             
-            const rW = iW * scale;
-            const rH = iH * scale;
+            const rW = iW * scale, rH = iH * scale;
             const x = (cW - rW) / 2;
-            
             let y = cH - rH;
-            if (window.innerWidth <= 420) {
-                y = (cH - rH) * 0.1;
-            }
+            if (window.innerWidth <= 420) y = (cH - rH) * 0.1;
             
             return { x, y, w: rW, h: rH };
         }
 
-        // Watercolor Aesthetic Tuning
-        const baseRadius = 80;      // Broad base coverage
+        const baseRadius = 80;      
         const maxVelocity = 15;
-        const fadeSpeed = 0.010;    // Lingering watery decay rate
+        const fadeSpeed = 0.0018;    
 
         function applyBrushStroke(currentX, currentY, velocity) {
-            // Dynamic brush expansion calculation based on motion speed
             const dynamicRadius = baseRadius + Math.min(velocity * 6.0, 130);
-            
             maskCtx.globalCompositeOperation = 'destination-out';
             
-            // 1. Core wet wash pools
             const poolCount = 3;
             for (let i = 0; i < poolCount; i++) {
                 const offsetX = (Math.random() - 0.5) * (dynamicRadius * 0.4);
@@ -605,7 +606,6 @@
                     currentX + offsetX, currentY + offsetY, localRadius * 0.05, 
                     currentX + offsetX, currentY + offsetY, localRadius
                 );
-                
                 poolGrad.addColorStop(0, 'rgba(0,0,0,1.0)');
                 poolGrad.addColorStop(0.25, 'rgba(0,0,0,0.85)');
                 poolGrad.addColorStop(0.6, 'rgba(0,0,0,0.35)');
@@ -618,21 +618,16 @@
                 maskCtx.fill();
             }
 
-            // 2. Scattered satellite watercolor splatters
             if (Math.random() > 0.3) {
                 const splatterCount = Math.floor(2 + Math.random() * 4);
                 for (let j = 0; j < splatterCount; j++) {
-                    // Spread droplets across concentric radial distribution fields
                     const angle = Math.random() * Math.PI * 2;
                     const distance = (0.4 + Math.random() * 0.9) * dynamicRadius;
                     const splatX = currentX + Math.cos(angle) * distance;
                     const splatY = currentY + Math.sin(angle) * distance;
                     const splatRadius = (5 + Math.random() * 15) * (1 + velocity * 0.1);
 
-                    const splatGrad = maskCtx.createRadialGradient(
-                        splatX, splatY, splatRadius * 0.1,
-                        splatX, splatY, splatRadius
-                    );
+                    const splatGrad = maskCtx.createRadialGradient(splatX, splatY, splatRadius * 0.1, splatX, splatY, splatRadius);
                     splatGrad.addColorStop(0, 'rgba(0,0,0,0.9)');
                     splatGrad.addColorStop(0.5, 'rgba(0,0,0,0.4)');
                     splatGrad.addColorStop(1, 'rgba(0,0,0,0)');
@@ -644,7 +639,6 @@
                 }
             }
 
-            // 3. Fluid line interpolation to prevent broken gaps between fast move frames
             if (lastX !== null) {
                 const distanceBetween = Math.sqrt(Math.pow(currentX - lastX, 2) + Math.pow(currentY - lastY, 2));
                 const steps = Math.ceil(distanceBetween / 12);
@@ -654,7 +648,6 @@
                     const interX = lastX + (currentX - lastX) * ratio;
                     const interY = lastY + (currentY - lastY) * ratio;
                     
-                    // Slightly jitter path lines to prevent overly straight mechanical strokes
                     const jitterX = (Math.random() - 0.5) * 8;
                     const jitterY = (Math.random() - 0.5) * 8;
                     const bridgeRadius = dynamicRadius * 0.8;
@@ -675,7 +668,6 @@
             }
         }
 
-        // Unified input handling routine tracking motion speed metrics
         function handleInteractionMove(clientX, clientY) {
             const rect = canvas.getBoundingClientRect();
             const currentX = clientX - rect.left;
@@ -701,37 +693,29 @@
         }
 
         function handleInteractionEnd() {
-            lastX = null;
-            lastY = null;
-            lastTime = null;
+            lastX = null; lastY = null; lastTime = null;
         }
 
-        // Mouse Listeners
-        container.addEventListener('mousemove', (e) => {
-            handleInteractionMove(e.clientX, e.clientY);
-        });
+        container.addEventListener('mousemove', (e) => handleInteractionMove(e.clientX, e.clientY));
         container.addEventListener('mouseleave', handleInteractionEnd);
 
-        // Mobile Touch Listeners 
         container.addEventListener('touchstart', (e) => {
             if (e.touches.length > 0) {
-                // Initialize position metrics silently on initial tap contact
                 const rect = canvas.getBoundingClientRect();
                 lastX = e.touches[0].clientX - rect.left;
                 lastY = e.touches[0].clientY - rect.top;
                 lastTime = performance.now();
                 handleInteractionMove(e.touches[0].clientX, e.touches[0].clientY);
             }
-        });
+        }, { passive: true });
+        
         container.addEventListener('touchmove', (e) => {
-            if (e.touches.length > 0) {
-                handleInteractionMove(e.touches[0].clientX, e.touches[0].clientY);
-            }
-        });
-        container.addEventListener('touchend', handleInteractionEnd);
-        container.addEventListener('touchcancel', handleInteractionEnd);
+            if (e.touches.length > 0) handleInteractionMove(e.touches[0].clientX, e.touches[0].clientY);
+        }, { passive: true });
+        
+        container.addEventListener('touchend', handleInteractionEnd, { passive: true });
+        container.addEventListener('touchcancel', handleInteractionEnd, { passive: true });
 
-        // Frame rendering calculations 
         function renderLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
@@ -739,22 +723,19 @@
             maskCtx.fillStyle = `rgba(0, 0, 0, ${fadeSpeed})`;
             maskCtx.fillRect(0, 0, canvas.width, canvas.height);
             
+            maskCtx.fillStyle = 'rgba(0, 0, 0, 0.0012)';
+            maskCtx.fillRect(0, 0, canvas.width, canvas.height);
+            
             const metrics = getImgMetrics(imgGrey);
             
-            // 1. Draw colored baseline background layer
             ctx.drawImage(imgColor, metrics.x, metrics.y, metrics.w, metrics.h);
             
-            // 2. Mix and mask structural layers out-of-view 
-            const offscreenCanvas = document.createElement('canvas');
-            offscreenCanvas.width = canvas.width;
-            offscreenCanvas.height = canvas.height;
-            const offCtx = offscreenCanvas.getContext('2d');
-            
+            offCtx.clearRect(0, 0, canvas.width, canvas.height);
             offCtx.drawImage(imgGrey, metrics.x, metrics.y, metrics.w, metrics.h);
             offCtx.globalCompositeOperation = 'destination-in';
             offCtx.drawImage(maskCanvas, 0, 0);
+            offCtx.globalCompositeOperation = 'source-over'; 
             
-            // 3. Flatten overlay layers contextually over viewports
             ctx.drawImage(offscreenCanvas, 0, 0);
             
             requestAnimationFrame(renderLoop);
@@ -795,12 +776,13 @@
                 
                 setTimeout(() => {
                     endVideoContainer.classList.add('show');
+                    endVideo.setAttribute('preload', 'auto'); 
                     endVideo.currentTime = 0;
                     endVideo.play().catch(() => {});
                     
                     endVideo.addEventListener('timeupdate', () => {
-                        if (endVideo.duration && endVideo.currentTime >= endVideo.duration) {                        
-                            endVideo.pause();                        
+                        if (endVideo.duration && endVideo.currentTime >= endVideo.duration) {                                                
+                            endVideo.pause();                                                
                             endVideo.currentTime = endVideo.duration - 0.01; 
                         }
                     });
@@ -811,17 +793,11 @@
         }, 500);
     }
 
-    function startRotationOnView() {
-        if (rotationInterval) return;
-        const rect = rotatingText.getBoundingClientRect();
-        if (rect.top < window.innerHeight) {
-            window.removeEventListener('scroll', startRotationOnView);
+    function startRotationLoop() {
+        if (!rotationInterval) {
             rotationInterval = setInterval(rotateWords, 999);
         }
     }
-
-    window.addEventListener('scroll', startRotationOnView);
-    startRotationOnView();
 </script>
 </body>
 </html>
