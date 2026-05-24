@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>In Loving Memory</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Temple Memory</title>
+
+<!-- FONTS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
+
+/* ==========================================================================
+   RESET & GLOBALS
+   ========================================================================== */
+
 *{
     margin:0;
     padding:0;
@@ -19,27 +30,34 @@ html{
 body{
     background:#070707;
     color:#f5f5f5;
-    font-family:'Georgia', serif;
     overflow-x:hidden;
+    font-family:'Inter', sans-serif;
 }
 
-/* =========================
-   MAIN CONTAINER
-========================= */
-.memorial-container{
-    width:100%;
-    min-height:100vh;
-    background:#070707;
+/* ==========================================================================
+   PAGE LOAD STATE
+   ========================================================================== */
+
+body.loading{
+    overflow:hidden;
 }
 
-/* =========================
+.page{
+    opacity:0;
+    transition:opacity 1.2s ease;
+}
+
+body.loaded .page{
+    opacity:1;
+}
+
+/* ==========================================================================
    HERO SECTION
-========================= */
+   ========================================================================== */
+
 .hero-section{
     position:relative;
     width:100%;
-
-    /* desktop image height */
     height:83vh;
     min-height:620px;
     max-height:920px;
@@ -50,35 +68,40 @@ body{
 
     overflow:hidden;
     background:#070707;
-
-    transition:height .35s ease;
 }
 
-/* IMAGE */
 .memorial-image{
     width:100%;
     height:100%;
 
-    /* DESKTOP = FULL IMAGE */
     object-fit:contain;
-
-    /* stable positioning */
     object-position:center bottom;
 
-    filter:grayscale(70%) brightness(1.05);
+    filter:grayscale(70%) brightness(0.1);
+
+    opacity:0;
+
+    transform:scale(1.03);
 
     transition:
-        object-position .35s ease,
-        transform .35s ease,
-        height .35s ease;
+        opacity 1.8s cubic-bezier(0.25, 1, 0.5, 1),
+        transform 1.8s cubic-bezier(0.25, 1, 0.5, 1),
+        filter 1.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* SMOOTH FADE */
+body.loaded .memorial-image{
+    opacity:1;
+    transform:scale(1);
+    filter:grayscale(70%) brightness(1.05);
+}
+
 .hero-section::after{
     content:"";
+
     position:absolute;
     left:0;
     bottom:0;
+
     width:100%;
     height:28%;
 
@@ -93,11 +116,12 @@ body{
     pointer-events:none;
 }
 
-/* =========================
-   CONTENT
-========================= */
+/* ==========================================================================
+   HERO CONTENT
+   ========================================================================== */
+
 .content{
-    width:min(100%, 900px);
+    width:min(100%, 920px);
 
     margin:0 auto;
 
@@ -107,58 +131,269 @@ body{
         clamp(80px, 10vw, 130px);
 
     text-align:center;
-
-    transition:padding .35s ease;
 }
 
-/* NAME */
+.fade-up{
+    opacity:0;
+    transform:translateY(25px);
+
+    transition:
+        opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1),
+        transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+body.loaded .fade-up{
+    opacity:1;
+    transform:translateY(0);
+}
+
+body.loaded .delay-1{
+    transition-delay:0.8s;
+}
+
+body.loaded .delay-2{
+    transition-delay:1.1s;
+}
+
+body.loaded .delay-3{
+    transition-delay:1.4s;
+}
+
 .name{
-    font-size:clamp(2.2rem, 5vw, 4.5rem);
-    line-height:1.08;
+    font-family:'Cormorant Garamond', serif;
+    font-size:clamp(2.7rem, 5vw, 5rem);
+    line-height:1.05;
     font-weight:700;
     color:#ffffff;
 
     margin-bottom:14px;
-
-    transition:
-        font-size .35s ease,
-        margin .35s ease;
 }
 
-/* YEARS */
 .years{
-    font-size:clamp(.95rem, 1.5vw, 1.15rem);
+    font-family:'Inter', sans-serif;
+    font-size:clamp(.92rem, 1.5vw, 1.05rem);
     color:#b8b8b8;
 
-    letter-spacing:clamp(2px, .35vw, 4px);
+    letter-spacing:4px;
 
-    margin-bottom:clamp(28px, 5vw, 46px);
-
-    transition:
-        font-size .35s ease,
-        letter-spacing .35s ease,
-        margin .35s ease;
+    margin-bottom:36px;
 }
 
-/* PARAGRAPH */
 .tribute-text{
+    font-family:'Inter', sans-serif;
     font-size:clamp(1rem, 1.35vw, 1.12rem);
 
     text-align:justify;
     text-wrap:pretty;
 
-    line-height:clamp(1.8, 2vw, 2);
+    line-height:2;
 
     color:#d2d2d2;
-
-    transition:
-        font-size .35s ease,
-        line-height .35s ease;
 }
 
-/* =========================
-   TABLET
-========================= */
+/* ==========================================================================
+   MEMORY SECTION
+   ========================================================================== */
+
+.memory-section{
+    width:100%;
+    margin:120px 0;
+    background:transparent;
+}
+
+.memory-inner{
+    width:min(100%, 920px);
+
+    margin:0 auto;
+
+    padding:0 clamp(22px, 5vw, 48px);
+}
+
+.memory-image-wrap{
+    width:100%;
+    overflow:hidden;
+    background:transparent;
+}
+
+.memory-image{
+    width:25%;
+    height:auto;
+
+    display:block;
+
+    object-fit:contain;
+    object-position:left center;
+
+    filter:grayscale(100%) brightness(.82);
+
+    opacity:0;
+
+    transition:
+        filter 1s ease,
+        opacity .7s ease;
+}
+
+.memory-image.loaded-image{
+    opacity:1;
+}
+
+.memory-image.active{
+    filter:grayscale(0%) brightness(1);
+}
+
+.memory-content{
+    opacity:0;
+    transition:opacity .8s ease;
+}
+
+.memory-content.visible{
+    opacity:1;
+}
+
+.memory-year{
+    font-family:'Inter', sans-serif;
+
+    color:#7d7d7d;
+
+    letter-spacing:4px;
+
+    margin-top:22px;
+    margin-bottom:22px;
+
+    font-size:.9rem;
+}
+
+.memory-paragraph{
+    font-family:'Inter', sans-serif;
+
+    color:#d5d5d5;
+
+    line-height:2;
+    text-align:justify;
+
+    font-size:1.02rem;
+}
+
+/* ==========================================================================
+   END SECTION
+   ========================================================================== */
+
+.end-section{
+    width:100%;
+
+    padding:220px 24px 180px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+/* ==========================================================================
+   NAME
+   ========================================================================== */
+
+.rotating-name{
+    font-family:'Cormorant Garamond', serif;
+
+    font-size:clamp(3rem, 9vw, 8rem);
+
+    line-height:1;
+
+    color:#ffffff;
+
+    opacity:1;
+
+    transition:opacity .5s ease-in-out;
+
+    position:relative;
+
+    z-index:2;
+}
+
+.rotating-name.fade{
+    opacity:0;
+}
+
+/* ==========================================================================
+   SIGNATURE VIDEO
+   ========================================================================== */
+
+.end-video-container{
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    /*
+        slightly above the text center
+        so it overlaps the name naturally
+    */
+    transform:translate(-50%, -72%);
+
+    /*
+        smaller than text width
+    */
+    width:min(58vw, 520px);
+
+    opacity:0;
+
+    transition:
+        opacity 2s ease,
+        transform 2s ease;
+
+    z-index:3;
+
+    pointer-events:none;
+}
+
+.end-video-container.show{
+    opacity:1;
+
+    transform:translate(-50%, -69%);
+}
+
+.end-video-wrapper{
+    position:relative;
+
+    width:100%;
+
+    /*
+        signature ratio
+    */
+    padding-bottom:38%;
+}
+
+.end-video-wrapper video{
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    opacity:.92;
+
+    mix-blend-mode:screen;
+
+    filter:
+        brightness(1.1)
+        contrast(1.05);
+}
+
+/* ==========================================================================
+   MEDIA QUERIES
+   ========================================================================== */
+
 @media (max-width:900px){
 
     .hero-section{
@@ -167,14 +402,15 @@ body{
     }
 
     .memorial-image{
-        /* mobile can crop smoothly */
         object-fit:cover;
     }
+
+    .end-video-container{
+        width:min(72vw, 460px);
+    }
+
 }
 
-/* =========================
-   MOBILE
-========================= */
 @media (max-width:600px){
 
     .hero-section{
@@ -187,14 +423,23 @@ body{
         padding-right:24px;
     }
 
-    .tribute-text{
+    .tribute-text,
+    .memory-paragraph{
         font-size:1rem;
     }
+
+    .end-video-container{
+        width:min(82vw, 340px);
+
+        transform:translate(-50%, -66%);
+    }
+
+    .end-video-container.show{
+        transform:translate(-50%, -63%);
+    }
+
 }
 
-/* =========================
-   SMALL PHONE
-========================= */
 @media (max-width:420px){
 
     .hero-section{
@@ -209,13 +454,19 @@ body{
     .years{
         letter-spacing:2px;
     }
+
+    .end-video-container{
+        width:min(86vw, 300px);
+    }
+
 }
+
 </style>
 </head>
 
-<body>
+<body class="loading">
 
-<div class="memorial-container">
+<div class="page">
 
     <!-- HERO -->
     <section class="hero-section">
@@ -223,31 +474,393 @@ body{
         <img
             class="memorial-image"
             src="https://sklepagatesting.github.io/resources/Images/jayautajay.png"
-            alt="In Loving Memory"
+            alt="Temple"
         >
 
     </section>
 
-    <!-- CONTENT -->
+    <!-- HERO CONTENT -->
     <section class="content">
 
-        <h1 class="name">"Do Good, Sometimes"
+        <h1 class="name fade-up delay-1">
+            Temple of Quiet Light
         </h1>
 
-        <div class="years">
-            2003 –
+        <div class="years fade-up delay-2">
+            ESTABLISHED • 1888
         </div>
 
-        <p class="tribute-text">
-            A common form of Lorem ipsum reads: Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-            ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        <p class="tribute-text fade-up delay-3">
+
+            Within the silent halls of stone and shadow, the temple remains
+            untouched by time. Candles flicker softly beneath carved arches,
+            while drifting incense and distant bells echo through the ancient
+            chambers. Every path, every pillar, and every weathered wall carries
+            a sense of stillness that invites reflection and calm.
+
         </p>
 
     </section>
 
+    <!-- MEMORY SECTION 1 -->
+    <section class="memory-section">
+
+        <div class="memory-inner">
+
+            <div class="memory-image-wrap">
+
+                <img
+                    class="memory-image scroll-image"
+                    src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1600&auto=format&fit=crop"
+                    alt=""
+                >
+
+            </div>
+
+            <div class="memory-content">
+
+                <div class="memory-year">
+                    1912
+                </div>
+
+                <p class="memory-paragraph">
+
+                    Surrounded by mountain fog and quiet forests, the eastern
+                    sanctuary became a place of retreat for travelers and monks.
+                    Morning light enters through the open stone corridor,
+                    revealing textures shaped by centuries of rain, wind, and
+                    devotion.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- MEMORY SECTION 2 -->
+    <section class="memory-section">
+
+        <div class="memory-inner">
+
+            <div class="memory-image-wrap">
+
+                <img
+                    class="memory-image scroll-image"
+                    src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?q=80&w=1600&auto=format&fit=crop"
+                    alt=""
+                >
+
+            </div>
+
+            <div class="memory-content">
+
+                <div class="memory-year">
+                    1936
+                </div>
+
+                <p class="memory-paragraph">
+
+                    Lanterns once illuminated the sacred passage during evening
+                    ceremonies. The temple's architecture was designed to guide
+                    visitors slowly inward, allowing silence and movement to
+                    become part of the same experience.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- END -->
+    <section class="end-section">
+
+        <!-- SIGNATURE VIDEO -->
+        <div
+            class="end-video-container"
+            id="endVideoContainer"
+        >
+
+            <div class="end-video-wrapper">
+
+                <video
+                    id="endVideo"
+                    playsinline
+                    muted
+                >
+
+                    <source
+                        src="https://www.w3schools.com/html/mov_bbb.mp4"
+                        type="video/mp4"
+                    >
+
+                </video>
+
+            </div>
+
+        </div>
+
+        <!-- NAME -->
+        <h2
+            class="rotating-name"
+            id="rotatingText"
+        >
+            Eternal Silence
+        </h2>
+
+    </section>
+
 </div>
+
+<script>
+
+/* ==========================================================================
+   IMAGE PRELOAD HANDLER
+   ========================================================================== */
+
+const images = document.images;
+
+let loadedCount = 0;
+
+function finishLoading(){
+
+    document.body.classList.remove('loading');
+
+    setTimeout(() => {
+
+        document.body.classList.add('loaded');
+
+    }, 100);
+
+}
+
+for(let img of images){
+
+    if(img.complete){
+
+        loadedCount++;
+
+    } else {
+
+        img.addEventListener('load', () => {
+
+            loadedCount++;
+
+            if(loadedCount === images.length){
+
+                finishLoading();
+
+            }
+
+        });
+
+    }
+
+}
+
+if(loadedCount === images.length){
+
+    finishLoading();
+
+}
+
+/* ==========================================================================
+   MEMORY SECTIONS IMAGE PRELOAD
+   ========================================================================== */
+
+const scrollImages =
+    document.querySelectorAll('.scroll-image');
+
+scrollImages.forEach((img) => {
+
+    if(img.complete){
+
+        img.classList.add('loaded-image');
+
+    } else {
+
+        img.addEventListener('load', () => {
+
+            img.classList.add('loaded-image');
+
+        });
+
+    }
+
+});
+
+/* ==========================================================================
+   SCROLL ACTION LIFECYCLES
+   ========================================================================== */
+
+const memoryContent =
+    document.querySelectorAll('.memory-content');
+
+function updateEffects(){
+
+    const vh = window.innerHeight;
+
+    /* SCROLL IMAGE FILTERS */
+
+    scrollImages.forEach((img) => {
+
+        const rect =
+            img.getBoundingClientRect();
+
+        const activeTop = vh * 0.3;
+
+        const activeBottom = vh * 0.7;
+
+        if(
+            rect.top < activeBottom &&
+            rect.bottom > activeTop
+        ){
+
+            img.classList.add('active');
+
+        } else {
+
+            img.classList.remove('active');
+
+        }
+
+    });
+
+    /* CONTENT FADE REVEALS */
+
+    memoryContent.forEach((content) => {
+
+        const rect =
+            content.getBoundingClientRect();
+
+        if(rect.top < vh * 0.92){
+
+            content.classList.add('visible');
+
+        }
+
+    });
+
+    startRotationOnView();
+
+}
+
+window.addEventListener('scroll', updateEffects);
+
+window.addEventListener('load', updateEffects);
+
+/* ==========================================================================
+   ROTATING TEXT LOOP & SIGNATURE VIDEO
+   ========================================================================== */
+
+const rotatingText =
+    document.getElementById('rotatingText');
+
+const endVideoContainer =
+    document.getElementById('endVideoContainer');
+
+const endVideo =
+    document.getElementById('endVideo');
+
+const words = [
+
+    "Eternal Silence",
+    "Ancient Echoes",
+    "Sacred Light",
+    "Temple of Stillness",
+    "Quiet Devotion"
+
+];
+
+let current = 0;
+let rotationInterval = null;
+
+function rotateWords(){
+
+    if(current >= words.length - 1){
+        clearInterval(rotationInterval);
+        return;
+    }
+
+    /* TEXT FADE OUT */
+    rotatingText.classList.add('fade');
+
+    setTimeout(() => {
+
+        current++;
+
+        rotatingText.textContent = words[current];
+
+        /* FINAL NAME (trigger signature reveal) */
+        if(current === words.length - 1){
+
+            rotatingText.style.transition =
+                "opacity 2.5s ease-in-out";
+
+            /*
+                reveal signature video (overlapping above name)
+            */
+            setTimeout(() => {
+
+                endVideoContainer.classList.add('show');
+
+                // ensure it starts clean
+                endVideo.currentTime = 0;
+
+                // play fully
+                endVideo.play().catch(() => {});
+
+                // stop EXACTLY at last frame
+                endVideo.addEventListener('timeupdate', () => {
+
+                    if (endVideo.duration && endVideo.currentTime >= endVideo.duration) {
+                        endVideo.pause();
+                        endVideo.currentTime = endVideo.duration - 0.01; // lock last frame
+                    }
+
+                });
+
+            }, 1700);
+        }
+
+        /* TEXT FADE IN */
+        rotatingText.classList.remove('fade');
+
+    }, 500);
+}
+
+function startRotationOnView(){
+
+    if(rotationInterval) return;
+
+    const rect =
+        rotatingText.getBoundingClientRect();
+
+    if(rect.top < window.innerHeight){
+
+        window.removeEventListener(
+            'scroll',
+            startRotationOnView
+        );
+
+        rotationInterval =
+            setInterval(rotateWords, 999);
+
+    }
+
+}
+
+window.addEventListener(
+    'scroll',
+    startRotationOnView
+);
+
+startRotationOnView();
+
+</script>
 
 </body>
 </html>
