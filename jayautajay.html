@@ -1,12 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Temple Memory</title>
-    
-    <!-- FONTS -->
+        
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght=500;600;700&family=Inter:wght=300;400;500;600&display=swap" rel="stylesheet">
@@ -22,7 +20,9 @@
         }
 
         html {
-            scroll-behavior: smooth;
+            /* Disabled default scroll behavior to let our smooth glide engine control physics cleanly */
+            scroll-behavior: auto !important;
+            height: 100%;
         }
 
         body {
@@ -30,6 +30,17 @@
             color: #f5f5f5;
             overflow-x: hidden;
             font-family: 'Inter', sans-serif;
+            height: 100%;
+        }
+
+        /* Smooth scroll container workspace layout */
+        #scroll-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            will-change: transform;
         }
 
         /* ==========================================================================
@@ -285,7 +296,7 @@
         }
 
         /* ==========================================================================
-           SIGNATURE VIDEO (FIXED SHIFT BOTTLENECK)
+           SIGNATURE VIDEO
            ========================================================================== */
         .end-video-container {
             position: absolute;
@@ -294,7 +305,7 @@
             transform: translate(-50%, -72%);
             width: min(58vw, 520px);
             opacity: 0;
-            transition: opacity 2s ease; /* Removed transform animation to completely eliminate layout recalculation jumps */
+            transition: opacity 2s ease;
             z-index: 1;
             pointer-events: none;
             will-change: opacity;
@@ -345,7 +356,7 @@
                 padding-right: 24px;
             }
             .tribute-text,
-            .memory-paragraph {
+            .memory-paragraph {                
                 font-size: 1rem;
             }
             .end-video-container {
@@ -353,7 +364,7 @@
                 transform: translate(-50%, -66%);
             }
             .end-video-container.show {
-                transform: translate(-50%, -66%); /* Fixed properties to keep element anchors completely stable on mobile activation */
+                transform: translate(-50%, -66%);
             }
         }
 
@@ -374,71 +385,66 @@
         }
     </style>
 </head>
-
 <body class="loading">
-<div class="page">
 
-    <!-- HERO -->
-    <section class="hero-section">
-        <img id="bgGrey" class="memorial-image" src="https://sklepagatesting.github.io/resources/Images/jayautajay.png" alt="Temple" style="display: none;">
-        <img id="bgColored" src="https://sklepagatesting.github.io/resources/Images/jayautajaycolored.png" alt="Temple Colored" style="display: none;">
-        
-        <div class="hero-canvas-container" id="canvasContainer">
-            <canvas id="brushCanvas"></canvas>
-        </div>
-    </section>
-
-    <!-- HERO CONTENT -->
-    <section class="content">
-        <h1 class="name fade-up delay-1">Temple of Quiet Light</h1>
-        <div class="years fade-up delay-2">ESTABLISHED • 1888</div>
-        <p class="tribute-text fade-up delay-3">
-            Within the silent halls of stone and shadow, the temple remains untouched by time. Candles flicker softly beneath carved arches, while drifting incense and distant bells echo through the ancient chambers. Every path, every pillar, and every weathered wall carries a sense of stillness that invites reflection and calm.
-        </p>
-    </section>
-
-    <!-- MEMORY SECTION 1 -->
-    <section class="memory-section">
-        <div class="memory-inner">
-            <div class="memory-image-wrap">
-                <img class="memory-image scroll-image" loading="lazy" src="https://sklepagatesting.github.io/resources/Images/daycare.png?q=80&w=1600&auto=format&fit=crop" alt="">
+<div id="scroll-container">
+    <div class="page">
+        <section class="hero-section">
+            <img id="bgGrey" class="memorial-image" src="https://sklepagatesting.github.io/resources/Images/jayautajay.png" alt="Temple" style="display: none;">
+            <img id="bgColored" src="https://sklepagatesting.github.io/resources/Images/jayautajaycolored.png" alt="Temple Colored" style="display: none;">
+                    
+            <div class="hero-canvas-container" id="canvasContainer">
+                <canvas id="brushCanvas"></canvas>
             </div>
-            <div class="memory-content">
-                <div class="memory-year">1912</div>
-                <p class="memory-paragraph">
-                    Surrounded by mountain fog and quiet forests, the eastern sanctuary became a place of retreat for travelers and monks. Morning light enters through the open stone corridor, revealing textures shaped by centuries of rain, wind, and devotion.
-                </p>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- MEMORY SECTION 2 -->
-    <section class="memory-section">
-        <div class="memory-inner">
-            <div class="memory-image-wrap">
-                <img class="memory-image scroll-image" loading="lazy" src="https://sklepagatesting.github.io/resources/Images/graduation.jpg?q=80&w=1600&auto=format&fit=crop" alt="">
-            </div>
-            <div class="memory-content">
-                <div class="memory-year">1936</div>
-                <p class="memory-paragraph">
-                    Lanterns once illuminated the sacred passage during evening ceremonies. The temple's architecture was designed to guide visitors slowly inward, allowing silence and movement to become part of the same experience.
-                </p>
-            </div>
-        </div>
-    </section>
+        <section class="content">
+            <h1 class="name fade-up delay-1">Temple of Quiet Light</h1>
+            <div class="years fade-up delay-2">ESTABLISHED • 1888</div>
+            <p class="tribute-text fade-up delay-3">
+                Within the silent halls of stone and shadow, the temple remains untouched by time. Candles flicker softly beneath carved arches, while drifting incense and distant bells echo through the ancient chambers. Every path, every pillar, and every weathered wall carries a sense of stillness that invites reflection and calm.
+            </p>
+        </section>
 
-    <!-- END -->
-    <section class="end-section">
-        <div class="end-video-container" id="endVideoContainer">
-            <div class="end-video-wrapper">
-                <video id="endVideo" playsinline muted preload="none">
-                    <source src="https://sklepagatesting.github.io/resources/Images/signature.mp4" type="video/mp4">
-                </video>
+        <section class="memory-section">
+            <div class="memory-inner">
+                <div class="memory-image-wrap">
+                    <img class="memory-image scroll-image" loading="lazy" src="https://sklepagatesting.github.io/resources/Images/daycare.png?q=80&w=1600&auto=format&fit=crop" alt="">
+                </div>
+                <div class="memory-content">
+                    <div class="memory-year">1912</div>
+                    <p class="memory-paragraph">
+                        Surrounded by mountain fog and quiet forests, the eastern sanctuary became a place of retreat for travelers and monks. Morning light enters through the open stone corridor, revealing textures shaped by centuries of rain, wind, and devotion.
+                    </p>
+                </div>
             </div>
-        </div>
-        <h2 class="rotating-name" id="rotatingText">Eternal Silence</h2>
-    </section>
+        </section>
 
+        <section class="memory-section">
+            <div class="memory-inner">
+                <div class="memory-image-wrap">
+                    <img class="memory-image scroll-image" loading="lazy" src="https://sklepagatesting.github.io/resources/Images/graduation.jpg?q=80&w=1600&auto=format&fit=crop" alt="">
+                </div>
+                <div class="memory-content">
+                    <div class="memory-year">1936</div>
+                    <p class="memory-paragraph">
+                        Lanterns once illuminated the sacred passage during evening ceremonies. The temple's architecture was designed to guide visitors slowly inward, allowing silence and movement to become part of the same experience.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="end-section">
+            <div class="end-video-container" id="endVideoContainer">
+                <div class="end-video-wrapper">
+                    <video id="endVideo" playsinline muted preload="none">
+                        <source src="https://sklepagatesting.github.io/resources/Images/signature.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <h1 class="rotating-name" id="rotatingText">Eternal Silence</h2>
+        </section>
+    </div>
 </div>
 
 <script>
@@ -453,7 +459,8 @@
         setTimeout(() => {
             document.body.classList.add('loaded');
             initCanvas(); 
-            initScrollAnimations(); 
+            initScrollAnimations();
+            initSmoothScroll();
         }, 100);
     }
 
@@ -476,14 +483,46 @@
     });
 
     /* ==========================================================================
-       HIGH PERFORMANCE SCROLL ENGINE (OPTIMIZED WITH INTERSECTION OBSERVERS)
+       KINETIC SMOOTH GLIDE SCROLL ENGINE
+       ========================================================================== */
+    let currentScrollY = 0;
+    let targetScrollY = 0;
+    const easeFactor = 0.075; // Lower values = smoother, more luxurious glide weight effect
+    const scrollContainer = document.getElementById('scroll-container');
+
+    function initSmoothScroll() {
+        // Compute and map out default physical body bounds matching actual virtual height
+        document.body.style.height = `${scrollContainer.getBoundingClientRect().height}px`;
+        
+        window.addEventListener('scroll', () => {
+            targetScrollY = window.scrollY;
+        }, { passive: true });
+
+        // Recalculate structural dimensions dynamically on genuine device flips
+        window.addEventListener('resize', () => {
+            document.body.style.height = `${scrollContainer.getBoundingClientRect().height}px`;
+        });
+
+        function performGlideLoop() {
+            // Apply fluid asymptotic interpolation tracking equations
+            currentScrollY += (targetScrollY - currentScrollY) * easeFactor;
+            
+            // Transform container via hardware layout layers matrix positions
+            scrollContainer.style.transform = `translate3d(0, -${currentScrollY}px, 0)`;
+            
+            requestAnimationFrame(performGlideLoop);
+        }
+        requestAnimationFrame(performGlideLoop);
+    }
+
+    /* ==========================================================================
+       HIGH PERFORMANCE SCROLL OBSERVER INTERSECTION INTERFACES
        ========================================================================== */
     function initScrollAnimations() {
         const memoryContents = document.querySelectorAll('.memory-content');
         const rotatingText = document.getElementById('rotatingText');
         let rotationTriggered = false;
 
-        // Content Fade-In Observer
         const staticObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -502,7 +541,6 @@
         memoryContents.forEach(content => staticObserver.observe(content));
         staticObserver.observe(rotatingText);
 
-        // Native hardware-accelerated Image Visibility Observer (Replaces lagging requestAnimationFrame loop)
         const imageObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -513,7 +551,7 @@
             });
         }, {
             root: null,
-            rootMargin: '-25% 0px -25% 0px', // Perfectly matches your 30% to 70% viewport bounds safely
+            rootMargin: '-20% 0px -20% 0px',
             threshold: 0
         });
 
@@ -521,87 +559,103 @@
     }
 
     /* ==========================================================================
-       BRUSH WORKSPACE RENDERING ENGINES
+       BRUSH WORKSPACE RENDERING ENGINE (MOBILE FLICKER IMMUNE CONFIGURATION)
        ========================================================================== */
     function initCanvas() {
         const container = document.getElementById('canvasContainer');
         const canvas = document.getElementById('brushCanvas');
         const ctx = canvas.getContext('2d');
-        
+                
         const imgGrey = document.getElementById('bgGrey');
         const imgColor = document.getElementById('bgColored');
-        
+                
         const maskCanvas = document.createElement('canvas');
         const maskCtx = maskCanvas.getContext('2d');
 
         const offscreenCanvas = document.createElement('canvas');
         const offCtx = offscreenCanvas.getContext('2d');
-        
+                
         let lastX = null, lastY = null, lastTime = null;
-        
+                
         const preserveCanvas = document.createElement('canvas');
         const preserveCtx = preserveCanvas.getContext('2d');
-        
+
+        // Track only genuine width mutations to eliminate address bar scroll resets
+        let currentViewportWidth = window.innerWidth;
+                
         function resize() {
             const w = container.clientWidth;
             const h = container.clientHeight;
-            
+                        
             if (maskCanvas.width > 0 && maskCanvas.height > 0) {
                 preserveCanvas.width = maskCanvas.width;
                 preserveCanvas.height = maskCanvas.height;
                 preserveCtx.drawImage(maskCanvas, 0, 0);
             }
-            
+                        
             canvas.width = w;
             canvas.height = h;
             offscreenCanvas.width = w;
             offscreenCanvas.height = h;
-            
+                        
             const oldW = maskCanvas.width;
             const oldH = maskCanvas.height;
-            
+                        
             maskCanvas.width = w;
             maskCanvas.height = h;
-            
+                        
             maskCtx.fillStyle = 'black';
             maskCtx.fillRect(0, 0, w, h);
-            
+                        
             if (oldW > 0 && oldH > 0) {
                 maskCtx.drawImage(preserveCanvas, 0, 0, oldW, oldH, 0, 0, w, h);
             }
         }
-        window.addEventListener('resize', resize);
+
+        window.addEventListener('resize', () => {
+            // Guard loop filter: If width is identical, it's a mobile address bar scale shift. Ignore it.
+            if (window.innerWidth === currentViewportWidth) return;
+            
+            currentViewportWidth = window.innerWidth;
+            resize();
+            
+            // Sync glide tracking matrices smoothly with updated client constraints
+            if (typeof initSmoothScroll === 'function') {
+                document.body.style.height = `${scrollContainer.getBoundingClientRect().height}px`;
+            }
+        });
+        
         resize();
 
         function getImgMetrics(img) {
             const cW = canvas.width, cH = canvas.height;
             const iW = img.naturalWidth || 800, iH = img.naturalHeight || 600;
-            
+                        
             let scale = Math.min(cW / iW, cH / iH);
             if (window.innerWidth <= 900) scale = Math.max(cW / iW, cH / iH);
-            
+                        
             const rW = iW * scale, rH = iH * scale;
             const x = (cW - rW) / 2;
             let y = cH - rH;
             if (window.innerWidth <= 420) y = (cH - rH) * 0.1;
-            
+                        
             return { x, y, w: rW, h: rH };
         }
 
-        const baseRadius = 80;      
+        const baseRadius = 80;              
         const maxVelocity = 15;
-        const fadeSpeed = 0.0018;    
-
+        const fadeSpeed = 0.0018;
+    
         function applyBrushStroke(currentX, currentY, velocity) {
             const dynamicRadius = baseRadius + Math.min(velocity * 6.0, 130);
             maskCtx.globalCompositeOperation = 'destination-out';
-            
+                        
             const poolCount = 3;
             for (let i = 0; i < poolCount; i++) {
                 const offsetX = (Math.random() - 0.5) * (dynamicRadius * 0.4);
                 const offsetY = (Math.random() - 0.5) * (dynamicRadius * 0.4);
                 const localRadius = dynamicRadius * (0.6 + Math.random() * 0.5);
-                
+                                
                 const poolGrad = maskCtx.createRadialGradient(
                     currentX + offsetX, currentY + offsetY, localRadius * 0.05, 
                     currentX + offsetX, currentY + offsetY, localRadius
@@ -611,7 +665,7 @@
                 poolGrad.addColorStop(0.6, 'rgba(0,0,0,0.35)');
                 poolGrad.addColorStop(0.9, 'rgba(0,0,0,0.08)');
                 poolGrad.addColorStop(1, 'rgba(0,0,0,0)');
-                
+                                
                 maskCtx.fillStyle = poolGrad;
                 maskCtx.beginPath();
                 maskCtx.arc(currentX + offsetX, currentY + offsetY, localRadius, 0, Math.PI * 2);
@@ -642,16 +696,16 @@
             if (lastX !== null) {
                 const distanceBetween = Math.sqrt(Math.pow(currentX - lastX, 2) + Math.pow(currentY - lastY, 2));
                 const steps = Math.ceil(distanceBetween / 12);
-                
+                                
                 for (let d = 1; d < steps; d++) {
                     const ratio = d / steps;
                     const interX = lastX + (currentX - lastX) * ratio;
                     const interY = lastY + (currentY - lastY) * ratio;
-                    
+                                        
                     const jitterX = (Math.random() - 0.5) * 8;
                     const jitterY = (Math.random() - 0.5) * 8;
                     const bridgeRadius = dynamicRadius * 0.8;
-                    
+                                        
                     const edgeGrad = maskCtx.createRadialGradient(
                         interX + jitterX, interY + jitterY, bridgeRadius * 0.1,
                         interX + jitterX, interY + jitterY, bridgeRadius
@@ -659,7 +713,7 @@
                     edgeGrad.addColorStop(0, 'rgba(0,0,0,0.6)');
                     edgeGrad.addColorStop(0.5, 'rgba(0,0,0,0.25)');
                     edgeGrad.addColorStop(1, 'rgba(0,0,0,0)');
-                    
+                                        
                     maskCtx.fillStyle = edgeGrad;
                     maskCtx.beginPath();
                     maskCtx.arc(interX + jitterX, interY + jitterY, bridgeRadius, 0, Math.PI * 2);
@@ -673,7 +727,7 @@
             const currentX = clientX - rect.left;
             const currentY = clientY - rect.top;
             const now = performance.now();
-            
+                        
             let velocity = 0;
             if (lastTime !== null && lastX !== null) {
                 const dx = currentX - lastX;
@@ -684,9 +738,9 @@
                     velocity = Math.min(distance / dt, maxVelocity);
                 }
             }
-            
+                        
             applyBrushStroke(currentX, currentY, velocity);
-            
+                        
             lastX = currentX;
             lastY = currentY;
             lastTime = now;
@@ -708,36 +762,36 @@
                 handleInteractionMove(e.touches[0].clientX, e.touches[0].clientY);
             }
         }, { passive: true });
-        
+                
         container.addEventListener('touchmove', (e) => {
             if (e.touches.length > 0) handleInteractionMove(e.touches[0].clientX, e.touches[0].clientY);
         }, { passive: true });
-        
+                
         container.addEventListener('touchend', handleInteractionEnd, { passive: true });
         container.addEventListener('touchcancel', handleInteractionEnd, { passive: true });
 
         function renderLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
+                        
             maskCtx.globalCompositeOperation = 'source-over';
             maskCtx.fillStyle = `rgba(0, 0, 0, ${fadeSpeed})`;
             maskCtx.fillRect(0, 0, canvas.width, canvas.height);
-            
+                        
             maskCtx.fillStyle = 'rgba(0, 0, 0, 0.0012)';
             maskCtx.fillRect(0, 0, canvas.width, canvas.height);
-            
+                        
             const metrics = getImgMetrics(imgGrey);
-            
+                        
             ctx.drawImage(imgColor, metrics.x, metrics.y, metrics.w, metrics.h);
-            
+                        
             offCtx.clearRect(0, 0, canvas.width, canvas.height);
             offCtx.drawImage(imgGrey, metrics.x, metrics.y, metrics.w, metrics.h);
             offCtx.globalCompositeOperation = 'destination-in';
             offCtx.drawImage(maskCanvas, 0, 0);
             offCtx.globalCompositeOperation = 'source-over'; 
-            
+                        
             ctx.drawImage(offscreenCanvas, 0, 0);
-            
+                        
             requestAnimationFrame(renderLoop);
         }
         renderLoop();
@@ -750,45 +804,45 @@
     const endVideoContainer = document.getElementById('endVideoContainer');
     const endVideo = document.getElementById('endVideo');
     const words = [
-        "Eternal Silence",    
-        "Ancient Echoes",    
-        "Sacred Light",    
-        "Temple of Stillness",    
+        "Eternal Silence",
+        "Ancient Echoes",
+        "Sacred Light",
+        "Temple of Stillness",
         "Quiet Devotion"
     ];
     let current = 0;
     let rotationInterval = null;
 
     function rotateWords() {
-        if (current >= words.length - 1) {        
-            clearInterval(rotationInterval);        
-            return;    
+        if (current >= words.length - 1) {
+            clearInterval(rotationInterval);
+            return;
         }
-        
+                
         rotatingText.classList.add('fade');
 
         setTimeout(() => {
             current++;
             rotatingText.textContent = words[current];
-            
+                        
             if (current === words.length - 1) {
                 rotatingText.style.transition = "opacity 2.5s ease-in-out";
-                
+                                
                 setTimeout(() => {
                     endVideoContainer.classList.add('show');
                     endVideo.setAttribute('preload', 'auto'); 
                     endVideo.currentTime = 0;
                     endVideo.play().catch(() => {});
-                    
+                                        
                     endVideo.addEventListener('timeupdate', () => {
-                        if (endVideo.duration && endVideo.currentTime >= endVideo.duration) {                                                
-                            endVideo.pause();                                                
+                        if (endVideo.duration && endVideo.currentTime >= endVideo.duration) {
+                            endVideo.pause();
                             endVideo.currentTime = endVideo.duration - 0.01; 
                         }
                     });
-                }, 1700);        
+                }, 1700);
             }
-            
+                        
             rotatingText.classList.remove('fade');
         }, 500);
     }
